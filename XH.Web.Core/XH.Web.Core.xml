@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XH.Web.Core</name>
+    </assembly>
+    <members>
+        <member name="T:XH.Web.Core.Controllers.SystemController">
+            <summary>
+            系统服务接口
+            </summary>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.SystemController.GetDescription">
+            <summary>
+            获取系统描述
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.SystemController.InitDataBase">
+            <summary>
+            数据库初始化
+            </summary>
+        </member>
+    </members>
+</doc>
