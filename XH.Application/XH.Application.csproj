@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<NoWarn>1701;1702;1591</NoWarn>
+		<DocumentationFile>XH.Application.xml</DocumentationFile>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<None Remove="XH.Application.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\XH.Core\XH.Core.csproj" />
+	</ItemGroup>
+
+</Project>
