@@ -9,13 +9,13 @@ using Furion.Logging;
 using Microsoft.Extensions.Configuration;
 using Tea;
 
-namespace XH.Core.DT;
-public class DTContext
+namespace XH.Application.Ali;
+public class DTService
 {
     private readonly string _appKey;
     private readonly string _appSecret;
 
-    public DTContext(IConfiguration conf)
+    public DTService(IConfiguration conf)
     {
         var DTConfig = conf.GetSection("DTConfig");
         Console.WriteLine(DTConfig);
@@ -46,7 +46,7 @@ public class DTContext
         var token = "ERROR";
         var client = CreateClient();
 
-        Log.Warning("key:{key},secret:{secret}",_appKey, _appSecret);
+        Log.Warning("key:{key},secret:{secret}", _appKey, _appSecret);
         var getAccessToken = new GetAccessTokenRequest()
         {
             AppKey = _appKey,

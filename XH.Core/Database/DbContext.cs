@@ -14,7 +14,7 @@ public static class DbContext
     /// <summary>
     /// SqlSugar 数据库实例
     /// </summary>
-    public static readonly SqlSugarScope Instance = new SqlSugarScope(
+    public static readonly SqlSugarScope Instance = new(
         // 读取 appsettings.json 中的 ConnectionConfigs 配置节点
         App.GetConfig<List<ConnectionConfig>>("ConnectionConfigs").Select(conf =>
         {

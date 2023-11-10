@@ -1,20 +1,26 @@
 ﻿using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using XH.Application.Ali;
 using XH.Application.System.Services;
-using XH.Core.DT;
 
 namespace XH.Web.Core.Controllers;
 
 /// <summary>
-/// 系统服务接口
+/// 测试服务接口
 /// </summary>
-public class SystemController : IDynamicApiController
+public class DemoController : IDynamicApiController
 {
     private readonly ISystemService _systemService;
-    private readonly DTContext _dTContext;
-    public SystemController(ISystemService systemService, DTContext dTContext)
+    private readonly DTService _dTContext;
+    private readonly OSSService _ossService;
+
+    public DemoController(ISystemService systemService, DTService dTContext, OSSService ossService)
     {
         _systemService = systemService;
         _dTContext = dTContext;
+        _ossService = ossService;
     }
 
     /// <summary>
@@ -42,5 +48,10 @@ public class SystemController : IDynamicApiController
     public string GetUserInfo(string code)
     {
         return _dTContext.GetUserInfo(code);
+    }
+
+    public void PostFile([FromForm] List<IFormFile> files)
+    {
+        _ossService.PutData(files);
     }
 }

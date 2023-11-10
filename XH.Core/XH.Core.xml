@@ -14,10 +14,5 @@
             SqlSugar 数据库实例
             </summary>
         </member>
-        <member name="M:XH.Core.DT.DTContext.CreateClient">
-            使用 Token 初始化账号Client
-            @return Client
-            @throws Exception
-        </member>
     </members>
 </doc>

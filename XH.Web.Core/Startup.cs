@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SqlSugar;
+using XH.Application.Ali;
 using XH.Core.DataBase;
-using XH.Core.DT;
 
 namespace XH.Web.Core;
 
@@ -25,8 +25,9 @@ public class Startup : AppStartup
         services.AddSingleton<ISqlSugarClient>(DbContext.Instance)
                 .AddScoped(typeof(Repository<>));
 
-        // 钉钉服务
-        services.AddSingleton(typeof(DTContext));
+        // 阿里爸爸大套餐！
+        services.AddSingleton(typeof(DTService));
+        services.AddSingleton(typeof(OSSService));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

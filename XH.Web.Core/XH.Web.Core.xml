@@ -4,23 +4,23 @@
         <name>XH.Web.Core</name>
     </assembly>
     <members>
-        <member name="T:XH.Web.Core.Controllers.SystemController">
+        <member name="T:XH.Web.Core.Controllers.DemoController">
             <summary>
-            系统服务接口
+            测试服务接口
             </summary>
         </member>
-        <member name="M:XH.Web.Core.Controllers.SystemController.GetDescription">
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetDescription">
             <summary>
             获取系统描述
             </summary>
             <returns></returns>
         </member>
-        <member name="M:XH.Web.Core.Controllers.SystemController.InitDataBase">
+        <member name="M:XH.Web.Core.Controllers.DemoController.InitDataBase">
             <summary>
             数据库初始化
             </summary>
         </member>
-        <member name="M:XH.Web.Core.Controllers.SystemController.GetUserInfo(System.String)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetUserInfo(System.String)">
             <summary>
             获取用户信息
             </summary>

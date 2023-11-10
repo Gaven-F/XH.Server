@@ -4,5 +4,10 @@
         <name>XH.Application</name>
     </assembly>
     <members>
+        <member name="M:XH.Application.Ali.DTService.CreateClient">
+            使用 Token 初始化账号Client
+            @return Client
+            @throws Exception
+        </member>
     </members>
 </doc>
