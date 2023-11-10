@@ -20,5 +20,12 @@
             数据库初始化
             </summary>
         </member>
+        <member name="M:XH.Web.Core.Controllers.SystemController.GetUserInfo(System.String)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="code">免登码</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

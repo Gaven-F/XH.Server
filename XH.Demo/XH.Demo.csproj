@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AlibabaCloud.SDK.Dingtalk" Version="2.0.58" />
+    <PackageReference Include="dingtalk-sdk-netCore" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

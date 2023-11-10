@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SqlSugar;
 using XH.Core.DataBase;
+using XH.Core.DT;
 
 namespace XH.Web.Core;
 
@@ -23,6 +24,9 @@ public class Startup : AppStartup
         // 数据库服务
         services.AddSingleton<ISqlSugarClient>(DbContext.Instance)
                 .AddScoped(typeof(Repository<>));
+
+        // 钉钉服务
+        services.AddSingleton(typeof(DTContext));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

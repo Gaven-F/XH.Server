@@ -1,5 +1,6 @@
 ﻿using Furion.DynamicApiController;
 using XH.Application.System.Services;
+using XH.Core.DT;
 
 namespace XH.Web.Core.Controllers;
 
@@ -9,9 +10,11 @@ namespace XH.Web.Core.Controllers;
 public class SystemController : IDynamicApiController
 {
     private readonly ISystemService _systemService;
-    public SystemController(ISystemService systemService)
+    private readonly DTContext _dTContext;
+    public SystemController(ISystemService systemService, DTContext dTContext)
     {
         _systemService = systemService;
+        _dTContext = dTContext;
     }
 
     /// <summary>
@@ -29,5 +32,15 @@ public class SystemController : IDynamicApiController
     public void InitDataBase()
     {
         _systemService.DataBaseInit();
+    }
+
+    /// <summary>
+    /// 获取用户信息
+    /// </summary>
+    /// <param name="code">免登码</param>
+    /// <returns></returns>
+    public string GetUserInfo(string code)
+    {
+        return _dTContext.GetUserInfo(code);
     }
 }
