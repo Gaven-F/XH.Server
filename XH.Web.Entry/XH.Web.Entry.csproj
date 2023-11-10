@@ -10,19 +10,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-
-
-	<ItemGroup>
-	  <Content Remove="appsettings.Production.json" />
-	</ItemGroup>
-
-
-
-	<ItemGroup>
-	  <Compile Include="appsettings.Production.json" />
-	</ItemGroup>
-
-
 	<ItemGroup>
 		<ProjectReference Include="..\XH.Web.Core\XH.Web.Core.csproj" />
 	</ItemGroup>
