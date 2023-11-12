@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using XH.Core.DataBase.Tables;
 
 namespace XH.Core.DataBase;
-public class Repository<T> : SimpleClient<T> where T : BaseTable, new()
+public class Repository<T> : SimpleClient<T> where T : BaseEntry, new()
 {
     public Repository(ISqlSugarClient context) : base(context)
     {

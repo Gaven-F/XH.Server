@@ -2,7 +2,7 @@
 using System;
 
 namespace XH.Core.DataBase.Tables;
-public class BaseTable
+public class BaseEntry
 {
     [SugarColumn(IsPrimaryKey = true, ColumnDescription = "唯一主键")]
     public long Id { get; set; }

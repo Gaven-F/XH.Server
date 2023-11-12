@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using XH.Core.Database.Tables;
 
 namespace XH.Application.Work;
-internal interface IBusinessTrip
+public interface IBusinessTripService
 {
     public long AddTrip(BusinessTrip trip);
     public List<BusinessTrip> GetAllTrip();
-    public void AuditTrip(long tripId, int status);
+    public void ApprovalTrip(long tripId, int status);
     public void DelTrip(long tripId);
 }

@@ -14,5 +14,10 @@
             SqlSugar 数据库实例
             </summary>
         </member>
+        <member name="T:XH.Core.Database.Tables.ApprovalTables.ApprovalStep">
+            <summary>
+            审核步骤数据实例
+            </summary>
+        </member>
     </members>
 </doc>

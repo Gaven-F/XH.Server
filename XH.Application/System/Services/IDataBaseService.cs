@@ -2,4 +2,5 @@
 public interface IDataBaseService
 {
     public void DataBaseInit();
+    public void AddSeedData();
 }

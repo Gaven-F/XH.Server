@@ -398,5 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 
-*.Development.json
-*.Production.json
+# *.Development.json
+# *.Production.json
