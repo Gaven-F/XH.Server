@@ -37,8 +37,9 @@ public class OSSService
         return _validFileType.Contains(type);
     }
 
-    public bool PutData(List<IFormFile> files)
+    public List<string> PutData(List<IFormFile> files)
     {
+        var fileNames = new List<string>(files.Count);
         files.ForEach(file =>
         {
             var type = Path.GetExtension(file.FileName);
@@ -51,11 +52,13 @@ public class OSSService
 
             //if (!Client.DoesBucketExist(type.Replace(".", "")))
             //    Client.CreateBucket(type.Replace(".", ""));
+            var fn = DateTimeOffset.Now.ToUnixTimeMilliseconds() + type;
+            fileNames.Add(fn);
 
-            Client.PutObject("wsy-xh-bucket", DateTimeOffset.Now.ToUnixTimeMilliseconds() + type, file.OpenReadStream());
+            Client.PutObject("wsy-xh-bucket", fn, file.OpenReadStream());
 
         });
 
-        return true;
+        return fileNames;
     }
 }

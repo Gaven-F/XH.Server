@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using AlibabaCloud.SDK.Dingtalkoauth2_1_0;
+﻿using AlibabaCloud.SDK.Dingtalkoauth2_1_0;
 using AlibabaCloud.SDK.Dingtalkoauth2_1_0.Models;
 using DingTalk.Api;
 using DingTalk.Api.Request;
-using DingTalk.Api.Response;
 using Furion.Logging;
 using Microsoft.Extensions.Configuration;
 using Tea;
@@ -46,7 +43,6 @@ public class DTService
         var token = "ERROR";
         var client = CreateClient();
 
-        Log.Warning("key:{key},secret:{secret}", _appKey, _appSecret);
         var getAccessToken = new GetAccessTokenRequest()
         {
             AppKey = _appKey,

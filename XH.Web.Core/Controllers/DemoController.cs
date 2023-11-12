@@ -1,9 +1,14 @@
 ﻿using Furion.DynamicApiController;
+using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using XH.Application.Ali;
 using XH.Application.System.Services;
+using XH.Core.Database.Tables;
+using XH.Core.DataBase;
 
 namespace XH.Web.Core.Controllers;
 
@@ -13,13 +18,13 @@ namespace XH.Web.Core.Controllers;
 public class DemoController : IDynamicApiController
 {
     private readonly ISystemService _systemService;
-    private readonly DTService _dTContext;
+    private readonly DTService _dTService;
     private readonly OSSService _ossService;
 
     public DemoController(ISystemService systemService, DTService dTContext, OSSService ossService)
     {
         _systemService = systemService;
-        _dTContext = dTContext;
+        _dTService = dTContext;
         _ossService = ossService;
     }
 
@@ -47,11 +52,38 @@ public class DemoController : IDynamicApiController
     /// <returns></returns>
     public string GetUserInfo(string code)
     {
-        return _dTContext.GetUserInfo(code);
+        return _dTService.GetUserInfo(code);
     }
 
-    public void PostFile([FromForm] List<IFormFile> files)
+    /// <summary>
+    /// 提交文件
+    /// </summary>
+    /// <param name="files"></param>
+    public List<string> PostFile([FromForm] List<IFormFile> files)
     {
-        _ossService.PutData(files);
+        return _ossService.PutData(files);
+    }
+
+    /// <summary>
+    /// 提交请假请求
+    /// </summary>
+    /// <param name="repository"></param>
+    /// <param name="businessTrip"></param>
+    public void PostBusinessTrip([FromServices] Repository<BusinessTrip> repository, FBusinessTrip businessTrip)
+    {
+        repository.InsertReturnSnowflakeId(businessTrip.Adapt<BusinessTrip>());
+    }
+
+    /// <summary>
+    /// 获取出差信息
+    /// </summary>
+    /// <param name="repository"></param>
+    /// <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+    /// <returns></returns>
+    public IEnumerable<FBusinessTrip> GetBusinessTrip([FromServices] Repository<BusinessTrip> repository,string userId = "ALL")
+    {
+        return repository.GetList((it) => userId.ToLower()
+            .Equals("all") || it.CorpId.Equals(userId))
+            .Select(it => it.Adapt<FBusinessTrip>());
     }
 }
