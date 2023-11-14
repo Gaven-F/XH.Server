@@ -2,13 +2,15 @@
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using XH.Application.Ali;
 using XH.Application.System.Services;
-using XH.Core.Database.Tables;
+using XH.Core.Database.Entities;
 using XH.Core.DataBase;
+using XH.Core.DataBase.Entities;
 
 namespace XH.Web.Core.Controllers;
 
@@ -85,5 +87,36 @@ public class DemoController : IDynamicApiController
         return repository.GetList((it) => userId.ToLower()
             .Equals("all") || it.CorpId.Equals(userId))
             .Select(it => it.Adapt<FBusinessTrip>());
+    }
+
+    public void PostLeave([FromServices] Repository<Leave> repository, Leave leave)
+    {
+        repository.InsertReturnSnowflakeId(leave);
+    }
+
+    public void PostProcureApplication([FromServices] Repository<ProcureApplication> repository, ProcureApplication procureApplication)
+    {
+        repository.InsertReturnSnowflakeId(procureApplication);
+    }
+
+    public void PostProcurementConfirmation([FromServices] Repository<ProcurementConfirmation> repository, ProcurementConfirmation procurementConfirmation)
+    {
+        repository.InsertReturnSnowflakeId(procurementConfirmation);
+    }
+
+
+    public IEnumerable<Leave> GetLeave([FromServices] Repository<Leave> repository)
+    {
+        return repository.GetList();
+    }
+
+    public IEnumerable<ProcureApplication> GetProcureApplication([FromServices] Repository<ProcureApplication> repository)
+    {
+        return repository.GetList();
+    }
+
+    public IEnumerable<ProcurementConfirmation> GetProcurementConfirmation([FromServices] Repository<ProcurementConfirmation> repository)
+    {
+        return repository.GetList();
     }
 }

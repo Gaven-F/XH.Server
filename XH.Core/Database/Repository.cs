@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using XH.Core.DataBase.Tables;
+using XH.Core.DataBase.Entities;
 
 namespace XH.Core.DataBase;
-public class Repository<T> : SimpleClient<T> where T : BaseEntry, new()
+public class Repository<T> : SimpleClient<T> where T : BaseEntity, new()
 {
     public Repository(ISqlSugarClient context) : base(context)
     {

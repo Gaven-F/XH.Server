@@ -1,11 +1,12 @@
 ﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
-using XH.Core.DataBase.Tables;
+using XH.Core.DataBase.Entities;
 using XH.Core.Interfaces.AsTools;
 
-namespace XH.Core.Database.Tables;
-public class BusinessTrip : BaseEntry, INeedApprove
+namespace XH.Core.Database.Entities;
+
+public class BusinessTrip : BaseEntity, INeedApprove
 {
 	[SugarColumn(ColumnDescription = "申请人Id号")]
 	public string CorpId { get; set; } = string.Empty;

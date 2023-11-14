@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XH.Core.Database.Tables.ApprovalTables;
-using XH.Core.DataBase.Tables;
+using XH.Core.Database.Entities.ApprovalEntities;
+using XH.Core.DataBase.Entities;
 using XH.Core.Interfaces.AsTools;
 
 namespace XH.Application.Work;
@@ -25,7 +25,7 @@ public partial class WorkService : IApproveService
 		throw new NotImplementedException();
 	}
 
-	public void BindApprocal<T>() where T : BaseEntry, INeedApprove, new()
+	public void BindApprocal<T>() where T : BaseEntity, INeedApprove, new()
 	{
 		throw new NotImplementedException();
 	}

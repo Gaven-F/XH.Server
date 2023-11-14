@@ -2,7 +2,7 @@
 using SqlSugar;
 using System.Reflection;
 using XH.Application.System.Services;
-using XH.Core.DataBase.Tables;
+using XH.Core.DataBase.Entities;
 
 namespace XH.Application;
 
@@ -22,8 +22,8 @@ public class SystemService : ISystemService, ITransient
 
 	public void DataBaseInit()
 	{
-		var tables = Assembly.GetAssembly(typeof(BaseEntry))!.GetTypes()
-			.Where(t => ReferenceEquals(t.BaseType, typeof(BaseEntry)))
+		var Entities = Assembly.GetAssembly(typeof(BaseEntity))!.GetTypes()
+			.Where(t => ReferenceEquals(t.BaseType, typeof(BaseEntity)))
 			.ToArray();
 
 		_db.DbMaintenance.CreateDatabase();
@@ -33,7 +33,7 @@ public class SystemService : ISystemService, ITransient
 		t.Select(it => it.Name).ToList()
 			.ForEach(it => _db.DbMaintenance.DropTable(it));
 
-		_db.CodeFirst.InitTables(tables);
+		_db.CodeFirst.InitTables(Entities);
 
 		// 添加种子数据
 		AddSeedData();

@@ -1,7 +1,7 @@
 ﻿using FastJSON;
 using Mapster;
 using StackExchange.Profiling.Internal;
-using XH.Core.Database.Tables;
+using XH.Core.Database.Entities;
 
 namespace XH.Application.Mapper;
 

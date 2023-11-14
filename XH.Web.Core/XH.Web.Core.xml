@@ -33,14 +33,14 @@
             </summary>
             <param name="files"></param>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.PostBusinessTrip(XH.Core.DataBase.Repository{XH.Core.Database.Tables.BusinessTrip},XH.Core.Database.Tables.FBusinessTrip)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostBusinessTrip(XH.Core.DataBase.Repository{XH.Core.Database.Entities.BusinessTrip},XH.Core.Database.Entities.FBusinessTrip)">
             <summary>
             提交请假请求
             </summary>
             <param name="repository"></param>
             <param name="businessTrip"></param>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.GetBusinessTrip(XH.Core.DataBase.Repository{XH.Core.Database.Tables.BusinessTrip},System.String)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetBusinessTrip(XH.Core.DataBase.Repository{XH.Core.Database.Entities.BusinessTrip},System.String)">
             <summary>
             获取出差信息
             </summary>

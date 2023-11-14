@@ -26,7 +26,7 @@
             </summary>
             <typeparam name="T">需要审核的实体类型</typeparam>
         </member>
-        <member name="M:XH.Application.Work.IApproveService.Approve(System.Int64,XH.Core.Database.Tables.ApprovalTables.ApprovalStatusEnum)">
+        <member name="M:XH.Application.Work.IApproveService.Approve(System.Int64,XH.Core.Database.Entities.ApprovalEntities.ApprovalStatusEnum)">
             <summary>
             审核步骤状态改变
             </summary>

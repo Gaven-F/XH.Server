@@ -1,16 +1,12 @@
 ﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XH.Core.DataBase.Tables;
+using XH.Core.DataBase.Entities;
 
-namespace XH.Core.Database.Tables.ApprovalTables;
+
+namespace XH.Core.Database.Entities.ApprovalEntities;
 /// <summary>
 /// 审核步骤数据实例
 /// </summary>
-public class ApprovalStep : BaseEntry
+public class ApprovalStep : BaseEntity
 {
 	[SugarColumn(ColumnDescription = "审核步骤名称")]
 	public string Name { get; set; } = string.Empty;

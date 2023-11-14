@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XH.Core.Database.Tables;
-using XH.Core.Database.Tables.ApprovalTables;
-using XH.Core.DataBase.Tables;
+using XH.Core.Database.Entities;
+using XH.Core.Database.Entities.ApprovalEntities;
+using XH.Core.DataBase.Entities;
 using XH.Core.Interfaces.AsTools;
 
 namespace XH.Application.Work;

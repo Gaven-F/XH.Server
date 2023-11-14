@@ -1,6 +1,6 @@
 ﻿
-using XH.Core.Database.Tables.ApprovalTables;
-using XH.Core.DataBase.Tables;
+using XH.Core.Database.Entities.ApprovalEntities;
+using XH.Core.DataBase.Entities;
 using XH.Core.Interfaces.AsTools;
 
 namespace XH.Application.Work;
@@ -20,7 +20,7 @@ public interface IApproveService
 	/// 绑定
 	/// </summary>
 	/// <typeparam name="T">需要审核的实体类型</typeparam>
-	public void BindApprocal<T>() where T : BaseEntry, INeedApprove, new();
+	public void BindApprocal<T>() where T : BaseEntity, INeedApprove, new();
 	/// <summary>
 	/// 审核步骤状态改变
 	/// </summary>

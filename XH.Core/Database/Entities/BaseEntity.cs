@@ -1,8 +1,8 @@
 ﻿using SqlSugar;
 using System;
 
-namespace XH.Core.DataBase.Tables;
-public class BaseEntry
+namespace XH.Core.DataBase.Entities;
+public class BaseEntity
 {
     [SugarColumn(IsPrimaryKey = true, ColumnDescription = "唯一主键")]
     public long Id { get; set; }
