@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 namespace XH_Server.Application.Services.System.Tests;
@@ -7,11 +7,11 @@ namespace XH_Server.Application.Services.System.Tests;
 [TestClass()]
 public class SystemServiceTests
 {
-	[TestMethod()]
-	public void InitDataBaseTest()
-	{
-		Assert.Fail();
-	}
+    [TestMethod()]
+    public void InitDataBaseTest()
+    {
+        Assert.Fail();
+    }
 }
 =======
 ﻿using System;

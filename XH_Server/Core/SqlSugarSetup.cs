@@ -18,7 +18,8 @@ public static class SqlSugarSetup
                     col.IsNullable = true;
                 }
             },
-            EntityNameService = (type, entity) => {
+            EntityNameService = (type, entity) =>
+            {
                 entity.DbTableName = UtilMethods.ToUnderLine(entity.DbTableName.ToLower());
             }
         };

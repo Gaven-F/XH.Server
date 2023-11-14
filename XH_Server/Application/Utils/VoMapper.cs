@@ -4,8 +4,8 @@ namespace XH_Server.Application.Utils;
 
 public class VoMapper : IRegister
 {
-	public void Register(TypeAdapterConfig config)
-	{
+    public void Register(TypeAdapterConfig config)
+    {
 
-	}
+    }
 }

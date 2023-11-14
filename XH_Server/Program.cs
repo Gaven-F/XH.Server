@@ -1,5 +1,4 @@
 using Furion.Schedule;
-using Furion.TimeCrontab;
 using XH_Server.Applications.Jobs;
 using XH_Server.Applications.Utils;
 
@@ -16,8 +15,8 @@ builder.Services.AddInject();
 
 builder.Services.AddSchedule(options =>
 {
-	options.LogEnabled = true;
-	options.AddJob(typeof(DemoJob).ScanToBuilder());
+    options.LogEnabled = true;
+    options.AddJob(typeof(DemoJob).ScanToBuilder());
 });
 
 
