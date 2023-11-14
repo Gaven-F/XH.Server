@@ -8,39 +8,39 @@ namespace XH.Application;
 
 public class SystemService : ISystemService, ITransient
 {
-	private readonly SqlSugarScope _db;
+    private readonly SqlSugarScope _db;
 
-	public SystemService(ISqlSugarClient sqlSugarClient)
-	{
-		_db = (SqlSugarScope)sqlSugarClient;
-	}
+    public SystemService(ISqlSugarClient sqlSugarClient)
+    {
+        _db = (SqlSugarScope)sqlSugarClient;
+    }
 
-	public void AddSeedData()
-	{
-		
-	}
+    public void AddSeedData()
+    {
 
-	public void DataBaseInit()
-	{
-		var Entities = Assembly.GetAssembly(typeof(BaseEntity))!.GetTypes()
-			.Where(t => ReferenceEquals(t.BaseType, typeof(BaseEntity)))
-			.ToArray();
+    }
 
-		_db.DbMaintenance.CreateDatabase();
+    public void DataBaseInit()
+    {
+        var Entities = Assembly.GetAssembly(typeof(BaseEntity))!.GetTypes()
+            .Where(t => ReferenceEquals(t.BaseType, typeof(BaseEntity)))
+            .ToArray();
 
-		// 清除所有原有数据
-		var t = _db.DbMaintenance.GetTableInfoList();
-		t.Select(it => it.Name).ToList()
-			.ForEach(it => _db.DbMaintenance.DropTable(it));
+        _db.DbMaintenance.CreateDatabase();
 
-		_db.CodeFirst.InitTables(Entities);
+        // 清除所有原有数据
+        var t = _db.DbMaintenance.GetTableInfoList();
+        t.Select(it => it.Name).ToList()
+            .ForEach(it => _db.DbMaintenance.DropTable(it));
 
-		// 添加种子数据
-		AddSeedData();
-	}
+        _db.CodeFirst.InitTables(Entities);
 
-	public string GetDescription()
-	{
-		return "获取成功！";
-	}
+        // 添加种子数据
+        AddSeedData();
+    }
+
+    public string GetDescription()
+    {
+        return "获取成功！";
+    }
 }

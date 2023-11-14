@@ -5,7 +5,7 @@ namespace XH.Core.DataBase.Entities;
 
 public class ProcurementConfirmation : BaseEntity
 {
-    public string? CorpId { get; set; }
+    public string CorpId { get; set; } = string.Empty;
     public string? ProcurType { get; set; }
     public DateTimeOffset DeliveryTime { get; set; }
     public string? ProcurementDetails { get; set; }

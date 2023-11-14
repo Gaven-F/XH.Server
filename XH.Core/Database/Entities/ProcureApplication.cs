@@ -6,7 +6,7 @@ namespace XH.Core.DataBase.Entities;
 
 public class ProcureApplication : BaseEntity
 {
-    public string? CorpId { get; set; }
+    public string CorpId { get; set; } = string.Empty;
     public string? ProcureProject { get; set; }
     public string? ProcurType { get; set; }
     public string? ExplanatExpenditure { get; set; }

@@ -6,7 +6,7 @@ namespace XH.Core.DataBase.Entities;
 
 public class Leave : BaseEntity
 {
-    public string? CorpId { get; set; }
+    public string CorpId { get; set; } = string.Empty;
     public string? LeaveType { get; set; }
     public string? AnnualLeave { get; set; }
     public DateTimeOffset StartDate { get; set; }

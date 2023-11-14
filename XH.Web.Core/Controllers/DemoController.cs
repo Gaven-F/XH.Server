@@ -2,9 +2,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SqlSugar;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using XH.Application.Ali;
 using XH.Application.System.Services;
@@ -82,7 +80,7 @@ public class DemoController : IDynamicApiController
     /// <param name="repository"></param>
     /// <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
     /// <returns></returns>
-    public IEnumerable<FBusinessTrip> GetBusinessTrip([FromServices] Repository<BusinessTrip> repository,string userId = "ALL")
+    public IEnumerable<FBusinessTrip> GetBusinessTrip([FromServices] Repository<BusinessTrip> repository, string userId = "ALL")
     {
         return repository.GetList((it) => userId.ToLower()
             .Equals("all") || it.CorpId.Equals(userId))
@@ -105,18 +103,21 @@ public class DemoController : IDynamicApiController
     }
 
 
-    public IEnumerable<Leave> GetLeave([FromServices] Repository<Leave> repository)
+    public IEnumerable<Leave> GetLeave([FromServices] Repository<Leave> repository, string userId = "ALL")
     {
-        return repository.GetList();
+        return repository.GetList((it) => userId.ToLower()
+                    .Equals("all") || it.CorpId!.Equals(userId));
     }
 
-    public IEnumerable<ProcureApplication> GetProcureApplication([FromServices] Repository<ProcureApplication> repository)
+    public IEnumerable<ProcureApplication> GetProcureApplication([FromServices] Repository<ProcureApplication> repository,  string userId = "ALL")
     {
-        return repository.GetList();
+        return repository.GetList((it) => userId.ToLower()
+                    .Equals("all") || it.CorpId!.Equals(userId));
     }
 
-    public IEnumerable<ProcurementConfirmation> GetProcurementConfirmation([FromServices] Repository<ProcurementConfirmation> repository)
+    public IEnumerable<ProcurementConfirmation> GetProcurementConfirmation([FromServices] Repository<ProcurementConfirmation> repository,  string userId = "ALL")
     {
-        return repository.GetList();
+        return repository.GetList((it) => userId.ToLower()
+                    .Equals("all") || it.CorpId!.Equals(userId));
     }
 }
