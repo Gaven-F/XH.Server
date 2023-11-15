@@ -11,6 +11,8 @@ public static class GFUtil
         builder.Services.AddRepository();
         builder.Services.AddSystemService();
 
+        // Application Services
+        builder.Services.AddApprovalService();
 
         return builder;
     }

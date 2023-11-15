@@ -13,8 +13,4 @@
     <PackageReference Include="SqlSugarCore" Version="5.1.4.115" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\Dto\" />
-  </ItemGroup>
-
 </Project>

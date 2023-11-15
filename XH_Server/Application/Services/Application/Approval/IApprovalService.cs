@@ -1,4 +1,5 @@
-﻿using XH_Server.Domain.Entities;
+﻿using XH_Server.Domain.Dto;
+using XH_Server.Domain.Entities;
 using XH_Server.Domain.Vo;
 
 namespace XH_Server.Application.Services.Application.Approval;
@@ -11,6 +12,11 @@ public interface IApprovalService
     /// <param name="approvalConfig">审核配置</param>
     /// <returns>首节点Id</returns>
     public long CreateStep(ApprovalConfig approvalConfig);
+    /// <summary>
+    /// 获取审核流程配置
+    /// </summary>
+    /// <returns></returns>
+    public List<ApprovalConfig> GetConfig();
     /// <summary>
     /// 通过审核
     /// </summary>
@@ -36,8 +42,8 @@ public interface IApprovalService
     /// <summary>
     /// 创建审核配置
     /// </summary>
-    /// <param name="approvalConfigVo"></param>
-    public void AddConfig(ApprovalConfigVo approvalConfigVo);
+    /// <param name="approvalConfigDto"></param>
+    public void AddConfig(ApprovalConfigDto approvalConfigDto);
     /// <summary>
     /// 删除审核配置
     /// </summary>

@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using SqlSugar;
 using XH_Server.Core;
+using XH_Server.Domain.Dto;
 using XH_Server.Domain.Entities;
 using XH_Server.Domain.Vo;
 
@@ -17,9 +18,9 @@ public class ApprovalService : IApprovalService
         _repositoryConfig = approvalConfigDb;
     }
 
-    public void AddConfig(ApprovalConfigVo approvalConfigVo)
+    public void AddConfig(ApprovalConfigDto approvalConfigDto)
     {
-        _repositoryConfig.InsertReturnSnowflakeId(approvalConfigVo.Adapt<ApprovalConfig>());
+        _repositoryConfig.InsertReturnSnowflakeId(approvalConfigDto.Adapt<ApprovalConfig>());
     }
 
     public void BackStep(long stepId, string msg = "无")
@@ -110,5 +111,10 @@ public class ApprovalService : IApprovalService
     {
         var step = _repositoryStep.GetById(stepId) ?? throw new Exception("无审核节点步骤");
         return (step.ApprovalStatus, step.ApprovalDescription);
+    }
+
+    public List<ApprovalConfig> GetConfig()
+    {
+        return _repositoryConfig.GetList();
     }
 }
