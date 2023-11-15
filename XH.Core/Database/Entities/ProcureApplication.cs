@@ -13,9 +13,9 @@ public class ProcureApplication : BaseEntity
     public DateTimeOffset PurchaseDate { get; set; }
     public string? TotalAmount { get; set; }
     public string? Notes { get; set; }
-    [SugarColumn(IsJson = true)]
+    [SugarColumn(IsJson = true, ColumnDataType = "JSON")]
     public List<string>? Picture { get; set; }
-    [SugarColumn(IsJson = true)]
+    [SugarColumn(IsJson = true, ColumnDataType = "JSON")]
     public List<string>? Annex { get; set; }
     public string? ProcureMethod { get; set; }
 }
