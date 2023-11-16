@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using XH_Server.Application.Services.Application.Approval;
 using XH_Server.Domain.Dto;
@@ -8,20 +9,21 @@ namespace XH_Server.Controllers;
 
 public class ApproveController : ControllerBase
 {
-    private readonly IApprovalService _approve;
+    private readonly ApprovalService _approve;
 
-    public ApproveController(IApprovalService approve)
+    public ApproveController(ApprovalService approve)
     {
         _approve = approve;
     }
 
-    public void AddApprovalConfig(ApprovalConfigDto data)
+    [AllowAnonymous]
+    public IEnumerable<string> SetApprovalConfig(IEnumerable<ApprovalConfigDto> data)
     {
-        _approve.AddConfig(data);
+        return _approve.SetConfig(data).Adapt<List<string>>();
     }
 
-    public IEnumerable<ApprovalConfigVo> GetApprovalConfig()
-    {
-        return _approve.GetConfig().Select(c => c.Adapt<ApprovalConfigVo>());
-    }
+    //public IEnumerable<ApprovalConfigVo> GetApprovalConfig()
+    //{
+    //    return _approve.GetConfig().Select(c => c.Adapt<ApprovalConfigVo>());
+    //}
 }

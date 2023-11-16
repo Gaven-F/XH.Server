@@ -1,4 +1,6 @@
-﻿using XH_Server.Application.Utils;
+﻿using Furion.Schedule;
+using XH_Server.Application.Utils;
+using XH_Server.Applications.Jobs;
 using XH_Server.Core;
 
 namespace XH_Server.Applications.Utils;
@@ -13,6 +15,16 @@ public static class GFUtil
 
         // Application Services
         builder.Services.AddApprovalService();
+
+
+        //builder.Services.AddSchedule(options =>
+        //{
+        //    options.LogEnabled = true;
+        //    options.AddJob(typeof(DemoJob).ScanToBuilder());
+        //});
+
+
+        builder.Services.AddConsoleFormatter();
 
         return builder;
     }

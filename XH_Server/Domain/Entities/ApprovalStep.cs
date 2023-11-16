@@ -1,11 +1,12 @@
 ﻿using SqlSugar;
+using XH_Server.Domain.Entities.Extra;
 
 namespace XH_Server.Domain.Entities;
 
-public class ApprovalStep : BaseEntity
+public class ApprovalStep
 {
-    public string? ApproverId { get; set; }
-    public string? ApproverLevel { get; set; }
+    public DingTalkUserInfo? Approcer { get; set; }
+
 
     public ApprovalStatus ApprovalStatus { get; set; }
     public string ApprovalDescription { get; set; } = "无";

@@ -13,15 +13,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddInject();
 
-builder.Services.AddSchedule(options =>
-{
-    options.LogEnabled = true;
-    options.AddJob(typeof(DemoJob).ScanToBuilder());
-});
-
-
-builder.Services.AddConsoleFormatter();
-builder.Services.AddFileLogging(".log");
 
 var app = builder.Build();
 

@@ -20,7 +20,7 @@ public static class ServiceExtra
 
     public static IServiceCollection AddApprovalService(this IServiceCollection services)
     {
-        services.AddSingleton<IApprovalService, ApprovalService>();
+        services.AddSingleton<ApprovalService>();
         return services;
     }
 
