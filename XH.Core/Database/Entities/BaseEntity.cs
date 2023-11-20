@@ -17,5 +17,7 @@ public class BaseEntity
     public DateTimeOffset DeleteTime { get; set; } = default;
 
     [SugarColumn(ColumnDescription = "逻辑删除")]
-    public bool IsDelete { get; set; } = default;
+    public bool IsDelete { get; set; } = false;
+
+    public int Status { get; set; } = 0;
 }

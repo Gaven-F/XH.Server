@@ -41,6 +41,8 @@ public class BusinessTrip : BaseEntity, INeedApprove
     [SugarColumn(ColumnDescription = "审核流程起点")]
     public long StartApprovalStep { get; set; }
 
+    public int? Status { get; set; } = 0;
+
     public TimeSpan SumTripTime => StartTime - EndTime;
 }
 

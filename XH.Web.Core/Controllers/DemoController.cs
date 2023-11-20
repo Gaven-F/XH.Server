@@ -2,6 +2,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 using System.Collections.Generic;
 using System.Linq;
 using XH.Application.Ali;
@@ -20,12 +21,14 @@ public class DemoController : IDynamicApiController
     private readonly ISystemService _systemService;
     private readonly DTService _dTService;
     private readonly OSSService _ossService;
+    private readonly ISqlSugarClient _db;
 
-    public DemoController(ISystemService systemService, DTService dTContext, OSSService ossService)
+    public DemoController(ISystemService systemService, DTService dTContext, OSSService ossService, ISqlSugarClient db)
     {
         _systemService = systemService;
         _dTService = dTContext;
         _ossService = ossService;
+        _db = db;
     }
 
     /// <summary>
@@ -80,11 +83,10 @@ public class DemoController : IDynamicApiController
     /// <param name="repository"></param>
     /// <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
     /// <returns></returns>
-    public IEnumerable<FBusinessTrip> GetBusinessTrip([FromServices] Repository<BusinessTrip> repository, string userId = "ALL")
+    public IEnumerable<BusinessTripVo> GetBusinessTrip([FromServices] Repository<BusinessTrip> repository, string userId = "ALL")
     {
         return repository.GetList((it) => userId.ToLower()
-            .Equals("all") || it.CorpId.Equals(userId))
-            .Select(it => it.Adapt<FBusinessTrip>());
+            .Equals("all") || it.CorpId.Equals(userId)).Adapt<List<BusinessTripVo>>();
     }
 
     public void PostLeave([FromServices] Repository<Leave> repository, Leave leave)
@@ -103,21 +105,36 @@ public class DemoController : IDynamicApiController
     }
 
 
-    public IEnumerable<Leave> GetLeave([FromServices] Repository<Leave> repository, string userId = "ALL")
+    public IEnumerable<LeaveVo> GetLeave([FromServices] Repository<Leave> repository, string userId = "ALL")
     {
         return repository.GetList((it) => userId.ToLower()
-                    .Equals("all") || it.CorpId!.Equals(userId));
+                    .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<LeaveVo>>();
     }
 
-    public IEnumerable<ProcureApplication> GetProcureApplication([FromServices] Repository<ProcureApplication> repository,  string userId = "ALL")
+    public IEnumerable<ProcureApplicationVo> GetProcureApplication([FromServices] Repository<ProcureApplication> repository, string userId = "ALL")
     {
         return repository.GetList((it) => userId.ToLower()
-                    .Equals("all") || it.CorpId!.Equals(userId));
+                    .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<ProcureApplicationVo>>();
     }
 
-    public IEnumerable<ProcurementConfirmation> GetProcurementConfirmation([FromServices] Repository<ProcurementConfirmation> repository,  string userId = "ALL")
+    public IEnumerable<ProcurementConfirmationVo> GetProcurementConfirmation([FromServices] Repository<ProcurementConfirmation> repository, string userId = "ALL")
     {
         return repository.GetList((it) => userId.ToLower()
-                    .Equals("all") || it.CorpId!.Equals(userId));
+                    .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<ProcurementConfirmationVo>>();
+    }
+
+    public int StatusChange(string id, int status, string table)
+    {
+        var data = _db.Queryable<BaseEntity>().AS(table).Single(it => it.Id == id.Adapt<long>());
+
+        if (data != null)
+        {
+            data.Status = status;
+        } else
+        {
+            throw new System.Exception("未找到数据！");
+        }
+
+        return _db.Updateable(data).AS(table).ExecuteCommand();
     }
 }

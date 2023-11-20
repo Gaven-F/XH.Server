@@ -22,18 +22,18 @@ public class SystemService : ISystemService, ITransient
 
     public void DataBaseInit()
     {
-        var Entities = Assembly.GetAssembly(typeof(BaseEntity))!.GetTypes()
+        var entities = Assembly.GetAssembly(typeof(BaseEntity))!.GetTypes()
             .Where(t => ReferenceEquals(t.BaseType, typeof(BaseEntity)))
             .ToArray();
 
         _db.DbMaintenance.CreateDatabase();
 
-        //// 清除所有原有数据
+        // 清除所有原有数据
         //var t = _db.DbMaintenance.GetTableInfoList();
         //t.Select(it => it.Name).ToList()
         //    .ForEach(it => _db.DbMaintenance.DropTable(it));
 
-        _db.CodeFirst.InitTables(Entities);
+        _db.CodeFirst.InitTables(entities);
 
         // 添加种子数据
         AddSeedData();
