@@ -20,5 +20,5 @@ public class ProcurementConfirmation : BaseEntity
     public List<string>? ResultReport { get; set; }
     [SugarColumn(IsJson = true, ColumnDataType = "JSON")]
     public List<string>? Annex { get; set; }
-
 }
+

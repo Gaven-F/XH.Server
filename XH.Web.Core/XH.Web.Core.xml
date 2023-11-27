@@ -48,5 +48,134 @@
             <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
             <returns></returns>
         </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostLeave(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.Leave},XH.Core.DataBase.Entities.Leave)">
+            <summary>
+            提交请假请求
+            </summary>
+            <param name="repository"></param>
+            <param name="leave"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostProcureApplication(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ProcureApplication},XH.Core.DataBase.Entities.ProcureApplication)">
+            <summary>
+            提交采购申请
+            </summary>
+            <param name="repository"></param>
+            <param name="procureApplication"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostProcurementConfirmation(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ProcurementConfirmation},XH.Core.DataBase.Entities.ProcurementConfirmation)">
+            <summary>
+            提交采购确认
+            </summary>
+            <param name="repository"></param>
+            <param name="procurementConfirmation"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetLeave(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.Leave},System.String)">
+            <summary>
+            获取请假信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetProcureApplication(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ProcureApplication},System.String)">
+            <summary>
+            获取采购申请信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetProcurementConfirmation(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ProcurementConfirmation},System.String)">
+            <summary>
+            获取采购确认信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.StatusChange(System.String,System.Int32,System.String)">
+            <summary>
+            修改状态
+            </summary>
+            <param name="id">数据id</param>
+            <param name="status">状态</param>
+            <param name="table">表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostMetting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},XH.Core.Database.Entities.Meeting)">
+            <summary>
+            提交会议
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetMetting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},System.String)">
+            <summary>
+            获取会议信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostSeal(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Seal},XH.Core.Database.Entities.Seal)">
+            <summary>
+            提交印章
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetSeal(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Seal},System.String)">
+            <summary>
+            获取印章信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostContract(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Contract},XH.Core.Database.Entities.Contract)">
+            <summary>
+            提交合同
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetContract(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Contract},System.String)">
+            <summary>
+            获取合同信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},XH.Core.Database.Entities.Topic)">
+            <summary>
+            提交主题
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},System.String)">
+            <summary>
+            获取主题信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostMeetingLog(XH.Core.DataBase.Repository{XH.Core.Database.Entities.MeetingLog},XH.Core.Database.Entities.MeetingLog)">
+            <summary>
+            提交会议记录
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetMeetingLog(XH.Core.DataBase.Repository{XH.Core.Database.Entities.MeetingLog},System.String)">
+            <summary>
+            获取会议记录信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
