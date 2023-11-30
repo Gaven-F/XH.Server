@@ -177,12 +177,30 @@ public class DemoController : IDynamicApiController
 		return _db.Updateable(data).AS(table).ExecuteCommand();
 	}
 
-	/// <summary>
-	/// 提交会议
-	/// </summary>
-	/// <param name="repository"></param>
-	/// <param name="data"></param>
-	public void PostMetting([FromServices] Repository<Meeting> repository, Meeting data)
+    public int DelData(string id, string table)
+    {
+        var data = _db.Queryable<BaseEntity>().AS(table).Single(it => it.Id == id.Adapt<long>());
+
+        if (data != null)
+        {
+			data.IsDelete = true;
+			data.UpdateTime = System.DateTimeOffset.Now;
+        }
+        else
+        {
+            throw new System.Exception("未找到数据！");
+        }
+
+        return _db.Updateable(data).AS(table).ExecuteCommand();
+    }
+
+
+    /// <summary>
+    /// 提交会议
+    /// </summary>
+    /// <param name="repository"></param>
+    /// <param name="data"></param>
+    public void PostMetting([FromServices] Repository<Meeting> repository, Meeting data)
 	{
 		repository.InsertReturnSnowflakeId(data);
 	}

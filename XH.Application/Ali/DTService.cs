@@ -4,6 +4,8 @@ using DingTalk.Api;
 using DingTalk.Api.Request;
 using Furion.Logging;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Tea;
 
 namespace XH.Application.Ali;
@@ -77,9 +79,25 @@ public class DTService
         {
             Code = code
         };
-        Console.WriteLine(GetAccessToken());
-        var res = client.Execute(req, GetAccessToken());
 
-        return res.Body;
+        var res = client.Execute(req, GetAccessToken());
+        var baseInfo = JsonDocument.Parse(res.Body).RootElement;
+        if (baseInfo.GetProperty("errcode").GetInt32() == 0)
+        {
+            var infoClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list");
+            var infoReq = new OapiSmartworkHrmEmployeeV2ListRequest();
+
+            infoReq.Agentid = 2791318037;
+            infoReq.UseridList = baseInfo.GetProperty("result").GetProperty("userid").GetString();
+
+            var infoRes = infoClient.Execute(infoReq, GetAccessToken());
+
+            return JsonSerializer.Serialize(new { baseInfo = res.Body, details = infoRes.Body });
+        }
+        else
+        {
+            return "ERROR";
+        }
+
     }
 }
