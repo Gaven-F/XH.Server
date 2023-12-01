@@ -177,30 +177,12 @@ public class DemoController : IDynamicApiController
 		return _db.Updateable(data).AS(table).ExecuteCommand();
 	}
 
-    public int DelData(string id, string table)
-    {
-        var data = _db.Queryable<BaseEntity>().AS(table).Single(it => it.Id == id.Adapt<long>());
-
-        if (data != null)
-        {
-			data.IsDelete = true;
-			data.UpdateTime = System.DateTimeOffset.Now;
-        }
-        else
-        {
-            throw new System.Exception("未找到数据！");
-        }
-
-        return _db.Updateable(data).AS(table).ExecuteCommand();
-    }
-
-
-    /// <summary>
-    /// 提交会议
-    /// </summary>
-    /// <param name="repository"></param>
-    /// <param name="data"></param>
-    public void PostMetting([FromServices] Repository<Meeting> repository, Meeting data)
+	/// <summary>
+	/// 提交会议
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="data"></param>
+	public void PostMeeting([FromServices] Repository<Meeting> repository, Meeting data)
 	{
 		repository.InsertReturnSnowflakeId(data);
 	}
@@ -211,10 +193,10 @@ public class DemoController : IDynamicApiController
 	/// <param name="repository"></param>
 	/// <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
 	/// <returns></returns>
-	public IEnumerable<MettingVo> GetMetting([FromServices] Repository<Meeting> repository, string userId = "ALL")
+	public IEnumerable<MeetingVo> GetMeeting([FromServices] Repository<Meeting> repository, string userId = "ALL")
 	{
 		return repository.GetList((it) => userId.ToLower()
-			.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<MettingVo>>();
+			.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<MeetingVo>>();
 	}
 
 	/// <summary>

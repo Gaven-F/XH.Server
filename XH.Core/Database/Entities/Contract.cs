@@ -11,7 +11,9 @@ public class Contract : BaseEntity
 	public string? OurCompany { get; set; }
 	public string? OppositeCompany { get; set; }
 	public string? Content { get; set; }
+	[SqlSugar.SugarColumn(IsJson = true, ColumnDataType = "JSON")]
 	public List<string>? Picture { get; set; }
 	public string? ApprovalForm { get; set; }
+	[SqlSugar.SugarColumn(IsJson = true, ColumnDataType = "JSON")]
 	public List<string>? ApprovalAnnex { get; set; }
 }
