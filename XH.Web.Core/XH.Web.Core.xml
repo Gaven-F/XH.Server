@@ -102,14 +102,14 @@
             <param name="table">表名</param>
             <returns></returns>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.PostMetting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},XH.Core.Database.Entities.Meeting)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostMeeting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},XH.Core.Database.Entities.Meeting)">
             <summary>
             提交会议
             </summary>
             <param name="repository"></param>
             <param name="data"></param>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.GetMetting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},System.String)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetMeeting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},System.String)">
             <summary>
             获取会议信息
             </summary>

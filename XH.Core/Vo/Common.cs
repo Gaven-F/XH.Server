@@ -20,7 +20,7 @@ public class BusinessTripVo : BusinessTrip
 {
 	new public string Id { get; set; } = string.Empty;
 }
-public class MettingVo : Meeting
+public class MeetingVo : Meeting
 {
 	new public string Id { get; set; } = string.Empty;
 }
