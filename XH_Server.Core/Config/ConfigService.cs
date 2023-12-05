@@ -1,25 +1,20 @@
 ﻿using Microsoft.Extensions.Configuration;
-using XH_Server.Core.ConfigService.DataType;
+using XH_Server.Core.Config.ConfigType;
 
-namespace XH_Server.Core.ConfigService;
+namespace XH_Server.Core.Config;
 
 public class ConfigService
 {
-	private static string configFileName = "xh.config.json";
+	private static readonly string configFileName = "xh.config.json";
 
-	private IConfiguration? _rootConfiguration;
+	private readonly IConfiguration? _rootConfiguration;
 
 
 	public AppConfig AppConfig { get; private set; }
 	public DatabaseConfig DatabaseConfig { get; private set; }
 	public DingtalkConfig DingtalkConfig { get; private set; }
-	public IConfiguration RootConfiguration
-	{
-		get
-		{
-			return _rootConfiguration ?? throw new Exception("未生成根配置项，请确认配置文件是否存在！");
-		}
-	}
+	public IConfiguration RootConfiguration => _rootConfiguration
+		?? throw new Exception("未生成根配置项，请确认配置文件是否存在！");
 
 	public ConfigService()
 	{
