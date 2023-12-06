@@ -29,9 +29,9 @@ public class SystemService : ISystemService, ITransient
         _db.DbMaintenance.CreateDatabase();
 
         // 清除所有原有数据
-        //var t = _db.DbMaintenance.GetTableInfoList();
-        //t.Select(it => it.Name).ToList()
-        //    .ForEach(it => _db.DbMaintenance.DropTable(it));
+        var t = _db.DbMaintenance.GetTableInfoList();
+        t.Select(it => it.Name).ToList()
+            .ForEach(it => _db.DbMaintenance.DropTable(it));
 
         _db.CodeFirst.InitTables(entities);
 

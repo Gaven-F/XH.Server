@@ -5,7 +5,6 @@ using DingTalk.Api.Request;
 using Furion.Logging;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using Tea;
 
 namespace XH.Application.Ali;
@@ -42,7 +41,7 @@ public class DTService
         // TODO:
         // Token的缓存时间为2h，尝试进行TOKEN有效时间判断，防止每次在有效时间内进行重复获取Token
 
-        var token = "ERROR";
+        string token = "ERROR";
         var client = CreateClient();
 
         var getAccessToken = new GetAccessTokenRequest()
@@ -98,6 +97,20 @@ public class DTService
         {
             return "ERROR";
         }
+
+    }
+    public string GetUserInfoById(string id)
+    {
+        var infoClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list");
+        var infoReq = new OapiSmartworkHrmEmployeeV2ListRequest
+        {
+            Agentid = 2791318037,
+            UseridList = id
+        };
+
+        var infoRes = infoClient.Execute(infoReq, GetAccessToken());
+        return infoRes.Body;
+
 
     }
 }
