@@ -147,28 +147,6 @@
             <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
             <returns></returns>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.PostTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},XH.Core.Database.Entities.Topic)">
-            <summary>
-            提交主题
-            </summary>
-            <param name="repository"></param>
-            <param name="data"></param>
-        </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.GetTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},System.String)">
-            <summary>
-            获取主题信息
-            </summary>
-            <param name="repository"></param>
-            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
-            <returns></returns>
-        </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.PostMeetingLog(XH.Core.DataBase.Repository{XH.Core.Database.Entities.MeetingLog},XH.Core.Database.Entities.MeetingLog)">
-            <summary>
-            提交会议记录
-            </summary>
-            <param name="repository"></param>
-            <param name="data"></param>
-        </member>
         <member name="M:XH.Web.Core.Controllers.DemoController.GetMeetingLog(XH.Core.DataBase.Repository{XH.Core.Database.Entities.MeetingLog},System.String)">
             <summary>
             获取会议记录信息
@@ -250,6 +228,21 @@
             </summary>
             <param name="repository"></param>
             <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},XH.Core.Database.Entities.Topic)">
+            <summary>
+            提交主题
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},System.String)">
+            <summary>
+            获取主题信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
             <returns></returns>
         </member>
     </members>

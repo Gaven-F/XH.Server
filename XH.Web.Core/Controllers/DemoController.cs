@@ -67,7 +67,6 @@ public class DemoController : IDynamicApiController
         return _ossService.PutData(files);
     }
 
-<<<<<<< HEAD
 	/// <summary>
 	/// 提交出差请求
 	/// </summary>
@@ -77,17 +76,6 @@ public class DemoController : IDynamicApiController
 	{
 		repository.InsertReturnSnowflakeId(businessTrip.Adapt<BusinessTrip>());
 	}
-=======
-    /// <summary>
-    /// 提交请假请求
-    /// </summary>
-    /// <param name="repository"></param>
-    /// <param name="businessTrip"></param>
-    public void PostBusinessTrip([FromServices] Repository<BusinessTrip> repository, FBusinessTrip businessTrip)
-    {
-        repository.InsertReturnSnowflakeId(businessTrip.Adapt<BusinessTrip>());
-    }
->>>>>>> 702d2d43097e3edc98f803f1bb8d9d533faa96e1
 
     /// <summary>
     /// 获取出差信息
@@ -273,7 +261,6 @@ public class DemoController : IDynamicApiController
             .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<ContractVo>>();
     }
 
-<<<<<<< HEAD
 	/// <summary>
 	/// 获取会议记录信息
 	/// </summary>
@@ -400,7 +387,6 @@ public class DemoController : IDynamicApiController
 			.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<IssueReceiptsVo>>();
 	}
 
-=======
     /// <summary>
     /// 提交主题
     /// </summary>
@@ -423,32 +409,4 @@ public class DemoController : IDynamicApiController
             .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<TopicVo>>();
     }
 
-    /// <summary>
-    /// 提交会议记录
-    /// </summary>
-    /// <param name="repository"></param>
-    /// <param name="data"></param>
-    public void PostMeetingLog([FromServices] Repository<MeetingLog> repository, MeetingLog data)
-    {
-        repository.InsertReturnSnowflakeId(data);
-    }
-
-    /// <summary>
-    /// 获取会议记录信息
-    /// </summary>
-    /// <param name="repository"></param>
-    /// <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
-    /// <returns></returns>
-    public IEnumerable<MeetingLogVo> GetMeetingLog([FromServices] Repository<MeetingLog> repository, string userId = "ALL")
-    {
-        return repository.GetList((it) => userId.ToLower()
-            .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<MeetingLogVo>>();
-    }
-
-    [HttpGet("{id}")]
-    public string GetUserInfoById([FromServices] DTService dt,string id )
-    {
-        return dt.GetUserInfoById(id);
-    }
->>>>>>> 702d2d43097e3edc98f803f1bb8d9d533faa96e1
 }
