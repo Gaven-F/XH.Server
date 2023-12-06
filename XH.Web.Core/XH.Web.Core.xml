@@ -35,7 +35,7 @@
         </member>
         <member name="M:XH.Web.Core.Controllers.DemoController.PostBusinessTrip(XH.Core.DataBase.Repository{XH.Core.Database.Entities.BusinessTrip},XH.Core.Database.Entities.FBusinessTrip)">
             <summary>
-            提交请假请求
+            提交出差请求
             </summary>
             <param name="repository"></param>
             <param name="businessTrip"></param>
@@ -102,14 +102,14 @@
             <param name="table">表名</param>
             <returns></returns>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.PostMetting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},XH.Core.Database.Entities.Meeting)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostMeeting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},XH.Core.Database.Entities.Meeting)">
             <summary>
             提交会议
             </summary>
             <param name="repository"></param>
             <param name="data"></param>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.GetMetting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},System.String)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetMeeting(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Meeting},System.String)">
             <summary>
             获取会议信息
             </summary>
@@ -175,6 +175,81 @@
             </summary>
             <param name="repository"></param>
             <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostChipPayment(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ChipPayment},XH.Core.DataBase.Entities.ChipPayment)">
+            <summary>
+            提交流片付款
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetChipPayment(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ChipPayment},System.String)">
+            <summary>
+            获取流片付款信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId">用户id，不填写或填写ALL默认获取所有</param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostProjectManagement(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ProjectManagement},XH.Core.DataBase.Entities.ProjectManagement)">
+            <summary>
+            提交项目管理
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetProjectManagement(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.ProjectManagement},System.String)">
+            <summary>
+            获取项目管理信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostReimbursement(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.Reimbursement},XH.Core.DataBase.Entities.Reimbursement)">
+            <summary>
+            提交报销
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetReimbursement(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.Reimbursement},System.String)">
+            <summary>
+            获取报销信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostInvoicing(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.Invoicing},XH.Core.DataBase.Entities.Invoicing)">
+            <summary>
+            提交发票
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetInvoicing(XH.Core.DataBase.Repository{XH.Core.DataBase.Entities.Invoicing},System.String)">
+            <summary>
+            获取发票信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostIssueReceipts(XH.Core.DataBase.Repository{XH.Core.Database.Entities.IssueReceipts},XH.Core.Database.Entities.IssueReceipts)">
+            <summary>
+            提交收款
+            </summary>
+            <param name="repository"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XH.Web.Core.Controllers.DemoController.GetIssueReceipts(XH.Core.DataBase.Repository{XH.Core.Database.Entities.IssueReceipts},System.String)">
+            <summary>
+            获取收款信息
+            </summary>
+            <param name="repository"></param>
+            <param name="userId"></param>
             <returns></returns>
         </member>
     </members>

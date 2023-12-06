@@ -20,7 +20,7 @@ public class BusinessTripVo : BusinessTrip
 {
 	new public string Id { get; set; } = string.Empty;
 }
-public class MettingVo : Meeting
+public class MeetingVo : Meeting
 {
 	new public string Id { get; set; } = string.Empty;
 }
@@ -37,6 +37,27 @@ public class TopicVo : Topic
 	new public string Id { get; set; } = string.Empty;
 }
 public class MeetingLogVo : MeetingLog
+{
+	new public string Id { get; set; } = string.Empty;
+}
+
+public class InvoicingVo : Invoicing
+{
+	new public string Id { get; set; } = string.Empty;
+}
+public class IssueReceiptsVo : IssueReceipts
+{
+	new public string Id { get; set; } = string.Empty;
+}
+public class ChipPaymentVo : ChipPayment
+{
+	new public string Id { get; set; } = string.Empty;
+}
+public class ProjectManagementVo : ProjectManagement
+{
+	new public string Id { get; set; } = string.Empty;
+}
+public class ReimbursementVo : Reimbursement
 {
 	new public string Id { get; set; } = string.Empty;
 }
