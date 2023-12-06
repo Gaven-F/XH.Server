@@ -409,4 +409,9 @@ public class DemoController : IDynamicApiController
             .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<TopicVo>>();
     }
 
+	[HttpGet("{id}")]
+	public string GetUserInfoById([FromServices] DTService dt, string id)
+	{
+		return dt.GetUserInfoById(id);
+	}
 }
