@@ -260,7 +260,7 @@ public class DemoController : IDynamicApiController
         return repository.GetList((it) => userId.ToLower()
             .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<ContractVo>>();
     }
-
+    /// <summary>
 	/// 提交会议记录
 	/// </summary>
 	/// <param name="repository"></param>
