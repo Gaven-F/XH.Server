@@ -261,6 +261,15 @@ public class DemoController : IDynamicApiController
             .Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<ContractVo>>();
     }
 
+	/// 提交会议记录
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="data"></param>
+	public void PostMeetingLog([FromServices] Repository<MeetingLog> repository, MeetingLog data)
+	{
+		repository.InsertReturnSnowflakeId(data);
+	}
+
 	/// <summary>
 	/// 获取会议记录信息
 	/// </summary>
