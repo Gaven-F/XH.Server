@@ -1,8 +1,11 @@
-﻿using XH_Server.Core.Database;
+﻿using System.Reflection;
+using XH_Server.Common.Attributes;
+using XH_Server.Core.Database;
 
-namespace XH_Server.Domain.Entities;
+namespace XH_Server.Domain.Basic;
 
-public class BaseEntity
+
+public class BasicEntity
 {
 	[SugarColumn(IsPrimaryKey = true, ColumnDescription = "数据唯一Id")]
 	public long Id { get; set; }
@@ -28,25 +31,37 @@ public class BaseEntity
 	public virtual int Delete(DatabaseService dbService)
 	{
 		IsDelete = true;
-		Logging.Create(msg: $"删除数据：{this}").Save(dbService);
 		return Update(dbService);
 	}
 
 	public virtual int Update(DatabaseService dbService)
 	{
 		UpdateTime = DateTimeOffset.Now;
-		Logging.Create(msg: $"更新数据：{this}").Save(dbService);
 		return dbService.Instance.Updateable(this).ExecuteCommandWithOptLock();
 	}
 
 	public virtual long Save(DatabaseService dbService)
 	{
-		Logging.Create(msg: $"存储数据：{this}").Save(dbService);
 		return dbService.Instance.Insertable(this).ExecuteReturnSnowflakeId();
 	}
 
-	public static IEnumerable<T> GetAllEntities<T>(DatabaseService dbService, bool hasDelete = false) where T : BaseEntity
+	public static IEnumerable<T> GetAllEntities<T>(DatabaseService dbService, bool hasDelete = false) where T : BasicEntity
 	{
 		return dbService.Instance.Queryable<T>().WhereIF(!hasDelete, it => !it.IsDelete).ToList();
+	}
+
+	public string GetTableName()
+	{
+		return GetType().Name[0..];
+	}
+
+	public string GetCustomName()
+	{
+		var nA = GetType().GetCustomAttribute<NameAttribute>();
+		if (nA is null)
+		{
+			return GetType().Name;
+		}
+		return nA.Name;
 	}
 }

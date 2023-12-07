@@ -5,6 +5,8 @@ using XH_Server.Core.Config;
 namespace XH_Server.Core.Database;
 public class DatabaseService
 {
+	private const string EntityEndChar = "E";
+
 	public ISqlSugarClient Instance { get; private set; }
 
 	public void InitDatabase() => Instance.DbMaintenance.CreateDatabase();
@@ -37,7 +39,17 @@ public class DatabaseService
 					{
 						entity.IsNullable = true;
 					}
+					entity.DbColumnName = char.ToLower(propInfo.Name[0]) + propInfo.Name[1..^0];
+				},
+				EntityNameService = (type, entity) =>
+				{
+					if (type.Name.EndsWith(EntityEndChar))
+					{
+						entity.DbTableName = type.Name[..^EntityEndChar.Length];
+					}
 				}
+
+
 			}
 		});
 	}

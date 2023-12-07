@@ -8,7 +8,7 @@ public class ConfigServiceTests
 	[TestMethod()]
 	public void ConfigServiceTest()
 	{
-		var configService = new ConfigService();
+		var configService = new Config.ConfigService();
 		Assert.IsNotNull(configService);
 	}
 }

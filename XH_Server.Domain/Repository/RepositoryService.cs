@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 using XH_Server.Core.Database;
-using XH_Server.Domain.Entities;
+using XH_Server.Domain.Basic;
 
 namespace XH_Server.Domain.Repository;
 
 public class RepositoryService<T>(DatabaseService databaseService) : SimpleClient<T>(databaseService.Instance)
-	where T : BaseEntity, new()
+	where T : BasicEntity, new()
 {
 	public override List<T> GetList() => base.GetList()
 		.Where(it => !it.IsDelete).ToList();
