@@ -61,3 +61,7 @@ public class ReimbursementVo : Reimbursement
 {
 	new public string Id { get; set; } = string.Empty;
 }
+public class PaymentVo : Payment
+{
+	new public string Id { get; set; } = string.Empty;
+}
