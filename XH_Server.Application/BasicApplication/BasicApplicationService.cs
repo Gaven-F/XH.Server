@@ -1,14 +1,12 @@
 ﻿using XH_Server.Domain.Approval;
+using XH_Server.Domain.Basic;
 using XH_Server.Domain.DataEntities;
-using XH_Server.Domain.Notification;
 
-namespace XH_Server.Application.BaseApplication;
-/// <summary>
-/// 出差
-/// </summary>
-public class BusinessTripApplication(BasicEntityService<EBusinessTrip> eService, IApprovalService approvalService)
+namespace XH_Server.Application.BasicApplication;
+
+public class BasicApplicationService<T>(BasicEntityService<T> eService, IApprovalService approvalService) where T : BasicEntity, IApproval
 {
-	public long CreateBussinessTrip(EBusinessTrip e)
+	public long CreateDataWithApproval(T e)
 	{
 		var approvalTemplate = approvalService.GetApprovalTemplateByDataName(e.GetTableName());
 		if (approvalTemplate != null)
@@ -26,6 +24,11 @@ public class BusinessTripApplication(BasicEntityService<EBusinessTrip> eService,
 		approvalService.NotificationApproval(e);
 
 		return e.Id;
+	}
+
+	public long ApprovalData(long id)
+	{
+		var e = 
 	}
 
 }
