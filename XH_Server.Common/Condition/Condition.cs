@@ -9,10 +9,12 @@ public class Condition
 
 	private Condition() { }
 
-	private static Exception GetException()
+	public static Condition Default() => new()
 	{
-		return new ArgumentOutOfRangeException("类型错误");
-	}
+		JudgmentField = "NONE"
+	};
+
+	private static ArgumentOutOfRangeException GetException() => new("类型错误");
 
 	public static Condition Parse(string raw)
 	{

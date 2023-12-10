@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\XH_Server.Core\XH_Server.Core.csproj" />
+  </ItemGroup>
+
 </Project>
