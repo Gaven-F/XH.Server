@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using XH_Server.Core.Config.ConfigType;
 
 namespace XH_Server.Core.Config;
 

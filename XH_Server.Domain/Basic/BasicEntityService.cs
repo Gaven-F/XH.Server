@@ -1,31 +1,33 @@
 ﻿
+using SqlSugar;
+using XH_Server.Domain.Repository;
+
 namespace XH_Server.Domain.Basic;
 
-// TODO 实现接口
-public class BasicEntityService<T> : IBasicEntityService<T> where T : BasicEntity
+public class BasicEntityService<T>(IRepositoryService<T> repositoryService) : IBasicEntityService<T> where T : BasicEntity, new()
 {
 	public long Create(T e)
 	{
-		throw new NotImplementedException();
+		return repositoryService.SaveData(e);
 	}
 
-	public int Delete(T e)
+	public int Delete(long eId)
 	{
-		throw new NotImplementedException();
+		return repositoryService.DeleteData(eId);
 	}
 
 	public IEnumerable<T> GetEntities(bool isDelete = false)
 	{
-		throw new NotImplementedException();
+		return repositoryService.GetData(isDelete);
 	}
 
 	public T GetEntityById(long id)
 	{
-		throw new NotImplementedException();
+		return repositoryService.GetDataById(id);
 	}
 
 	public int Update(T e)
 	{
-		throw new NotImplementedException();
+		return repositoryService.UpdateData(e);
 	}
 }

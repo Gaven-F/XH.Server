@@ -1,0 +1,35 @@
+﻿using XH_Server.Core.Database;
+using XH_Server.Domain.Basic;
+
+namespace XH_Server.Domain.Repository;
+
+public class RepositoryService<T>(DatabaseService dbService) : IRepositoryService<T> where T : BasicEntity, new()
+{
+	public int DeleteData(long eId)
+	{
+		var entity = dbService.Instance.Queryable<T>().Single(e => e.Id == eId);
+		entity.IsDeleted = true;
+		return dbService.Instance.Updateable<T>().ExecuteCommand();
+	}
+
+	public IEnumerable<T> GetData(bool isDelete = false)
+	{
+		return dbService.Instance.Queryable<T>().Where(e => e.IsDeleted == isDelete).ToList();
+	}
+
+	public T GetDataById(long id)
+	{
+		return dbService.Instance.Queryable<T>().Single(e => e.Id == id);
+	}
+
+	public long SaveData(T e)
+	{
+		return dbService.Instance.Insertable(e).ExecuteReturnSnowflakeId();
+	}
+
+	public int UpdateData(T e)
+	{
+		e.UpdateTime = DateTime.Now;
+		return dbService.Instance.Updateable(e).ExecuteCommand();
+	}
+}

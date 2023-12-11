@@ -7,4 +7,6 @@ public class EApprovalNode : BasicEntity
 	public ApprovalNodeType NodeType { get; set; } = ApprovalNodeType.Approve;
 	public long NextNodeId { get; set; }
 	public long ApprovalerId { get; set; }
+
+	public List<EApprovalHistory>? Histories { get; set; }
 }
