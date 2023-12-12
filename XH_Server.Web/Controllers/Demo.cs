@@ -5,9 +5,14 @@ namespace XH_Server.Web.Controllers;
 
 public class Demo : IDynamicApiController
 {
-	[HttpGet]
-	public string GetMsg()
-	{
-		return "Hello";
-	}
+    public string GetMsg()
+    {
+        return "Hello";
+    }
+
+    public string PostData([FromBody] string data = "")
+    {
+        Console.WriteLine(data);
+        return data;
+    }
 }

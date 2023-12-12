@@ -8,6 +8,11 @@ using XH_Server.Domain.Repository;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
 
+builder.WebHost.UseUrls(["http://*:5678"]).UseKestrel(options =>
+{
+	options.Limits.MinRequestBodyDataRate = null;
+});
+
 builder.Services
 	.AddControllers()
 	.AddInject();

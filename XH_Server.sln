@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Application", "XH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Common", "XH_Server.Common\XH_Server.Common.csproj", "{7891CAEC-F029-47CC-B0C0-4CC6BE722BFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XH_Server.Web", "XH_Server.Web\XH_Server.Web.csproj", "{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Web", "XH_Server.Web\XH_Server.Web.csproj", "{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

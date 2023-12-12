@@ -6,7 +6,7 @@ using XH_Server.Domain.Approve;
 
 namespace XH_Server.Web.Controllers;
 
-public class BusinessTrip(IBasicApplicationService<EBussinessTrip> app) : IDynamicApiController
+public class BusinessTrip(IBasicApplicationService<EBussinessTrip> app) 
 {
 	public IEnumerable<EBussinessTrip> GetData()
 	{
