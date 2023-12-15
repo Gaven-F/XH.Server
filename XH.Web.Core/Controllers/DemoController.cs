@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using XH.Application.Ali;
 using XH.Application.System.Services;
 using XH.Core.Database.Entities;
@@ -417,21 +418,108 @@ public class DemoController : IDynamicApiController
 		return repository.GetList((it) => userId.ToLower()
 			.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<TopicVo>>();
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="dt"></param>
+	/// <param name="id"></param>
+	/// <returns></returns>
 	[HttpGet("{id}")]
 	public string GetUserInfoById([FromServices] DTService dt, string id)
 	{
 		return dt.GetUserInfoById(id);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="userId"></param>
+	/// <returns></returns>
 	public IEnumerable<PaymentVo> GetPayments([FromServices] Repository<Payment> repository, string userId = "ALL")
 	{
 		return repository.GetList((it) => userId.ToLower()
 					.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<PaymentVo>>();
 	}
-
+	
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="data"></param>
 	public void PostPayment([FromServices] Repository<Payment> repository, Payment data)
 	{
-	repository.InsertReturnSnowflakeId(data);
+		repository.InsertReturnSnowflakeId(data);
+	}
+
+	/// <summary>
+	/// 提交订单管理
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="data"></param>
+	public void PostOrderManagement([FromServices] Repository<OrderManagement> repository, OrderManagement data)
+	{
+		repository.InsertReturnSnowflakeId(data);
+	}
+
+	/// <summary>
+	/// 获取订单管理
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="userId"></param>
+	/// <returns></returns>
+	public IEnumerable<OrderManagementVo> GetOrderManagement([FromServices] Repository<OrderManagement> repository, string userId = "ALL")
+	{
+		return repository.GetList((it) => userId.ToLower()
+							.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<OrderManagementVo>>();
+	}
+
+	/// <summary>
+	/// 获取耗材管理
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="userId"></param>
+	/// <returns></returns>
+	public IEnumerable<ConsumablesManagementVo> GetConsumablesManagements([FromServices] Repository<ConsumablesManagement> repository, string userId = "ALL")
+	{
+		return repository.GetList((it) => userId.ToLower()
+									.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<ConsumablesManagementVo>>();
+	}
+
+	/// <summary>
+	/// 提交耗材管理
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="data"></param>
+	public void PostConsumablesManagement([FromServices] Repository<ConsumablesManagement> repository, ConsumablesManagement data)
+	{
+		repository.InsertReturnSnowflakeId(data);
+	}
+
+	/// <summary>
+	/// 获取流片业务收款单位
+	/// </summary>
+	/// <returns></returns>
+	public IEnumerable<string?> GetChipPaymentReceivingUnit()
+	{
+		return _db.Queryable<ChipPayment>().Select(it => it.ReasonPayment).ToList().Distinct();
+	}
+
+	/// <summary>
+	/// 获取流片业务银行
+	/// </summary>
+	/// <returns></returns>
+	public IEnumerable<string?> GetChipPaymentBank()
+	{
+		return _db.Queryable<ChipPayment>().Select(it => it.Bank).Distinct().ToList();
+	}
+	
+	/// <summary>
+	/// 获取流片业务银行账户
+	/// </summary>
+	/// <returns></returns>
+	public IEnumerable<string?> GetChipPaymentAccount()
+	{
+		return _db.Queryable<ChipPayment>().Select(it=>it.Account). Distinct().ToList();
 	}
 }

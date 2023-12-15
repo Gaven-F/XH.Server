@@ -65,3 +65,12 @@ public class PaymentVo : Payment
 {
 	new public string Id { get; set; } = string.Empty;
 }
+public class OrderManagementVo : OrderManagement
+{
+	new public string Id { get; set; } = string.Empty;
+}
+
+public class ConsumablesManagementVo : ConsumablesManagement
+{
+	new public string Id { get; set; } = string.Empty;
+}

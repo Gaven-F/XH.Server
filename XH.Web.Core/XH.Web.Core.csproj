@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
-
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<NoWarn>1701;1702;1591</NoWarn>
@@ -9,7 +7,6 @@
 		<Nullable>enable</Nullable>
 
 	</PropertyGroup>
-
 
 	<ItemGroup>
 		<None Remove="XH.Web.Core.xml" />
