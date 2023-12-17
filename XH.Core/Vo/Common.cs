@@ -74,3 +74,7 @@ public class ConsumablesManagementVo : ConsumablesManagement
 {
 	new public string Id { get; set; } = string.Empty;
 }
+public class EquipmentLogVo : EquipmentLog
+{
+	new public string Id { get; set; } = string.Empty;
+}

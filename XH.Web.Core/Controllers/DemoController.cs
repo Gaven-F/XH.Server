@@ -418,8 +418,9 @@ public class DemoController : IDynamicApiController
 		return repository.GetList((it) => userId.ToLower()
 			.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<TopicVo>>();
 	}
+
 	/// <summary>
-	/// 
+	/// 获取用户信息
 	/// </summary>
 	/// <param name="dt"></param>
 	/// <param name="id"></param>
@@ -431,7 +432,7 @@ public class DemoController : IDynamicApiController
 	}
 
 	/// <summary>
-	/// 
+	/// 获取付款
 	/// </summary>
 	/// <param name="repository"></param>
 	/// <param name="userId"></param>
@@ -441,9 +442,9 @@ public class DemoController : IDynamicApiController
 		return repository.GetList((it) => userId.ToLower()
 					.Equals("all") || it.CorpId!.Equals(userId)).Adapt<List<PaymentVo>>();
 	}
-	
+
 	/// <summary>
-	/// 
+	/// 提交付款 
 	/// </summary>
 	/// <param name="repository"></param>
 	/// <param name="data"></param>
@@ -502,7 +503,7 @@ public class DemoController : IDynamicApiController
 	/// <returns></returns>
 	public IEnumerable<string?> GetChipPaymentReceivingUnit()
 	{
-		return _db.Queryable<ChipPayment>().Select(it => it.ReasonPayment).ToList().Distinct();
+		return _db.Queryable<ChipPayment>().Select(it => it.ReceivingUnit).ToList().Distinct();
 	}
 
 	/// <summary>
@@ -513,13 +514,101 @@ public class DemoController : IDynamicApiController
 	{
 		return _db.Queryable<ChipPayment>().Select(it => it.Bank).Distinct().ToList();
 	}
-	
+
 	/// <summary>
 	/// 获取流片业务银行账户
 	/// </summary>
 	/// <returns></returns>
 	public IEnumerable<string?> GetChipPaymentAccount()
 	{
-		return _db.Queryable<ChipPayment>().Select(it=>it.Account). Distinct().ToList();
+		return _db.Queryable<ChipPayment>().Select(it => it.Account).Distinct().ToList();
+	}
+
+	/// <summary>
+	/// 获取流片编号
+	/// </summary>
+	/// <returns></returns>
+	public string GetCPID()
+	{
+		return $"XH_CP_{_db.Queryable<ChipPayment>().Count():000000}";
+	}
+
+	/// <summary>
+	/// 提交扫码记录
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="data"></param>
+	public void PostEquipmentLog([FromServices] Repository<EquipmentLog> repository, string data)
+	{
+		var val = data.Split('|');
+		var log = new EquipmentLog
+		{
+			EquipmentId = val[0],
+			GoodsID = val[1],
+		};
+
+		if (char.ToLower(val[1][0]) == 's')
+		{
+			log.Type = "S";
+		}
+		else if (char.ToLower(val[1][0]) == 'e')
+		{
+			log.Type = "E";
+			log.BindS = repository.GetList().Find(it => it.Type == "S" && it.EquipmentId == val[0])!.GoodsID;
+		}
+		repository.InsertReturnSnowflakeId(log);
+	}
+
+	/// <summary>
+	/// 获取样品列表
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <returns></returns>
+	public IEnumerable<string> GetGoodsId([FromServices] Repository<EquipmentLog> repository)
+	{
+		return repository.GetList().Where(it => it.Type == "S").Select(it => it.GoodsID).Distinct().ToList();
+	}
+
+	/// <summary>
+	/// 提交补充信息
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="id"></param>
+	/// <param name="info"></param>
+	public void PostGoodsInfo([FromServices] Repository<EquipmentLog> repository,string id, string info)
+	{
+		var d = 	repository.GetById(id);
+		d.Info = info;
+		d.UpdateTime = DateTime.Now;
+		repository.Update(d);
+	}
+
+	/// <summary>
+	/// 获取样品操作设备列表
+	/// </summary>
+	/// <param name="repository"></param>
+	/// <param name="sId"></param>
+	/// <returns></returns>
+	public IEnumerable<EquipmentLogVo> GetEquipmentLogById([FromServices] Repository<EquipmentLog> repository, string sId)
+	{
+		var rawData = repository.GetList().Where(it => it.BindS == sId && it.Type == "E").OrderBy(it => it.CreateTime).Adapt<List<EquipmentLogVo>>();
+		var res = new List<EquipmentLogVo>();
+
+		rawData.ForEach(d =>
+		{
+			var cache = res.Where(it => it.GoodsID == d.GoodsID).ToList();
+			
+			if (cache.Count > 0 && d.CreateTime > cache[0].CreateTime && d.CreateTime > cache[0].EndTime)
+			{
+				res[res.FindIndex(it => it.Id == cache[0].Id)].EndTime = d.CreateTime;
+			}
+			else
+			{
+				res.Add(d);
+			}
+		});
+
+		return res;
 	}
 }
+
