@@ -554,7 +554,9 @@ public class DemoController : IDynamicApiController
 		else if (char.ToLower(val[1][0]) == 'e')
 		{
 			log.Type = "E";
-			log.BindS = repository.GetList().Find(it => it.Type == "S" && it.EquipmentId == val[0])!.GoodsID;
+			var cacheData = repository.GetList();
+			cacheData.Reverse();
+			log.BindS = cacheData.Find(it => it.Type == "S" && it.EquipmentId == val[0])!.GoodsID;
 		}
 		repository.InsertReturnSnowflakeId(log);
 	}
@@ -592,6 +594,7 @@ public class DemoController : IDynamicApiController
 	public IEnumerable<EquipmentLogVo> GetEquipmentLogById([FromServices] Repository<EquipmentLog> repository, string sId)
 	{
 		var rawData = repository.GetList().Where(it => it.BindS == sId && it.Type == "E").OrderBy(it => it.CreateTime).Adapt<List<EquipmentLogVo>>();
+
 		var res = new List<EquipmentLogVo>();
 
 		rawData.ForEach(d =>
