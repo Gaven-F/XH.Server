@@ -19,12 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DingtalkApiDemo\DingtalkApiDemo.csproj" />
     <ProjectReference Include="..\XH_Server.Application\XH_Server.Application.csproj" />
     <ProjectReference Include="..\XH_Server.Common\XH_Server.Common.csproj" />
     <ProjectReference Include="..\XH_Server.Core\XH_Server.Core.csproj" />
     <ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://gitee.com/dotnetchina/Furion/raw/v4/schemas/v4/furion-schema.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://raw.githubusercontent.com/andig/evcc/master/schema.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

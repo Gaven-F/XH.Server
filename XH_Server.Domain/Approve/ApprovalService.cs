@@ -31,15 +31,15 @@ public class ApprovalService(DatabaseService dbService) : IApproveService
 		db.Updateable(new List<EApprovalNode> { node1, node2 }).ExecuteCommand();
 	}
 
-	public void CreateApprocalNode(EApprovalNode node, long templateId)
+	public long CreateApprocalNode(EApprovalNode node, long templateId)
 	{
 		node.ApprovalTemplateId = templateId;
-		db.Insertable(node).ExecuteReturnSnowflakeId();
+		return db.Insertable(node).ExecuteReturnSnowflakeId();
 	}
 
-	public void CreateApprovalTemplate(EApprovalTemplate template)
+	public long CreateApprovalTemplate(EApprovalTemplate template)
 	{
-		db.Insertable(template).ExecuteReturnSnowflakeId();
+		return db.Insertable(template).ExecuteReturnSnowflakeId();
 	}
 
 	public EApprovalNode JudgemntNodeCheck<T>(long nodeId, T data) where T : BasicEntity

@@ -8,11 +8,6 @@ using XH_Server.Domain.Repository;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
 
-builder.WebHost.UseUrls(["http://*:5678"]).UseKestrel(options =>
-{
-	options.Limits.MinRequestBodyDataRate = null;
-});
-
 builder.Services
 	.AddControllers()
 	.AddInject();
@@ -26,6 +21,7 @@ builder.Services
 	.AddScoped(typeof(DingtalkService))
 	.AddScoped(typeof(OStorageService))
 	.AddScoped(typeof(DatabaseService))
+	.AddSingleton(typeof(DingtalkService))
 	// 伪·领域服务
 	.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>))
 	.AddScoped(typeof(IBasicEntityService<>), typeof(BasicEntityService<>))

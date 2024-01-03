@@ -8,5 +8,6 @@ public class EApprovalNode : BasicEntity
 	public long NextNodeId { get; set; }
 	public long ApprovalerId { get; set; }
 
+	[SqlSugar.SugarColumn(IsIgnore = true)]
 	public List<EApprovalHistory>? Histories { get; set; }
 }

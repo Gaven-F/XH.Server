@@ -45,13 +45,13 @@ public interface IApproveService
 	/// 创建审核模板
 	/// </summary>
 	/// <param name="template"></param>
-	public void CreateApprovalTemplate(EApprovalTemplate template);
+	public long CreateApprovalTemplate(EApprovalTemplate template);
 	/// <summary>
 	/// 创建审核节点
 	/// </summary>
 	/// <param name="node"></param>
 	/// <param name="templateId"></param>
-	public void CreateApprocalNode(EApprovalNode node, long templateId);
+	public long CreateApprocalNode(EApprovalNode node, long templateId);
 	/// <summary>
 	/// 插入节点
 	/// </summary>

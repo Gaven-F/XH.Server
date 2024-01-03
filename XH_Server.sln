@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Common", "XH_Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Web", "XH_Server.Web\XH_Server.Web.csproj", "{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{85BFB267-4BFC-479E-A8AE-CAD59301785A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingtalkApiDemo", "DingtalkApiDemo\DingtalkApiDemo.csproj", "{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +43,16 @@ Global
 		{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90} = {85BFB267-4BFC-479E-A8AE-CAD59301785A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37EFC54B-2630-406F-8FC5-9857729AE749}
