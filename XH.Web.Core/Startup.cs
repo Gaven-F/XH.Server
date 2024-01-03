@@ -27,7 +27,7 @@ public class Startup : AppStartup
 
         // 阿里爸爸大套餐！
         services.AddSingleton(typeof(DTService));
-        services.AddSingleton(typeof(OSSService));
+        // services.AddSingleton(typeof(OSSService));
 
     }
 

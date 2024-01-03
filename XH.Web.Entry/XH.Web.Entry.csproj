@@ -3,7 +3,7 @@
 
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
 		<PublishReadyToRunComposite>true</PublishReadyToRunComposite>
@@ -27,7 +27,7 @@
 		<ProjectReference Include="..\XH.Web.Core\XH.Web.Core.csproj" />
 	</ItemGroup>
 	<ProjectExtensions>
-		<VisualStudio><UserProperties appsettings_1production_1json__JsonSchema="" properties_4launchsettings_1json__JsonSchema="" /></VisualStudio>
+		<VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio>
 	</ProjectExtensions>
 
 </Project>
