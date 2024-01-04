@@ -5,6 +5,7 @@ namespace XH.Core.Database.Entities;
 public class IssueReceipts : BaseEntity
 {
 	public string? CorpId { get; set; }
+	public string? InvoiceType { get; set; }
 	public string? ApplicatDepart { get; set; }
 	public string? ReasonReceipt { get; set; }
 	public string? ReceiptAmount { get; set; }

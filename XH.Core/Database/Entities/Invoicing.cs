@@ -6,6 +6,7 @@ namespace XH.Core.DataBase.Entities;
 public class Invoicing : BaseEntity
 {
 	public string? CorpId { get; set; }
+	public string? InvoicingType { get; set; }
 	public string? ApplicatDepart { get; set; }
 	public string? ReasonInvoic { get; set; }
 	public string? BillType { get; set; }
