@@ -11,47 +11,47 @@ namespace XH.Web.Core;
 
 public class Startup : AppStartup
 {
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddConsoleFormatter();
-        services.AddJwt<JwtHandler>();
+	public void ConfigureServices(IServiceCollection services)
+	{
+		services.AddConsoleFormatter();
+		services.AddJwt<JwtHandler>();
 
-        services.AddCorsAccessor();
+		services.AddCorsAccessor();
 
-        services.AddControllers()
-                .AddInjectWithUnifyResult();
+		services.AddControllers()
+				.AddInjectWithUnifyResult();
 
-        // 数据库服务
-        services.AddSingleton<ISqlSugarClient>(DbContext.Instance)
-                .AddScoped(typeof(Repository<>));
+		// 数据库服务
+		services.AddSingleton<ISqlSugarClient>(DbContext.Instance)
+				.AddScoped(typeof(Repository<>));
 
-        // 阿里爸爸大套餐！
-        services.AddSingleton(typeof(DTService));
-        // services.AddSingleton(typeof(OSSService));
+		// 阿里爸爸大套餐！
+		services.AddSingleton(typeof(DTService));
+		services.AddSingleton(typeof(OSSService));
 
-    }
+	}
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+	{
+		if (env.IsDevelopment())
+		{
+			app.UseDeveloperExceptionPage();
+		}
 
-        //app.UseHttpsRedirection();
+		//app.UseHttpsRedirection();
 
-        app.UseRouting();
+		app.UseRouting();
 
-        app.UseCorsAccessor();
+		app.UseCorsAccessor();
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+		app.UseAuthentication();
+		app.UseAuthorization();
 
-        app.UseInject(string.Empty);
+		app.UseInject(string.Empty);
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
-    }
+		app.UseEndpoints(endpoints =>
+		{
+			endpoints.MapControllers();
+		});
+	}
 }

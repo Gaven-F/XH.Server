@@ -2,5 +2,5 @@
 
 public interface ISystemService : IDataBaseService
 {
-    string GetDescription();
+	string GetDescription();
 }

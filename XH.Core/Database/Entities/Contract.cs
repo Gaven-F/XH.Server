@@ -7,7 +7,7 @@ public class Contract : BaseEntity
 {
 	public string? CorpId { get; set; }
 	public string? ContractNumber { get; set; }
-	public DateTimeOffset SignDate { get; set; }
+	public DateTime SignDate { get; set; }
 	public string? OurCompany { get; set; }
 	public string? OppositeCompany { get; set; }
 	public string? Content { get; set; }

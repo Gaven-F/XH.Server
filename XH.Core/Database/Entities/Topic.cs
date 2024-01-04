@@ -12,7 +12,7 @@ public class Topic : BaseEntity
 	public string? TopicTitle { get; set; }
 	public string? TopicContent { get; set; }
 	public string? ReviewConference { get; set; }
-	public DateTimeOffset MeetingTime { get; set; }
+	public DateTime MeetingTime { get; set; }
 	[SugarColumn(IsJson = true, ColumnDataType = "JSON")]
 
 	public List<string>? Participants { get; set; }

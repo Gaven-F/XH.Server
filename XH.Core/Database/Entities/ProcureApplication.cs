@@ -6,16 +6,16 @@ namespace XH.Core.DataBase.Entities;
 
 public class ProcureApplication : BaseEntity
 {
-    public string CorpId { get; set; } = string.Empty;
-    public string? ProcureProject { get; set; }
-    public string? ProcurType { get; set; }
-    public string? ExplanatExpenditure { get; set; }
-    public DateTimeOffset PurchaseDate { get; set; }
-    public string? TotalAmount { get; set; }
-    public string? Notes { get; set; }
-    [SugarColumn(IsJson = true, ColumnDataType = "JSON")]
-    public List<string>? Picture { get; set; }
-    [SugarColumn(IsJson = true, ColumnDataType = "JSON")]
-    public List<string>? Annex { get; set; }
-    public string? ProcureMethod { get; set; }
+	public string CorpId { get; set; } = string.Empty;
+	public string? ProcureProject { get; set; }
+	public string? ProcurType { get; set; }
+	public string? ExplanatExpenditure { get; set; }
+	public DateTime PurchaseDate { get; set; }
+	public string? TotalAmount { get; set; }
+	public string? Notes { get; set; }
+	[SugarColumn(IsJson = true, ColumnDataType = "JSON")]
+	public List<string>? Picture { get; set; }
+	[SugarColumn(IsJson = true, ColumnDataType = "JSON")]
+	public List<string>? Annex { get; set; }
+	public string? ProcureMethod { get; set; }
 }

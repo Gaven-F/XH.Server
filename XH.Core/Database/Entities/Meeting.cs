@@ -7,8 +7,8 @@ public class Meeting : BaseEntity
 {
 	public string? CorpId { get; set; }
 	public string? Affiliatedcompany { get; set; }
-	public DateTimeOffset? ApplicationTime { get; set; }
-	public DateTimeOffset? Usagetime { get; set; }
+	public DateTime? ApplicationTime { get; set; }
+	public DateTime? Usagetime { get; set; }
 	public string? Reasonborrow { get; set; }
 	[SqlSugar.SugarColumn(IsJson = true, ColumnDataType = "JSON")]
 	public List<string>? Annex { get; set; }

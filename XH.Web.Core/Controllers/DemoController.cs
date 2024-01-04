@@ -186,7 +186,7 @@ public class DemoController : IDynamicApiController
 		if (data != null)
 		{
 			data.IsDelete = true;
-			data.UpdateTime = DateTimeOffset.Now;
+			data.UpdateTime = DateTime.Now;
 		}
 		else
 		{
@@ -577,9 +577,9 @@ public class DemoController : IDynamicApiController
 	/// <param name="repository"></param>
 	/// <param name="id"></param>
 	/// <param name="info"></param>
-	public void PostGoodsInfo([FromServices] Repository<EquipmentLog> repository,string id, string info)
+	public void PostGoodsInfo([FromServices] Repository<EquipmentLog> repository, string id, string info)
 	{
-		var d = 	repository.GetById(id);
+		var d = repository.GetById(id);
 		d.Info = info;
 		d.UpdateTime = DateTime.Now;
 		repository.Update(d);
@@ -600,7 +600,7 @@ public class DemoController : IDynamicApiController
 		rawData.ForEach(d =>
 		{
 			var cache = res.Where(it => it.GoodsID == d.GoodsID).ToList();
-			
+
 			if (cache.Count > 0 && d.CreateTime > cache[0].CreateTime && d.CreateTime > cache[0].EndTime)
 			{
 				res[res.FindIndex(it => it.Id == cache[0].Id)].EndTime = d.CreateTime;

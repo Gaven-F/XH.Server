@@ -1,13 +1,10 @@
-﻿using FastJSON;
-using Mapster;
-using StackExchange.Profiling.Internal;
-using XH.Core.Database.Entities;
+﻿using Mapster;
 
 namespace XH.Application.Mapper;
 
 public class Mapper : IRegister
 {
-    public void Register(TypeAdapterConfig config)
-    {
-    }
+	public void Register(TypeAdapterConfig config)
+	{
+	}
 }
