@@ -2,6 +2,7 @@
 
 namespace XH_Server.Web.Controllers;
 
+[ApiDescriptionSettings(Order = 99)]
 public class DingtalkApi : ControllerBase
 {
 	public IEnumerable<string> GetAllUserId()

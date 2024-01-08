@@ -1,18 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using XH_Server.Domain.Approve;
+using XH_Server.Domain.ApprocedPolicy;
 
 namespace XH_Server.Web.Controllers;
 
-public class ApproveApi(IApproveService approveService) : ControllerBase
+[ApiDescriptionSettings(Order = 99)]
+public class ApproveApi(ApprovedPolicyService approveService) : ControllerBase
 {
-	public string CreateApprovalTemplate(EApprovalTemplate template)
+	public void CreateApproval(EApprovedPolicy data)
 	{
-		return approveService.CreateApprovalTemplate(template).ToString();
+		approveService.Create(data);
 	}
 
-	public string CreateApprocalNode(EApprovalNode node, long templateId)
-	{
-		return approveService.CreateApprocalNode(node, templateId).ToString();
-
-	}
 }

@@ -1,5 +1,6 @@
 ﻿namespace XH_Server.Common.Condition;
-public class Condition
+[Obsolete]
+public class ConditionV1
 {
 	private static readonly char[] _separator = ['-', ' ', ','];
 
@@ -7,20 +8,20 @@ public class Condition
 	private JudgmentType Type { get; set; } = JudgmentType.E;
 	private string Value { get; set; } = string.Empty;
 
-	private Condition() { }
+	private ConditionV1() { }
 
-	public static Condition Default() => new()
+	public static ConditionV1 Default() => new()
 	{
 		JudgmentField = "NONE"
 	};
 
 	private static ArgumentOutOfRangeException GetException() => new("类型错误");
 
-	public static Condition Parse(string raw)
+	public static ConditionV1 Parse(string raw)
 	{
 		var splitRaw = raw.Split(_separator);
 
-		var c = new Condition
+		var c = new ConditionV1
 		{
 			JudgmentField = splitRaw[0],
 			Type = (JudgmentType)Enum.Parse(typeof(JudgmentType), splitRaw[1].ToUpper()),
@@ -39,7 +40,7 @@ public class Condition
 		return Check(Parse(condition), data, GetException());
 	}
 
-	public static bool Check(Condition condition, object data, Exception exception)
+	public static bool Check(ConditionV1 condition, object data, Exception exception)
 	{
 		var property = data.GetType().GetProperty(condition.JudgmentField)
 			?? throw new ArgumentException($"Property {condition.JudgmentField} not found in {data.GetType().Name}");
@@ -72,4 +73,62 @@ public enum JudgmentType
 	/// Equal,Greate,Less,GreateEqual,LessEqual,NotEqual
 	/// </summary>
 	E, G, L, GE, LE, NE
+}
+
+
+
+public class Condition
+{
+	private static readonly char[] _separator = ['-', ' ', ','];
+	public string? FiledName { get; set; }
+	public string? Value { get; set; }
+	public Type T { get; set; }
+
+
+	protected static Dictionary<Type, Func<string, string, bool>> _judgmentFunc = new()
+	{
+		{Type.E, (string arg1, string arg2) => arg1.Equals(arg2)},
+		{Type.G, (string arg1, string arg2) => arg1.CompareTo(arg2) == 1},
+		{Type.L, (string arg1, string arg2) => arg1.CompareTo(arg2) == -1},
+		{Type.GE, (string arg1, string arg2) => arg1.CompareTo(arg2) >= 0 },
+		{Type.LE, (string arg1, string arg2) => arg1.CompareTo(arg2) <= 0},
+		{Type.NE, (string arg1, string arg2) => !arg1.Equals(arg2)},
+	};
+
+	public static Condition Parse(string raw)
+	{
+		var splitRaw = raw.Split(_separator);
+
+		var c = new Condition
+		{
+			FiledName = splitRaw[0],
+			T = (Type)Enum.Parse(typeof(JudgmentType), splitRaw[1].ToUpper()),
+			Value = splitRaw[2]
+		};
+		return c;
+	}
+	public static Func<string, string, bool> GetJudgmentFunc(string t) => _judgmentFunc[Enum.Parse<Type>(t)];
+	public static Func<string, string, bool> GetJudgmentFunc(Type t) => _judgmentFunc[t];
+
+	public bool Check(object o)
+	{
+		ArgumentNullException.ThrowIfNull(Value);
+		ArgumentNullException.ThrowIfNull(FiledName);
+
+		var t = o.GetType();
+		var property = t.GetProperty(FiledName);
+		var filed = t.GetField(FiledName);
+
+		var v = (property?.GetValue(o) ?? filed?.GetValue(o))?.ToString();
+		ArgumentNullException.ThrowIfNull(v);
+
+		return GetJudgmentFunc(T)(Value, v);
+	}
+
+	public override string ToString()
+	{
+		return $"{FiledName}-{T}-{Value}";
+	}
+	[Flags]
+	public enum Type { E, G, L, GE, LE, NE }
 }

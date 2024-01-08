@@ -2,6 +2,7 @@ using XH_Server.Application;
 using XH_Server.Core.Config;
 using XH_Server.Core.Database;
 using XH_Server.Core.Dingtalk;
+using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Approve;
 using XH_Server.Domain.Basic;
 using XH_Server.Domain.Repository;
@@ -22,12 +23,13 @@ builder.Services
 	.AddScoped(typeof(OStorageService))
 	.AddScoped(typeof(DatabaseService))
 	.AddSingleton(typeof(DingtalkService))
+	.AddScoped(typeof(ApprovedPolicyService))
 	// 伪·领域服务
 	.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>))
 	.AddScoped(typeof(IBasicEntityService<>), typeof(BasicEntityService<>))
 	.AddScoped(typeof(IApproveService), typeof(ApprovalService))
 	// 应用服务
-	.AddScoped(typeof(IBasicApplicationService<>), typeof(BasicApplicationService<>));
+	.AddScoped(typeof(BasicApplicationApi<>));
 
 var app = builder.Build();
 

@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DingtalkApiDemo\DingtalkApiDemo.csproj" />
     <ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />
   </ItemGroup>
 

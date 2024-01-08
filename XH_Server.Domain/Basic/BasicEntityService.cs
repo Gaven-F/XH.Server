@@ -1,6 +1,4 @@
-﻿
-using SqlSugar;
-using XH_Server.Domain.Repository;
+﻿using XH_Server.Domain.Repository;
 
 namespace XH_Server.Domain.Basic;
 

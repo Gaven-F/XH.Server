@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{85BFB267-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DingtalkApiDemo", "DingtalkApiDemo\DingtalkApiDemo.csproj", "{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolicyDemo", "PolicyDemo\PolicyDemo.csproj", "{59065167-6BAE-4B71-937C-67451960D5B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolicyDemo", "PolicyDemo\PolicyDemo.csproj", "{59065167-6BAE-4B71-937C-67451960D5B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
