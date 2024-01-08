@@ -27,9 +27,9 @@ builder.Services
 	// 伪·领域服务
 	.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>))
 	.AddScoped(typeof(IBasicEntityService<>), typeof(BasicEntityService<>))
-	.AddScoped(typeof(IApproveService), typeof(ApprovalService))
-	// 应用服务
-	.AddScoped(typeof(BasicApplicationApi<>));
+	.AddScoped(typeof(IApproveService), typeof(ApprovalService));
+//// 应用服务
+//.AddScoped(typeof(BasicApplicationApi<>));
 
 var app = builder.Build();
 
