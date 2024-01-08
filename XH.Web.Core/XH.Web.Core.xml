@@ -237,7 +237,7 @@
             <param name="userId"></param>
             <returns></returns>
         </member>
-        <member name="M:XH.Web.Core.Controllers.DemoController.PostTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},XH.Core.Database.Entities.Topic)">
+        <member name="M:XH.Web.Core.Controllers.DemoController.PostTopic(XH.Core.DataBase.Repository{XH.Core.Database.Entities.Topic},System.Collections.Generic.IEnumerable{XH.Core.Database.Entities.Topic})">
             <summary>
             提交主题
             </summary>

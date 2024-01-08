@@ -402,9 +402,9 @@ public class DemoController : IDynamicApiController
 	/// </summary>
 	/// <param name="repository"></param>
 	/// <param name="data"></param>
-	public void PostTopic([FromServices] Repository<Topic> repository, Topic data)
+	public void PostTopic([FromServices] Repository<Topic> repository, IEnumerable<Topic> data)
 	{
-		repository.InsertReturnSnowflakeId(data);
+		repository.InsertReturnSnowflakeId(data.ToList());
 	}
 
 	/// <summary>
