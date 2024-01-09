@@ -9,13 +9,18 @@ public class BasicApplicationApi<T>(
 	)
 	where T : BasicEntity
 {
+
+
 	public virtual long Add(T entity)
 	{
 		var id = basicEntityService.Create(entity);
 		approvedPolicyService.CreateApproveBasicLog(entity);
 		var log = approvedPolicyService.GetCurrentApprovalLog(id);
+		if (log != null)
+		{
 
-		DingtalkUtils.SendMsg([log.ApproverId.ToString()], "有一个待审核的消息！");
+			DingtalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{entity}");
+		}
 
 		return id;
 	}
@@ -48,21 +53,21 @@ public class BasicApplicationApi<T>(
 		return basicEntityService.Delete(eId);
 	}
 
-	public IEnumerable<(T, EApprovalLog)> GetData()
+	public IEnumerable<Tuple<T, EApprovalLog>> GetData()
 	{
 		var data = basicEntityService.GetEntities();
-		List<(T, EApprovalLog)> res = new(data.Count());
+		List<Tuple<T, EApprovalLog>> res = new(data.Count());
 		foreach (var entity in data)
 		{
 			var log = approvedPolicyService.GetCurrentApprovalLog(entity.Id);
-			res.Add((entity, log));
+			res.Add(new(entity, log));
 		}
 		return res;
 	}
 
-	public virtual (T, EApprovalLog) GetDataById(long id)
+	public virtual Tuple<T, EApprovalLog> GetDataById(long id)
 	{
-		return (basicEntityService.GetEntityById(id), approvedPolicyService.GetCurrentApprovalLog(id));
+		return new(basicEntityService.GetEntityById(id), approvedPolicyService.GetCurrentApprovalLog(id));
 	}
 }
 

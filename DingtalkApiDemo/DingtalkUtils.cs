@@ -4,9 +4,9 @@ using Tea;
 
 public static class DingtalkUtils
 {
-	public static string AppKey { get; } = "dingh23286utoligpz1j";
-	public static string AppSecret { get; } = "TKIOe8LcS5J49_JpveQ6-5Y51jJ8ZhplmpTql5PlkEY2xRxuVMj9oArKq6AGgKkU";
-	public static string Agentid { get; } = "2810361637";
+	public static string AppKey { get; } = "dingifzl2bbmtmajc48t";
+	public static string AppSecret { get; } = "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
+	public static string Agentid { get; } = "2791318037";
 
 	private readonly static string _ERROR = "ERROR";
 	private readonly static string _GET_WORK_USER_ID_LIST_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";

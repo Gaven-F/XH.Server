@@ -83,7 +83,7 @@ public class ApprovedPolicyService(DatabaseService database)
 			.OrderBy(it => it.Index)
 			.First(it => it.ApprovalStatus != 1);
 
-		return log;
+		return log ;
 	}
 
 	public EApprovalLog GetLogById(long logId)
