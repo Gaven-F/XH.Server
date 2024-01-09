@@ -47,7 +47,6 @@ public static class DingtalkUtils
 			{
 				System.Diagnostics.Debug.WriteLine(_err.Message);
 				Console.WriteLine(_err.Message);
-
 			}
 			throw;
 		}
