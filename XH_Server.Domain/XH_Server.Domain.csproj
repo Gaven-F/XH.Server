@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\XH_Server.Common\XH_Server.Common.csproj" />
     <ProjectReference Include="..\XH_Server.Core\XH_Server.Core.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DingtalkApiDemo\DingtalkApiDemo.csproj" />
     <ProjectReference Include="..\XH_Server.Application\XH_Server.Application.csproj" />
-    <ProjectReference Include="..\XH_Server.Common\XH_Server.Common.csproj" />
     <ProjectReference Include="..\XH_Server.Core\XH_Server.Core.csproj" />
     <ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />
   </ItemGroup>
