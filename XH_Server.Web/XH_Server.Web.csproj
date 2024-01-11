@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DingtalkApiDemo\DingtalkUtils.csproj" />
     <ProjectReference Include="..\XH_Server.Application\XH_Server.Application.csproj" />
     <ProjectReference Include="..\XH_Server.Core\XH_Server.Core.csproj" />
     <ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />

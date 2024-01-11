@@ -13,14 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Web", "XH_Server.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{85BFB267-4BFC-479E-A8AE-CAD59301785A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DingtalkUtils", "DingtalkApiDemo\DingtalkUtils.csproj", "{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolicyDemo", "PolicyDemo\PolicyDemo.csproj", "{59065167-6BAE-4B71-937C-67451960D5B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EB5B5A00-2944-4110-AE70-077099155AFB}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DingtalkUtils", "DingtalkUtils\DingtalkUtils.csproj", "{56D03C39-8B02-4D0B-B19F-F54EE16E9D11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,14 +44,14 @@ Global
 		{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBB8260-9485-4F2C-AB60-DF9C7BFB7A24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{59065167-6BAE-4B71-937C-67451960D5B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{59065167-6BAE-4B71-937C-67451960D5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59065167-6BAE-4B71-937C-67451960D5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59065167-6BAE-4B71-937C-67451960D5B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D03C39-8B02-4D0B-B19F-F54EE16E9D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D03C39-8B02-4D0B-B19F-F54EE16E9D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D03C39-8B02-4D0B-B19F-F54EE16E9D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D03C39-8B02-4D0B-B19F-F54EE16E9D11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

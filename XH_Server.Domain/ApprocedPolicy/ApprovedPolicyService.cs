@@ -99,7 +99,6 @@ public class ApprovedPolicyService(DatabaseService database)
 		return _db.Queryable<EApprovalLog>().InSingle(logId);
 	}
 
-
 	public IEnumerable<EApprovalLog> GetLogs(long eId)
 	{
 		return _db.Queryable<EApprovalLog>().Where(it => it.EntityId == eId).OrderBy(it => it.Index).ToList();
