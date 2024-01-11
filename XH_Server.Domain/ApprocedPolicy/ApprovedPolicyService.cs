@@ -8,7 +8,7 @@ public class ApprovedPolicyService(DatabaseService database)
 
 	public long Create(EApprovedPolicy data)
 	{
-		return _db.Insertable(data).ExecuteReturnSnowflakeId();
+		return _db.InsertNav(data).Include(it => it.Conditions).ExecuteReturnEntity().Id;
 	}
 
 	public EApprovedPolicy GetPolicy<T>(T data) where T : BasicEntity

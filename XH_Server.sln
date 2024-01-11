@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XH_Server.Web", "XH_Server.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{85BFB267-4BFC-479E-A8AE-CAD59301785A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DingtalkApiDemo", "DingtalkApiDemo\DingtalkApiDemo.csproj", "{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DingtalkUtils", "DingtalkApiDemo\DingtalkUtils.csproj", "{7B082D22-D25E-4CB4-9A97-3D11FF60DD90}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolicyDemo", "PolicyDemo\PolicyDemo.csproj", "{59065167-6BAE-4B71-937C-67451960D5B7}"
 EndProject
@@ -57,7 +57,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7B082D22-D25E-4CB4-9A97-3D11FF60DD90} = {85BFB267-4BFC-479E-A8AE-CAD59301785A}
 		{59065167-6BAE-4B71-937C-67451960D5B7} = {85BFB267-4BFC-479E-A8AE-CAD59301785A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
