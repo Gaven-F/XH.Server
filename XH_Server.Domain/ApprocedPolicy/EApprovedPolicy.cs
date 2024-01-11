@@ -1,4 +1,7 @@
-﻿using XH_Server.Common.Condition;
+﻿
+using XH_Server.Common.Condition;
+using XH_Server.Domain.ApprocedPolicy.Condition;
+using XH_Server.Domain.Approve;
 using XH_Server.Domain.Basic;
 
 namespace XH_Server.Domain.ApprocedPolicy;
@@ -9,8 +12,8 @@ public class EApprovedPolicy : BasicEntity
 	public string Description { get; set; } = string.Empty;
 	public string EntityName { get; set; } = string.Empty;
 
-	[SqlSugar.SugarColumn(ColumnDataType = "varchar(16)")]
-	public Condition? Condition { get; set; }
+	[SqlSugar.Navigate(SqlSugar.NavigateType.OneToMany, nameof(ECondition.PolicyId))]
+	public List<ECondition>? Conditions { get; set; }
 	public bool IsDefault { get; set; }
 
 	public string ApproverIds { get; set; } = "";

@@ -1,4 +1,6 @@
-﻿namespace XH_Server.Common.Condition;
+﻿using XH_Server.Domain.Basic;
+
+namespace XH_Server.Domain.ApprocedPolicy.Condition;
 [Obsolete]
 public class ConditionV1
 {
@@ -77,9 +79,10 @@ public enum JudgmentType
 
 
 
-public class Condition
+public class ECondition : BasicEntity
 {
 	private static readonly char[] _separator = ['-', ' ', ','];
+	public long PolicyId { get; set; }
 	public string? FiledName { get; set; }
 	public string? Value { get; set; }
 	public Type T { get; set; }
@@ -87,19 +90,19 @@ public class Condition
 
 	protected static Dictionary<Type, Func<string, string, bool>> _judgmentFunc = new()
 	{
-		{Type.E, (string arg1, string arg2) => arg1.Equals(arg2)},
-		{Type.G, (string arg1, string arg2) => arg1.CompareTo(arg2) == 1},
-		{Type.L, (string arg1, string arg2) => arg1.CompareTo(arg2) == -1},
-		{Type.GE, (string arg1, string arg2) => arg1.CompareTo(arg2) >= 0 },
-		{Type.LE, (string arg1, string arg2) => arg1.CompareTo(arg2) <= 0},
-		{Type.NE, (string arg1, string arg2) => !arg1.Equals(arg2)},
+		{Type.E, (arg1, arg2) => arg1.Equals(arg2)},
+		{Type.G, (arg1, arg2) => arg1.CompareTo(arg2) == 1},
+		{Type.L, (arg1, arg2) => arg1.CompareTo(arg2) == -1},
+		{Type.GE, (arg1, arg2) => arg1.CompareTo(arg2) >= 0 },
+		{Type.LE, (arg1, arg2) => arg1.CompareTo(arg2) <= 0},
+		{Type.NE, (arg1, arg2) => !arg1.Equals(arg2)},
 	};
 
-	public static Condition Parse(string raw)
+	public static ECondition Parse(string raw)
 	{
 		var splitRaw = raw.Split(_separator);
 
-		var c = new Condition
+		var c = new ECondition
 		{
 			FiledName = splitRaw[0],
 			T = (Type)Enum.Parse(typeof(JudgmentType), splitRaw[1].ToUpper()),
@@ -120,15 +123,15 @@ public class Condition
 		var filed = t.GetField(FiledName);
 
 		var v = (property?.GetValue(o) ?? filed?.GetValue(o))?.ToString();
-		ArgumentNullException.ThrowIfNull(v);
+		//ArgumentNullException.ThrowIfNull(v);
 
-		return GetJudgmentFunc(T)(Value, v);
+		return v != null ? GetJudgmentFunc(T)(v, Value) : false;
 	}
 
 	public override string ToString()
 	{
 		return $"{FiledName}-{T}-{Value}";
 	}
-	[Flags]
+
 	public enum Type { E, G, L, GE, LE, NE }
 }

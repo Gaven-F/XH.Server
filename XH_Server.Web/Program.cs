@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using XH_Server.Application;
 using XH_Server.Core.Config;
 using XH_Server.Core.Database;
@@ -12,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args).Inject();
 builder.Services
 	.AddControllers()
 	.AddInject();
+
+builder.Services.AddJsonOptions(options =>
+{
+	options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddCorsAccessor();
 

@@ -3,7 +3,6 @@
 namespace XH_Server.Application;
 public class Entities
 {
-
 	public class EBussinessTrip : BasicEntity
 	{
 		public string CorpId { get; set; } = string.Empty;
@@ -28,7 +27,10 @@ public class Entities
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }
 		public string SumTime { get; set; } = string.Empty;
-		public string ReasonLeave { get; set; } = string.Empty;
+		public string EndDateSuffix { get; set; } = string.Empty;
+		public string StartDateSuffix { get; set; } = string.Empty;
+
+        public string ReasonLeave { get; set; } = string.Empty;
 		public string Annex { get; set; } = string.Empty;
 	}
 

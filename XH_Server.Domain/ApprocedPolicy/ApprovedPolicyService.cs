@@ -18,11 +18,20 @@ public class ApprovedPolicyService(DatabaseService database)
 			.Where(p => p.EntityName == entityName)
 			.ToList();
 
-		var policy = policies.FirstOrDefault(p => p!.Condition != null && p.Condition.Check(data), null);
+		var policy = policies
+			.FirstOrDefault(p =>
+				p!.Conditions != null &&
+				p.Conditions.All(it => it.Check(data)));
 
-		policy ??= policies.FirstOrDefault(it => it!.IsDefault, null);
+		policy ??= policies.FirstOrDefault(
+			it => it!.IsDefault,
+			new()
+			{
+				EntityName = entityName,
+				IsDefault = true
+			});
 
-		ArgumentNullException.ThrowIfNull(policy);
+		//ArgumentNullException.ThrowIfNull(policy);
 
 		return policy;
 	}
@@ -55,17 +64,16 @@ public class ApprovedPolicyService(DatabaseService database)
 	public void CreateApproveBasicLog<T>(T data) where T : BasicEntity
 	{
 		var approver = GetPolicy(data).ApproverIds?.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
-		if (approver.Length == 0)
-		{
-			throw new Exception("无效审核人员名单");
-		}
 
 		List<EApprovalLog> logs = [];
 		foreach (var item in approver.Select((val, i) => (val, i)))
 		{
 			logs.Add(new EApprovalLog() { ApproverId = item.val, Index = item.i, EntityId = data.Id });
 		}
-		_db.Insertable(logs).ExecuteReturnSnowflakeIdList();
+		if (logs.Count > 0)
+		{
+			_db.Insertable(logs).ExecuteReturnSnowflakeIdList();
+		}
 	}
 
 	public int Approve(long logId, byte status, string msg = "无")
@@ -83,7 +91,7 @@ public class ApprovedPolicyService(DatabaseService database)
 			.OrderBy(it => it.Index)
 			.First(it => it.ApprovalStatus != 1);
 
-		return log ;
+		return log;
 	}
 
 	public EApprovalLog GetLogById(long logId)

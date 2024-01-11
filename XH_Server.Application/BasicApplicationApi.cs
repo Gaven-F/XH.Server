@@ -18,8 +18,7 @@ public class BasicApplicationApi<T>(
 		var log = approvedPolicyService.GetCurrentApprovalLog(id);
 		if (log != null)
 		{
-
-			DingtalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{entity}");
+			DingtalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{entity.Id}");
 		}
 
 		return id;
