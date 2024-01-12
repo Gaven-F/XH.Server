@@ -1,7 +1,4 @@
-﻿
-using XH_Server.Common.Condition;
-using XH_Server.Domain.ApprocedPolicy.Condition;
-using XH_Server.Domain.Approve;
+﻿using XH_Server.Domain.ApprocedPolicy.Condition;
 using XH_Server.Domain.Basic;
 
 namespace XH_Server.Domain.ApprocedPolicy;

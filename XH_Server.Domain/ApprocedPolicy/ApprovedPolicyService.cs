@@ -11,6 +11,11 @@ public class ApprovedPolicyService(DatabaseService database)
 		return _db.InsertNav(data).Include(it => it.Conditions).ExecuteReturnEntity().Id;
 	}
 
+	public IEnumerable<EApprovedPolicy> GetPolicies(string? entityName)
+	{
+		return _db.Queryable<EApprovedPolicy>().WhereIF(entityName != null, it => it.EntityName == entityName).ToArray();
+	}
+
 	public EApprovedPolicy GetPolicy<T>(T data) where T : BasicEntity
 	{
 		var entityName = data.GetType().Name;

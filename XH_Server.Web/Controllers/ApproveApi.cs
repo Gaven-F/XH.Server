@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
+using XH_Server.Application.Entities.Dto;
 using XH_Server.Domain.ApprocedPolicy;
 
 namespace XH_Server.Web.Controllers;
@@ -9,6 +11,12 @@ public class ApproveApi(ApprovedPolicyService approveService) : ControllerBase
 	public void CreateApproval(EApprovedPolicy data)
 	{
 		approveService.Create(data);
+	}
+
+	public IEnumerable<Dtos.ApprovedPolicy> GetAllApproval(string? entityName = null)
+	{
+		var p = approveService.GetPolicies(entityName);
+		return p.Adapt<IList<Dtos.ApprovedPolicy>>();
 	}
 
 }

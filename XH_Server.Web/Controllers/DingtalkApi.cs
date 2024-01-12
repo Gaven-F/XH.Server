@@ -5,12 +5,12 @@ namespace XH_Server.Web.Controllers;
 [ApiDescriptionSettings(Order = 99)]
 public class DingtalkApi : ControllerBase
 {
-	public IEnumerable<string> GetAllUserId()
+	public IEnumerable<string>? GetAllUserId()
 	{
 		return DingtalkUtils.GetUserIds();
 	}
 
-	public IEnumerable<string> GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
+	public IEnumerable<string>? GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
 	{
 		return DingtalkUtils.GetUserInfo(userId, fileds);
 	}

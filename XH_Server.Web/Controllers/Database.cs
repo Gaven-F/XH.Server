@@ -14,7 +14,7 @@ public class Database(DatabaseService databaseService) : ControllerBase
 		databaseService.InitDatabase();
 		List<Type> tables =
 		[
-			.. typeof(BasicApplicationApi<>).Assembly.GetTypes().Where(t => t.BaseType == typeof(BasicEntity)).ToList(),
+			.. typeof(BasicApplicationApi<,>).Assembly.GetTypes().Where(t => t.BaseType == typeof(BasicEntity)).ToList(),
 			.. typeof(BasicEntity).Assembly.GetTypes().Where(t => t.BaseType == typeof(BasicEntity)).ToList(),
 		];
 		databaseService.InitTable(tables.Distinct());

@@ -1,8 +1,10 @@
 ﻿using Furion.DynamicApiController;
 using XH_Server.Application;
+using XH_Server.Application.Entities;
+using XH_Server.Application.Entities.Dto;
 using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
-using static XH_Server.Application.Entities;
+
 
 namespace XH_Server.Web.Controllers.Entity;
 
@@ -14,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class Leave(
 	IBasicEntityService<ELeave> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<ELeave>(
+	: BasicApplicationApi<ELeave, Dtos.Leave>(
 		bes, aps)
 	, IDynamicApiController
 {

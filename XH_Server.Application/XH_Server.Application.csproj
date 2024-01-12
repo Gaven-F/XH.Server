@@ -1,23 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DingtalkUtils\DingtalkUtils.csproj" />
-    <ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Mapster" Version="7.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DingtalkUtils\DingtalkUtils.csproj" />
+		<ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />
+	</ItemGroup>
+
+	<Target Name="Mapster" AfterTargets="AfterBuild">
+		<Message Text="&quot;$(TargetDir)$(ProjectName).dll&quot;" />
+		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
+		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
+		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
+	</Target>
 
 </Project>

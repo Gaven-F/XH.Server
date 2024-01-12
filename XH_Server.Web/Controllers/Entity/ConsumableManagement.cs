@@ -1,8 +1,9 @@
 ﻿using Furion.DynamicApiController;
 using XH_Server.Application;
+using XH_Server.Application.Entities;
+using XH_Server.Application.Entities.Dto;
 using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
-using static XH_Server.Application.Entities;
 
 namespace XH_Server.Web.Controllers.Entity;
 
@@ -14,7 +15,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class ConsumableManagement(
 	IBasicEntityService<EConsumableManagement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EConsumableManagement>(
+	: BasicApplicationApi<EConsumableManagement, Dtos.ConsumableManagement>(
 		bes, aps)
 	, IDynamicApiController
 {
