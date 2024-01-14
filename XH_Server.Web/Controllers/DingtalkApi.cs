@@ -10,7 +10,7 @@ public class DingtalkApi(DingtalkUtils.DingtalkUtils dingtalkUtils) : Controller
 		return dingtalkUtils.GetUserIds();
 	}
 
-	public IEnumerable<string>? GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
+	public IEnumerable<string>? GetUserInfo([FromQuery]IEnumerable<string> userId, [FromQuery] IEnumerable<string>? fileds )
 	{
 		return dingtalkUtils.GetUserInfo(userId, fileds);
 	}
