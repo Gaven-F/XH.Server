@@ -12,4 +12,8 @@
     <PackageReference Include="dingtalk-sdk-netCore" Version="1.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\XH_Server.Core\XH_Server.Core.csproj" />
+  </ItemGroup>
+
 </Project>

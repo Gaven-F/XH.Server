@@ -1,18 +1,21 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using XH_Server.Application.Entities.Dto;
 using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
 
 namespace XH_Server.Application;
-
+#pragma warning disable 8618
 public class BasicApplicationApi<T, DtoT>(
 	IBasicEntityService<T> basicEntityService,
 	ApprovedPolicyService approvedPolicyService
 	)
 	where T : BasicEntity
 {
-
+#pragma warning restore
+	[FromServices]
+	public DingtalkUtils.DingtalkUtils DingtalkUtils { get; set; }
 
 	public virtual Results<Ok<string>, BadRequest<string>> Add(T entity)
 	{

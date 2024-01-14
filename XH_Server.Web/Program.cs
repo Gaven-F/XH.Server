@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using XH_Server.Core.Config;
 using XH_Server.Core.Database;
-using XH_Server.Core.Dingtalk;
 using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
 using XH_Server.Domain.Repository;
@@ -24,12 +23,11 @@ builder.Services.AddCorsAccessor();
 // 应用服务及其依赖服务注入
 builder.Services
 	// 核心服务
-	.AddScoped(typeof(ConfigService))
-	.AddScoped(typeof(DingtalkService))
+	.AddSingleton(typeof(ConfigService))
 	.AddScoped(typeof(OStorageService))
 	.AddScoped(typeof(DatabaseService))
-	.AddSingleton(typeof(DingtalkService))
 	.AddScoped(typeof(ApprovedPolicyService))
+	.AddSingleton(typeof(DingtalkUtils.DingtalkUtils))
 	// 伪·领域服务
 	.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>))
 	.AddScoped(typeof(IBasicEntityService<>), typeof(BasicEntityService<>));

@@ -3,20 +3,20 @@
 namespace XH_Server.Web.Controllers;
 
 [ApiDescriptionSettings(Order = 99)]
-public class DingtalkApi : ControllerBase
+public class DingtalkApi(DingtalkUtils.DingtalkUtils dingtalkUtils) : ControllerBase
 {
 	public IEnumerable<string>? GetAllUserId()
 	{
-		return DingtalkUtils.GetUserIds();
+		return dingtalkUtils.GetUserIds();
 	}
 
 	public IEnumerable<string>? GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
 	{
-		return DingtalkUtils.GetUserInfo(userId, fileds);
+		return dingtalkUtils.GetUserInfo(userId, fileds);
 	}
 
 	public void SendMsg(IEnumerable<string> userId, string msg)
 	{
-		DingtalkUtils.SendMsg(userId, msg);
+		dingtalkUtils.SendMsg(userId, msg);
 	}
 }

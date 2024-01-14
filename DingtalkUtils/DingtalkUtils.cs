@@ -1,23 +1,28 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using Tea;
+using XH_Server.Core.Config;
 
-public static class DingtalkUtils
+namespace DingtalkUtils;
+
+public class DingtalkUtils(ConfigService configService)
 {
-	public static string AppKey { get; } = "dingifzl2bbmtmajc48t";
-	public static string AppSecret { get; } = "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
-	public static string Agentid { get; } = "2791318037";
+	public string AppKey { get; set; } = configService.DingtalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
+	public string AppSecret { get; set; } = configService.DingtalkConfig.AppSecret ?? "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
+	public string Agentid { get; set; } = configService.DingtalkConfig.AgentId ?? "2791318037";
 
-	private readonly static string _ERROR = "ERROR";
-	private readonly static string _GET_WORK_USER_ID_LIST_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";
-	private readonly static string _GET_USER_INFO_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list";
+	private readonly string _ERROR = "ERROR";
+	private readonly string _GET_WORK_USER_ID_LIST_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";
+	private readonly string _GET_USER_INFO_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list";
 
 	private static AlibabaCloud.SDK.Dingtalkoauth2_1_0.Client GetClient()
 	{
 
-		var config = new AlibabaCloud.OpenApiClient.Models.Config();
-		config.Protocol = "https";
-		config.RegionId = "central";
+		var config = new AlibabaCloud.OpenApiClient.Models.Config
+		{
+			Protocol = "https",
+			RegionId = "central"
+		};
 
 		return new AlibabaCloud.SDK.Dingtalkoauth2_1_0.Client(config);
 	}
@@ -27,7 +32,7 @@ public static class DingtalkUtils
 		return new DingTalk.Api.DefaultDingTalkClient(url);
 	}
 
-	public static string GetToken()
+	public string GetToken()
 	{
 		var client = GetClient();
 		var request = new AlibabaCloud.SDK.Dingtalkoauth2_1_0.Models.GetAccessTokenRequest
@@ -45,7 +50,7 @@ public static class DingtalkUtils
 		{
 			if (!AlibabaCloud.TeaUtil.Common.Empty(_err.Code) && !AlibabaCloud.TeaUtil.Common.Empty(_err.Message))
 			{
-				System.Diagnostics.Debug.WriteLine(_err.Message);
+				Debug.WriteLine(_err.Message);
 				Console.WriteLine(_err.Message);
 			}
 			throw;
@@ -53,9 +58,9 @@ public static class DingtalkUtils
 		catch (Exception _err)
 		{
 			var err = new TeaException(new Dictionary<string, object>
-				{
-					{ "message", _err.Message }
-				});
+			{
+				{ "message", _err.Message }
+			});
 
 			if (!AlibabaCloud.TeaUtil.Common.Empty(err.Code) && !AlibabaCloud.TeaUtil.Common.Empty(err.Message))
 			{
@@ -65,7 +70,7 @@ public static class DingtalkUtils
 		return _ERROR;
 	}
 
-	public static IEnumerable<string>? GetUserIds()
+	public IEnumerable<string>? GetUserIds()
 	{
 		var client = GetV2Client(_GET_WORK_USER_ID_LIST_URL);
 		var req = new DingTalk.Api.Request.OapiSmartworkHrmEmployeeQueryonjobRequest
@@ -101,7 +106,7 @@ public static class DingtalkUtils
 		return null;
 	}
 
-	public static IEnumerable<string>? GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
+	public IEnumerable<string>? GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
 	{
 
 		var client = GetV2Client(_GET_USER_INFO_URL);
@@ -143,7 +148,7 @@ public static class DingtalkUtils
 		return null;
 	}
 
-	public static void SendMsg(IEnumerable<string> userId, string msg)
+	public void SendMsg(IEnumerable<string> userId, string msg)
 	{
 		var client = GetV2Client("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
 		var req = new DingTalk.Api.Request.OapiMessageCorpconversationAsyncsendV2Request
@@ -170,13 +175,11 @@ public static class DingtalkUtils
 			var fg = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.DarkGreen;
 
-            Console.WriteLine("DingTalk Error");
-            Console.WriteLine(res.Errmsg ?? res.ErrMsg);
+			Console.WriteLine("DingTalk Error");
+			Console.WriteLine(res.Errmsg ?? res.ErrMsg);
 
 			Console.BackgroundColor = bg;
 			Console.ForegroundColor = fg;
-        }
+		}
 	}
 }
-
-
