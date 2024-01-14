@@ -5,6 +5,7 @@ using XH_Server.Core.Dingtalk;
 using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
 using XH_Server.Domain.Repository;
+using XH_Server.Web.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args).Inject();
@@ -36,6 +37,8 @@ builder.Services
 //.AddScoped(typeof(BasicApplicationApi<>));
 
 var app = builder.Build();
+
+app.UseMiddleware<GUtilsMiddleware>();
 
 app.UseAuthentication().UseAuthorization();
 
