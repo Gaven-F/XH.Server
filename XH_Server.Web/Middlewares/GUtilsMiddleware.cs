@@ -19,20 +19,6 @@ public class GUtilsMiddleware(RequestDelegate next)
 			context.Request.Path.Value));
 		Console.ForegroundColor = fg;
 
-		try
-		{
-			await next(context);
-		}
-		catch (Exception e)
-		{
-			context.Response.ContentType = "application/text";
-			context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-			await context.Response.WriteAsync(string.Format("""
-			ERROR!
-			{0}
-			{1}
-			""", e.Message, e.Source));
-		}
-
+		await next(context);
 	}
 }
