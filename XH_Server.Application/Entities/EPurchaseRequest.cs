@@ -14,5 +14,6 @@ public class EPurchaseRequest : BasicEntity
 	public string Picture { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
 	public string ProcureMethod { get; set; } = string.Empty;
+	public string LargeAmount { get; set; } = string.Empty;
 }
 
