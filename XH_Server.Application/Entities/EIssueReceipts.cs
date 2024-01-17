@@ -12,5 +12,6 @@ public class EIssueReceipts : BasicEntity
 	public DateTime ReceiptDate { get; set; }
 	public string ReceiptCompany { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
+	public string LargeAmount { get; set; } = string.Empty;
 }
 

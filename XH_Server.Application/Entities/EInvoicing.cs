@@ -13,5 +13,6 @@ public class EInvoicing : BasicEntity
 	public DateTime InvoicDate { get; set; }
 	public string InvoicCompany { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
+	public string LargeAmount { get; set; } = string.Empty;
 }
 

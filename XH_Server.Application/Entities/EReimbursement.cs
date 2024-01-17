@@ -11,5 +11,6 @@ public class EReimbursement : BasicEntity
 	public string ExpenseRelated { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
 	public string Remark { get; set; } = string.Empty;
+	public string LargeAmount { get; set; } = string.Empty;
 }
 
