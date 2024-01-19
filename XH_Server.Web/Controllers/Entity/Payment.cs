@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class Payment(
 	IBasicEntityService<EPayment> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EPayment, Dtos.Payment>(
+	: BasicApplicationApi<EPayment, Vo.Payment>(
 		bes, aps)
 	, IDynamicApiController
 {

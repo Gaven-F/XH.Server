@@ -15,7 +15,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class ConsumableManagement(
 	IBasicEntityService<EConsumableManagement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EConsumableManagement, Dtos.ConsumableManagement>(
+	: BasicApplicationApi<EConsumableManagement, Vo.ConsumableManagement>(
 		bes, aps)
 	, IDynamicApiController
 {

@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class Invoicing(
 	IBasicEntityService<EInvoicing> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EInvoicing,Dtos.Invoicing>(
+	: BasicApplicationApi<EInvoicing,Vo.Invoicing>(
 		bes, aps)
 	, IDynamicApiController
 {

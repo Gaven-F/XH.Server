@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class OrderManagement(
 	IBasicEntityService<EOrderManagement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EOrderManagement, Dtos.OrderManagement>(
+	: BasicApplicationApi<EOrderManagement, Vo.OrderManagement>(
 		bes, aps)
 	, IDynamicApiController
 {

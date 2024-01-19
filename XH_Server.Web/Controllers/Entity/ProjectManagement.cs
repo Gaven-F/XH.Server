@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class ProjectManagement(
 	IBasicEntityService<EProjectManagement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EProjectManagement, Dtos.ProjectManagement>(
+	: BasicApplicationApi<EProjectManagement, Vo.ProjectManagement>(
 		bes, aps)
 	, IDynamicApiController
 {

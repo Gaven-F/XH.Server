@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class Leave(
 	IBasicEntityService<ELeave> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<ELeave, Dtos.Leave>(
+	: BasicApplicationApi<ELeave, Vo.Leave>(
 		bes, aps)
 	, IDynamicApiController
 {

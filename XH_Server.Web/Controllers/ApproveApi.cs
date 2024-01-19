@@ -13,10 +13,10 @@ public class ApproveApi(ApprovedPolicyService approveService) : ControllerBase
 		approveService.Create(data);
 	}
 
-	public IEnumerable<Dtos.ApprovedPolicy> GetAllApproval(string? entityName = null)
+	public IEnumerable<Vo.ApprovedPolicy> GetAllApproval(string? entityName = null)
 	{
 		var p = approveService.GetPolicies(entityName);
-		return p.Adapt<IList<Dtos.ApprovedPolicy>>();
+		return p.Adapt<IList<Vo.ApprovedPolicy>>();
 	}
 
 }

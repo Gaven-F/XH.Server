@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class IssueReceipts(
 	IBasicEntityService<EIssueReceipts> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EIssueReceipts, Dtos.IssueReceipts>(
+	: BasicApplicationApi<EIssueReceipts, Vo.IssueReceipts>(
 		bes, aps)
 	, IDynamicApiController
 {

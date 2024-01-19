@@ -17,7 +17,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class UseSeal(
 	IBasicEntityService<EUseSeal> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EUseSeal, Dtos.UseSeal>(
+	: BasicApplicationApi<EUseSeal, Vo.UseSeal>(
 		bes, aps)
 	, IDynamicApiController
 {

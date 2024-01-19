@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class ContractManagement(
 	IBasicEntityService<EContractManagement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EContractManagement, Dtos.ContractManagement>(
+	: BasicApplicationApi<EContractManagement, Vo.ContractManagement>(
 		bes, aps)
 	, IDynamicApiController
 {

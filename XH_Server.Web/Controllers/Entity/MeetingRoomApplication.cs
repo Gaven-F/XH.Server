@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class MeetingRoomApplication(
 	IBasicEntityService<EMeetingRoomApplication> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EMeetingRoomApplication, Dtos.MeetingRoomApplication>(
+	: BasicApplicationApi<EMeetingRoomApplication, Vo.MeetingRoomApplication>(
 		bes, aps)
 	, IDynamicApiController
 {

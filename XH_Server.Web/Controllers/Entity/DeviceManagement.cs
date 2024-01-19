@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class DeviceManagement(
 	IBasicEntityService<EDeviceManagement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EDeviceManagement, Dtos.DeviceManagement>(
+	: BasicApplicationApi<EDeviceManagement, Vo.DeviceManagement>(
 		bes, aps)
 	, IDynamicApiController
 {

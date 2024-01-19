@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class ProcurementConfirmation(
 	IBasicEntityService<EProcurementConfirmation> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EProcurementConfirmation, Dtos.ProcurementConfirmation>(
+	: BasicApplicationApi<EProcurementConfirmation, Vo.ProcurementConfirmation>(
 		bes, aps)
 	, IDynamicApiController
 {

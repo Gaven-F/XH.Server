@@ -15,7 +15,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class BussinessTrip(
 		IBasicEntityService<EBussinessTrip> basicEntityService,
 		ApprovedPolicyService approvedPolicyService
-	) : BasicApplicationApi<EBussinessTrip, Dtos.BussinessTrip>(
+	) : BasicApplicationApi<EBussinessTrip, Vo.BussinessTrip>(
 		basicEntityService,
 		approvedPolicyService
 	), IDynamicApiController

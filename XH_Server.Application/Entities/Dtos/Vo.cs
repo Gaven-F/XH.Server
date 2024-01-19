@@ -1,7 +1,7 @@
 ﻿using XH_Server.Domain.ApprocedPolicy;
 
 namespace XH_Server.Application.Entities.Dto;
-public class Dtos
+public class Vo
 {
 	public class ApproLog : EApprovalLog
 	{
@@ -96,4 +96,10 @@ public class Dtos
 	{
 		new public string Id { get; set; } = string.Empty;
 	}
+
+	public class Topic : ETopic
+	{
+		new public string Id { get; set; } = string.Empty;
+	}
+
 }

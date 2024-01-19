@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class MeetingMinutes(
 	IBasicEntityService<EMeetingMinutes> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EMeetingMinutes, Dtos.MeetingMinutes>(
+	: BasicApplicationApi<EMeetingMinutes, Vo.MeetingMinutes>(
 		bes, aps)
 	, IDynamicApiController
 {

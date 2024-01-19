@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class ChipPayment(
 	IBasicEntityService<EChipPayment> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EChipPayment, Dtos.ChipPayment>(
+	: BasicApplicationApi<EChipPayment, Vo.ChipPayment>(
 		bes, aps)
 	, IDynamicApiController
 {

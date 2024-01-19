@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class Reimbursement(
 	IBasicEntityService<EReimbursement> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EReimbursement, Dtos.Reimbursement>(
+	: BasicApplicationApi<EReimbursement, Vo.Reimbursement>(
 		bes, aps)
 	, IDynamicApiController
 {

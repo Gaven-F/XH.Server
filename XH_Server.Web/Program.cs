@@ -3,6 +3,7 @@ using XH_Server.Core.Config;
 using XH_Server.Core.Database;
 using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
+using XH_Server.Domain.Converters;
 using XH_Server.Domain.Repository;
 using XH_Server.Web.Middlewares;
 
@@ -16,7 +17,9 @@ builder.Services
 builder.Services.AddJsonOptions(options =>
 {
 	options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+	options.JsonSerializerOptions.Converters.Add(new JsonLongToStringConverter());
 });
+
 
 builder.Services.AddCorsAccessor();
 

@@ -16,7 +16,7 @@ namespace XH_Server.Web.Controllers.Entity;
 public class PurchaseRequest(
 	IBasicEntityService<EPurchaseRequest> bes,
 	ApprovedPolicyService aps)
-	: BasicApplicationApi<EPurchaseRequest, Dtos.PurchaseRequest>(
+	: BasicApplicationApi<EPurchaseRequest, Vo.PurchaseRequest>(
 		bes, aps)
 	, IDynamicApiController
 {

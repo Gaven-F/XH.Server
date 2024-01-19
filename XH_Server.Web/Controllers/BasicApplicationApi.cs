@@ -6,24 +6,33 @@ using XH_Server.Domain.ApprocedPolicy;
 using XH_Server.Domain.Basic;
 
 namespace XH_Server.Application;
-#pragma warning disable 8618
-public class BasicApplicationApi<T, DtoT>(
-	IBasicEntityService<T> basicEntityService,
-	ApprovedPolicyService approvedPolicyService
-	)
-	where T : BasicEntity
+
+public class BasicApplicationApi<T, VoT> where T : BasicEntity
 {
-#pragma warning restore
+
 	[FromServices]
 	public DingtalkUtils.DingtalkUtils DingtalkUtils { get; set; }
+	[FromServices]
+	public IBasicEntityService<T> BasicEntityService { get; set; }
+	[FromServices]
+	public ApprovedPolicyService ApprovedPolicyService { get; set; }
+
+#pragma warning disable 8618
+	public BasicApplicationApi(IBasicEntityService<T> basicEntityService, ApprovedPolicyService approvedPolicyService)
+	{
+		BasicEntityService = basicEntityService;
+		ApprovedPolicyService = approvedPolicyService;
+	}
+	public BasicApplicationApi() { }
+#pragma warning restore
 
 	public virtual Results<Ok<string>, BadRequest<string>> Add(T entity)
 	{
 		try
 		{
-			var id = basicEntityService.Create(entity);
-			approvedPolicyService.CreateApproveBasicLog(entity);
-			var log = approvedPolicyService.GetCurrentApprovalLog(id);
+			var id = BasicEntityService.Create(entity);
+			ApprovedPolicyService.CreateApproveBasicLog(entity);
+			var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
 			if (log != null)
 			{
 				DingtalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{entity.Id}");
@@ -42,14 +51,14 @@ public class BasicApplicationApi<T, DtoT>(
 		try
 		{
 
-			var eId = approvedPolicyService.GetLogById(logId).EntityId;
-			approvedPolicyService.Approve(logId, status, msg);
-			var cLog = approvedPolicyService.GetCurrentApprovalLog(eId);
+			var eId = ApprovedPolicyService.GetLogById(logId).EntityId;
+			ApprovedPolicyService.Approve(logId, status, msg);
+			var cLog = ApprovedPolicyService.GetCurrentApprovalLog(eId);
 
 			if (cLog == null)
 			{
-				var e = basicEntityService.GetEntityById(eId);
-				DingtalkUtils.SendMsg(approvedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','), $"""
+				var e = BasicEntityService.GetEntityById(eId);
+				DingtalkUtils.SendMsg(ApprovedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','), $"""
 				抄送信息：
 				{e.CreateTime.ToLongDateString()}
 				""");
@@ -72,7 +81,7 @@ public class BasicApplicationApi<T, DtoT>(
 	{
 		try
 		{
-			return TypedResults.Ok(basicEntityService.Delete(eId));
+			return TypedResults.Ok(BasicEntityService.Delete(eId));
 		}
 		catch (Exception e)
 		{
@@ -80,16 +89,16 @@ public class BasicApplicationApi<T, DtoT>(
 		}
 	}
 
-	public Results<Ok<List<Tuple<DtoT, EApprovalLog>>>, BadRequest<string>> GetData()
+	public Results<Ok<List<Tuple<VoT, EApprovalLog>>>, BadRequest<string>> GetData()
 	{
 		try
 		{
-			var data = basicEntityService.GetEntities();
-			List<Tuple<DtoT, EApprovalLog>> res = new(data.Count());
+			var data = BasicEntityService.GetEntities();
+			List<Tuple<VoT, EApprovalLog>> res = new(data.Count());
 			foreach (var entity in data)
 			{
-				var log = approvedPolicyService.GetCurrentApprovalLog(entity.Id).Adapt<Dtos.ApproLog>();
-				res.Add(new(entity.Adapt<DtoT>(), log));
+				var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id).Adapt<Vo.ApproLog>();
+				res.Add(new(entity.Adapt<VoT>(), log));
 			}
 			return TypedResults.Ok(res);
 		}
@@ -99,13 +108,13 @@ public class BasicApplicationApi<T, DtoT>(
 		}
 	}
 
-	public virtual Results<Ok<Tuple<DtoT, Dtos.ApproLog>>, BadRequest<string>> GetDataById(long id)
+	public virtual Results<Ok<Tuple<VoT, Vo.ApproLog>>, BadRequest<string>> GetDataById(long id)
 	{
 		try
 		{
-			return TypedResults.Ok(new Tuple<DtoT, Dtos.ApproLog>(
-				basicEntityService.GetEntityById(id).Adapt<DtoT>(),
-				approvedPolicyService.GetCurrentApprovalLog(id).Adapt<Dtos.ApproLog>()));
+			return TypedResults.Ok(new Tuple<VoT, Vo.ApproLog>(
+				BasicEntityService.GetEntityById(id).Adapt<VoT>(),
+				ApprovedPolicyService.GetCurrentApprovalLog(id).Adapt<Vo.ApproLog>()));
 		}
 		catch (Exception e)
 		{
