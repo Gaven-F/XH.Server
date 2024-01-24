@@ -13,7 +13,7 @@ public class ApprovedPolicyService(DatabaseService database)
 
 	public IEnumerable<EApprovedPolicy> GetPolicies(string? entityName)
 	{
-		return _db.Queryable<EApprovedPolicy>().WhereIF(entityName != null, it => it.EntityName == entityName).ToArray();
+		return _db.Queryable<EApprovedPolicy>().Includes(it => it .Conditions).WhereIF(entityName != null, it => it.EntityName == entityName).ToArray();
 	}
 
 	public EApprovedPolicy GetPolicy<T>(T data) where T : BasicEntity
