@@ -1,4 +1,6 @@
 ﻿using Furion.DynamicApiController;
+using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using XH_Server.Application.Entities;
 using XH_Server.Domain.Repository;
 
@@ -57,5 +59,36 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
 		d.Info = info;
 		d.UpdateTime = DateTime.Now;
 		repository.UpdateData(d);
+	}
+
+	/// <summary>
+	/// 获取样品操作设备列表
+	/// </summary>
+	/// <param name="sId"></param>
+	/// <returns></returns>
+	public IEnumerable<EEquipmentLog> GetEquipmentLogById(string sId)
+	{
+		var rawData = repository.GetData()
+			.Where(it => it.BindS == sId && it.Type == "E")
+			.OrderBy(it => it.CreateTime)
+			.ToList();
+
+		var res = new List<EEquipmentLog>();
+
+		rawData.ForEach(d =>
+		{
+			var cache = res.Where(it => it.GoodsID == d.GoodsID).ToList();
+
+			if (cache.Count > 0 && d.CreateTime > cache[0].CreateTime && d.CreateTime > cache[0].EndTime)
+			{
+				res[res.FindIndex(it => it.Id == cache[0].Id)].EndTime = d.CreateTime;
+			}
+			else
+			{
+				res.Add(d);
+			}
+		});
+
+		return res;
 	}
 }

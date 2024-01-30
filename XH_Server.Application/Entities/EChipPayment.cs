@@ -13,9 +13,9 @@ public class EChipPayment : BasicEntity
 	public string Bank { get; set; } = string.Empty;
 	public string Account { get; set; } = string.Empty;
 	public string RateSelection { get; set; } = string.Empty;
-	public string AmountOne { get; set; } = string.Empty;
 	public string Unit { get; set; } = string.Empty;
-	public string AmountTwo { get; set; } = string.Empty;
+	public string Amount { get; set; } = string.Empty;
+	public string LargeAmount { get; set; } = string.Empty;
 	public string TotalAmount { get; set; } = string.Empty;
 	public string PaymentType { get; set; } = string.Empty;
 	public string ProofPayment { get; set; } = string.Empty;
