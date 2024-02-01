@@ -1,4 +1,6 @@
-﻿using Furion.DynamicApiController;
+﻿using Furion.DatabaseAccessor;
+using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Http.HttpResults;
 using XH_Server.Application;
 using XH_Server.Application.Entities;
 using XH_Server.Application.Entities.Dto;
@@ -20,5 +22,23 @@ public class ChipPayment(
 		bes, aps)
 	, IDynamicApiController
 {
+	public Results<Ok<IEnumerable<string>>, BadRequest> GetReceivingUnits()
+	{
+		return TypedResults.Ok(bes.GetEntities().Select(it => it.ReceivingUnit).ToList().Distinct());
+	}
 
+	public Results<Ok<IEnumerable<string>>, BadRequest> GetBanks()
+	{
+		return TypedResults.Ok(bes.GetEntities().Select(it => it.Bank).ToList().Distinct());
+	}
+
+	public Results<Ok<IEnumerable<string>>, BadRequest> GetAccount()
+	{
+		return TypedResults.Ok(bes.GetEntities().Select(it => it.Account).ToList().Distinct());
+	}
+
+	public Results<Ok<string>, BadRequest> GetNextId()
+	{
+		return TypedResults.Ok($"XH_CP_{bes.GetEntities().Count():000000}");
+	}
 }
