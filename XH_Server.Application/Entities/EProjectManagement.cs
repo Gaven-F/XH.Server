@@ -8,6 +8,8 @@ public class EProjectManagement : BasicEntity
 	public string ItemNumber { get; set; } = string.Empty;
 	public string ProjectName { get; set; } = string.Empty;
 	public string ProjectStartEndTime { get; set; } = string.Empty;
+    public DateTime ProjectStartTime { get; set; }
+    public DateTime ProjectEndTime { get; set; }
 	public string ResearchPersonnel { get; set; } = string.Empty;
 	public string ProjectBudget { get; set; } = string.Empty;
 	public string ProjectExecution { get; set; } = string.Empty;
