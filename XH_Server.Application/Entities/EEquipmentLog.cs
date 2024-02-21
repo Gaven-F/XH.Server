@@ -10,4 +10,5 @@ public class EEquipmentLog : BasicEntity
 	public string? Type { get; set; }
 	public string? BindS { get; set; }
 	public string? Info { get; set; }
+    public string? Operate { get; set; }
 }

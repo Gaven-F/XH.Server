@@ -53,11 +53,13 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
 	/// </summary>
 	/// <param name="id"></param>
 	/// <param name="info"></param>
-	public void PostGoodsInfo(long id, string info)
+	/// <param name="operate"></param>
+	public void PostGoodsInfo(long id, string info, string operate)
 	{
 		var d = repository.GetDataById(id);
 		d.Info = info;
 		d.UpdateTime = DateTime.Now;
+		d.Operate = operate;
 		repository.UpdateData(d);
 	}
 
