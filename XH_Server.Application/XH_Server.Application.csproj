@@ -16,20 +16,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Mapster" Version="7.4.0" />
+	  <PackageReference Include="Mapster" Version="7.4.1-pre01" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\DingtalkUtils\DingtalkUtils.csproj" />
 		<ProjectReference Include="..\XH_Server.Domain\XH_Server.Domain.csproj" />
 	</ItemGroup>
-
-	<Target Name="Mapster" AfterTargets="AfterBuild">
-		<Message Text="&quot;$(TargetDir)$(ProjectName).dll&quot;" />
-		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
-		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
-		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
-		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
-	</Target>
 
 </Project>

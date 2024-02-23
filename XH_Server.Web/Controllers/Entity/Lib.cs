@@ -1,6 +1,4 @@
 ﻿using Furion.DynamicApiController;
-using Mapster;
-using Microsoft.AspNetCore.Mvc;
 using XH_Server.Application.Entities;
 using XH_Server.Domain.Repository;
 
