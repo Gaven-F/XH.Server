@@ -13,19 +13,20 @@ public class ApprovedPolicyService(DatabaseService database)
 
 	public IEnumerable<EApprovedPolicy> GetPolicies(string? entityName)
 	{
-		return _db.Queryable<EApprovedPolicy>().Includes(it => it .Conditions).WhereIF(entityName != null, it => it.EntityName == entityName).ToArray();
+		return _db.Queryable<EApprovedPolicy>().Includes(it => it.Conditions).WhereIF(entityName != null, it => it.EntityName == entityName).ToArray();
 	}
 
 	public EApprovedPolicy GetPolicy<T>(T data) where T : BasicEntity
 	{
 		var entityName = data.GetType().Name;
 		var policies = _db.Queryable<EApprovedPolicy>()
+			.Includes(it => it.Conditions)
 			.Where(p => p.EntityName == entityName)
 			.ToList();
 
 		var policy = policies
 			.FirstOrDefault(p =>
-				p!.Conditions != null &&
+				p.Conditions != null &&
 				p.Conditions.All(it => it.Check(data)));
 
 		policy ??= policies.FirstOrDefault(
