@@ -5,6 +5,7 @@ namespace XH_Server.Domain.ApprocedPolicy;
 public class ApprovedPolicyService(DatabaseService database)
 {
 	private readonly SqlSugar.ISqlSugarClient _db = database.Instance;
+	private static readonly char[] separator = [' ', ',', '|'];
 
 	public long Create(EApprovedPolicy data)
 	{
@@ -69,7 +70,7 @@ public class ApprovedPolicyService(DatabaseService database)
 
 	public void CreateApproveBasicLog<T>(T data) where T : BasicEntity
 	{
-		var approver = GetPolicy(data).ApproverIds?.Split(",", StringSplitOptions.RemoveEmptyEntries) ?? [];
+		var approver = GetPolicy(data).ApproverIds?.Split(separator, StringSplitOptions.RemoveEmptyEntries) ?? [];
 
 		List<EApprovalLog> logs = [];
 		foreach (var item in approver.Select((val, i) => (val, i)))
