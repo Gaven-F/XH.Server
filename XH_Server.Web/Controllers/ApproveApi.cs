@@ -19,4 +19,10 @@ public class ApproveApi(ApprovedPolicyService approveService) : ControllerBase
 		return p.Adapt<IList<Vo.ApprovedPolicy>>();
 	}
 
+
+	public IEnumerable<Vo.ApproLog> GetLog(string entityId)
+	{
+		var p = approveService.GetLogs(Convert.ToInt64(entityId));
+		return p.Adapt<List<Vo.ApproLog>>();
+	}
 }

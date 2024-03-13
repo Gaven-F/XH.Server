@@ -110,4 +110,5 @@ public class ApprovedPolicyService(DatabaseService database)
 	{
 		return _db.Queryable<EApprovalLog>().Where(it => it.EntityId == eId).OrderBy(it => it.Index).ToList();
 	}
+
 }
