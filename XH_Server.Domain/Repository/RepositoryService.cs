@@ -8,7 +8,7 @@ public class RepositoryService<T>(DatabaseService dbService) : IRepositoryServic
 	public int DeleteData(long eId)
 	{
 		var entity = dbService.Instance.Queryable<T>().InSingle(eId) ?? throw new Exception("数据不存在，请检测ID是否正确！");
-		
+
 		entity.IsDeleted = true;
 		return dbService.Instance.Updateable(entity).ExecuteCommand();
 	}
@@ -23,9 +23,11 @@ public class RepositoryService<T>(DatabaseService dbService) : IRepositoryServic
 		return dbService.Instance.Queryable<T>().Single(e => e.Id == id);
 	}
 
+	public DatabaseService GetDb() => dbService;
+
 	public long SaveData(T e)
 	{
-		
+
 		return dbService.Instance.Insertable(e).ExecuteReturnSnowflakeId();
 	}
 

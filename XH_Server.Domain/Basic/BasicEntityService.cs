@@ -1,4 +1,5 @@
-﻿using XH_Server.Domain.Repository;
+﻿using XH_Server.Core.Database;
+using XH_Server.Domain.Repository;
 
 namespace XH_Server.Domain.Basic;
 
@@ -28,4 +29,6 @@ public class BasicEntityService<T>(IRepositoryService<T> repositoryService) : IB
 	{
 		return repositoryService.UpdateData(e);
 	}
+
+	public DatabaseService GetDb() => repositoryService.GetDb();
 }

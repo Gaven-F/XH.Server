@@ -1,4 +1,6 @@
-﻿namespace XH_Server.Domain.Basic;
+﻿using XH_Server.Core.Database;
+
+namespace XH_Server.Domain.Basic;
 
 public interface IBasicEntityService<T> where T : BasicEntity
 {
@@ -7,4 +9,5 @@ public interface IBasicEntityService<T> where T : BasicEntity
 	int Delete(long eId);
 	T GetEntityById(long id);
 	IEnumerable<T> GetEntities(bool isDelete = false);
+	DatabaseService GetDb();
 }

@@ -89,7 +89,7 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
 		}
 	}
 
-	public Results<Ok<List<Tuple<VoT, EApprovalLog>>>, BadRequest<string>> GetData()
+	public virtual Results<Ok<List<Tuple<VoT, EApprovalLog>>>, BadRequest<string>> GetData()
 	{
 		try
 		{

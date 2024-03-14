@@ -17,4 +17,3 @@ public class EBussinessTrip : BasicEntity
 	public string BusinessTrip { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
 }
-
