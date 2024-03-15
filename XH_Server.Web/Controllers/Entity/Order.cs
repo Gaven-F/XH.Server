@@ -38,7 +38,11 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
 	{
 		try
 		{
-			var data = BasicEntityService.GetDb().Instance.Queryable<EOrder>().Includes(it => it.Items).ToList();
+			var data = BasicEntityService.GetDb().Instance
+								.Queryable<EOrder>()
+								.Where(it => !it.IsDeleted)
+								.Includes(it => it.Items)
+								.ToList();
 			List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
 			foreach (var entity in data)
 			{
@@ -56,7 +60,11 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
 	[HttpGet("{engineerId}")]
 	public ActionResult<IEnumerable<EOrder>> GetDataByEngineer(string engineerId)
 	{
-		var data = BasicEntityService.GetDb().Instance.Queryable<EOrder>().Includes(it => it.Items).ToList();
+		var data = BasicEntityService.GetDb().Instance
+							   .Queryable<EOrder>()
+							   .Where(it => !it.IsDeleted)
+							   .Includes(it => it.Items)
+							   .ToList();
 		var res = data.Where(d => d.Items != null && d.Items.Where(i => i.Engineer == engineerId).Any());
 		return res.ToList();
 	}

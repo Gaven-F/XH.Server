@@ -4,38 +4,26 @@ namespace XH_Server.Application.Entities;
 
 public class EOrder : BasicEntity
 {
-	// 申请人
-	public string OrpId { get; set; } = string.Empty;
-	// 编号
-	public string Umbering { get; set; } = string.Empty;
-	// 随工单号
-	public string OrkNumber { get; set; } = string.Empty;
-	// 客户名称
-	public string UstomerName { get; set; } = string.Empty;
-	// 委托工程师
-	public string OmmissioneEngineers { get; set; } = string.Empty;
-	// 联系电话
-	public string OntactNumber { get; set; } = string.Empty;
-	// 产品数量
-	public string RoductsNumber { get; set; } = string.Empty;
-	// 产品名称
-	public string RoductsName { get; set; } = string.Empty;
-	// 产品型号
-	public string RoductsModel { get; set; } = string.Empty;
-	// 产品批次
-	public string RoductsLots { get; set; } = string.Empty;
-	// 封装形式
-	public string OrmFactor { get; set; } = string.Empty;
-	// 现场
-	public string Cene { get; set; } = string.Empty;
-	// 紧急程度
-	public string Rgency { get; set; } = string.Empty;
-	// 完成时间
-	public DateTime OmpletionTime { get; set; }
-	// 温度
-	public string Emperature { get; set; } = string.Empty;
-	// 湿度
-	public string Humidity { get; set; } = string.Empty;
+	public string? CorpId { get; set; }
+	public string? Numbering { get; set; }
+	public string? WorkNumber { get; set; }
+	public string? CustomerName { get; set; }
+	public string? CommissioneEngineers { get; set; }
+	public string? ContactNumber { get; set; }
+	public string? ProductsNumber { get; set; }
+	public string? ProductsName { get; set; }
+	public string? ProductsModel { get; set; }
+	public string? ProductsLots { get; set; }
+	public string? FormFactor { get; set; }
+	public string? Scene { get; set; }
+	public string? Urgency { get; set; }
+	public string? CompletionTime { get; set; }
+	public string? Temperature { get; set; }
+	public string? Humidity { get; set; }
+	public string? Laboratory { get; set; }
+	public string? Fabricated { get; set; }
+	public string? Review { get; set; }
+
 
 
 	[Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
