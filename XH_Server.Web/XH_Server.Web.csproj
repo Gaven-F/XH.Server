@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Furion" Version="4.9.1.12" />
+    <PackageReference Include="NPOI" Version="2.6.2" />
   </ItemGroup>
 
   <ItemGroup>
