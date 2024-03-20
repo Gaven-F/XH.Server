@@ -1,5 +1,7 @@
 ﻿using SqlSugar;
+using System.Text.Json.Serialization;
 using XH_Server.Domain.Basic;
+using XH_Server.Domain.Converters;
 namespace XH_Server.Application.Entities;
 
 public class EOrder : BasicEntity
@@ -32,6 +34,7 @@ public class EOrder : BasicEntity
 
 public class EOrderItem : BasicEntity
 {
+	[JsonConverter(typeof(JsonLongToStringConverter))]
 	public long OrderId { get; set; }
 	public string Project { get; set; } = string.Empty;
 	public string Condition { get; set; } = string.Empty;

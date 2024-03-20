@@ -1,10 +1,12 @@
-﻿using Furion.DynamicApiController;
+﻿using DingTalk.Api.Request;
+using Furion.DynamicApiController;
 using Mapster;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using XH_Server.Application;
 using XH_Server.Application.Entities;
 using XH_Server.Application.Entities.Dto;
+using XH_Server.Core.Database;
 using XH_Server.Domain.ApprocedPolicy;
 
 namespace XH_Server.Web.Controllers.Entity;
@@ -97,4 +99,21 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
         return new OkObjectResult(res);
     }
 
+    [HttpGet]
+    public IResult DownloadFile([FromServices] DatabaseService dbService, string orderId)
+    {
+        var stream = Utils.OrderUtils.Demo();
+        return TypedResults.Stream(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "demo.docx");
+
+        //var id = Convert.ToInt64(orderId);
+        //var db = dbService.Instance;
+        //var data = db.Queryable<EOrder>()
+        //  .Includes(it => it.Items)
+        //  .Where(it => !it.IsDeleted)
+        //  .InSingle(id);
+
+        //if (data == null) { return Results.BadRequest(); };
+
+
+    }
 }

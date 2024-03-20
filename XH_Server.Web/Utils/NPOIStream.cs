@@ -1,8 +1,10 @@
-﻿namespace XH_Server.Web.Utils;
+﻿using System.IO;
 
-public class NPOIStream : MemoryStream
+namespace XH_Server.Web.Utils;
+
+public class NPOIStream(bool allowClose = true) : MemoryStream
 {
-	public bool AllowClose { get; set; } = true;
+	public bool AllowClose { get; set; } = allowClose;
 
 	public override void Close()
 	{

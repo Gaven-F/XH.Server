@@ -67,7 +67,6 @@ artifacts/
 ScaffoldingReadMe.txt
 
 # StyleCop
-StyleCopReport.xml
 
 # Files built by Visual Studio
 *_i.c
@@ -90,6 +89,7 @@ StyleCopReport.xml
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
+StyleCopReport.xml
 *.log
 *.tlog
 *.vspscc
@@ -401,3 +401,4 @@ FodyWeavers.xsd
 
 *.db
 *.sqlite
+# _template
