@@ -17,7 +17,7 @@ public class ApproveApi(ApprovedPolicyService approveService, DatabaseService db
 	public IEnumerable<Vo.ApprovedPolicy> GetAllApproval(string? entityName = null)
 	{
 		var p = approveService.GetPolicies(entityName);
-		return p.Adapt<IList<Vo.ApprovedPolicy>>();
+		return p.Adapt<IList<Vo.ApprovedPolicy>>().Where(it => !it.IsDeleted);
 	}
 
 
