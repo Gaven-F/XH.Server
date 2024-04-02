@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace XH_Server.Web.Utils;
+﻿namespace XH_Server.Web.Utils;
 
 public class NPOIStream(bool allowClose = true) : MemoryStream
 {
