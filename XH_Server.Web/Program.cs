@@ -7,7 +7,6 @@ using XH_Server.Domain.Converters;
 using XH_Server.Domain.Repository;
 using XH_Server.Web.Middlewares;
 
-
 var builder = WebApplication.CreateBuilder(args).Inject();
 
 builder.Services
@@ -19,7 +18,6 @@ builder.Services.AddJsonOptions(options =>
 	options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 	options.JsonSerializerOptions.Converters.Add(new JsonLongToStringConverter());
 });
-
 
 builder.Services.AddCorsAccessor();
 

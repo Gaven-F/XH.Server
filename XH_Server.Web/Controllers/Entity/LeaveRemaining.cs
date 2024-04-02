@@ -1,5 +1,7 @@
 ﻿using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using XH_Server.Application;
 using XH_Server.Application.Entities;
 using XH_Server.Domain.Repository;
 
@@ -7,7 +9,7 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <summary>
 /// 假期剩余
 /// </summary>
-public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository) : IDynamicApiController
+public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository) : BasicApplicationApi<ELeaveRemaining, ELeaveRemaining>, IDynamicApiController
 {
 
     public ELeaveRemaining GetLeaveDate(string userId, string leaveType)
@@ -47,12 +49,15 @@ public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository) : ID
         repository.UpdateData(e);
     }
 
-    [HttpDelete("{id}")]
-    public int Delete(string id)
+    [NonAction]
+    public override Results<Ok<bool>, BadRequest<string>> Approve(long logId, byte status, string msg = "无")
     {
-        var i = Convert.ToInt64(id);
-        var data = repository.GetDataById(i);
-        data.IsDeleted = true;
-        return repository.UpdateData(data);
+        return base.Approve(logId, status, msg);
+    }
+
+    [NonAction]
+    public override Results<Ok<string>, BadRequest<string>> Add(ELeaveRemaining entity)
+    {
+        return base.Add(entity);
     }
 }
