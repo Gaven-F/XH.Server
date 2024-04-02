@@ -114,6 +114,4 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
 		var stream = Utils.OrderUtils.ReplaceByEntity(data);
 		return TypedResults.Stream(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "demo.docx");
 	}
-
-
 }
