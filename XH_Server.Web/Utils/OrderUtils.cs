@@ -13,6 +13,10 @@ public static partial class OrderUtils
     }
 
     private static readonly Regex placeHolder = R_REPLACE_HOLDER();
+    private static readonly Regex basicR = R_BASIC_REPLACE_HOLDER();
+    private static readonly Regex arrR = R_ARR_REPLACE_HOLDER();
+
+
     private static readonly string templateFilePath = "_template";
     private static readonly string absTemplateFilePath = Path.Combine(Environment.CurrentDirectory.ToString(), templateFilePath);
 
@@ -30,16 +34,14 @@ public static partial class OrderUtils
         if (!Directory.Exists(absTemplateFilePath)) throw new("模板文件不存在！");
     }
 
-    private static IEnumerable<N_Run> GetDocRuns(N_Doc doc) => from P in doc.Paragraphs
-                                                               from r in P.Runs
-                                                               select r;
+    private static IEnumerable<N_Par> GetDocPars(N_Doc doc) => from P in doc.Paragraphs
+                                                               select P;
 
-    private static IEnumerable<N_Run> GetDocTableRuns(N_Doc doc) => from T in doc.Tables
+    private static IEnumerable<N_Par> GetDocTablePars(N_Doc doc) => from T in doc.Tables
                                                                     from R in T.Rows
                                                                     from C in R.GetTableCells()
                                                                     from P in C.Paragraphs
-                                                                    from r in P.Runs
-                                                                    select r;
+                                                                    select P;
 
     public static Stream Demo()
     {
@@ -47,19 +49,32 @@ public static partial class OrderUtils
         using var fs = new FileStream(GetInfoByName("随工单.docx").FullPath, FileMode.Open);
         using var docx = new N_Doc(fs);
 
-        var runs = new List<N_Run>();
+        var runs = new List<N_Par>();
 
-        runs.AddRange(GetDocRuns(docx));
-        runs.AddRange(GetDocTableRuns(docx));
+        runs.AddRange(GetDocPars(docx));
+        runs.AddRange(GetDocTablePars(docx));
         runs.ForEach(r =>
         {
             var text = r.Text;
             if (placeHolder.Matches(text) is IEnumerable<Match> ms && ms.Any())
             {
-                foreach (Match m in ms)
+                foreach (var m in ms)
                 {
-                    // TODO 根据不同占位符获取不同的值
-                    r.ReplaceText(m.Groups[0].Value, "REPLACE");
+                    if (arrR.Matches(m.Groups[1].Value) is IEnumerable<Match> _arrM
+                        && _arrM.Any()
+                        && _arrM.ToList() is { } arrM)
+                    {
+                        var propName = arrM[0].Groups[1].Value;
+                        var index = Convert.ToInt32(arrM[0].Groups[2].Value);
+                        r.ReplaceText(m.Groups[0].Value, @$"ARRAY_{propName}_{index}");
+                    }
+                    if (basicR.Matches(m.Groups[1].Value) is IEnumerable<Match> _basicM
+                        && _basicM.Any()
+                        && _basicM.ToList() is { } basicM)
+                    {
+                        var propName = basicM[0].Groups[0].Value;
+                        r.ReplaceText(m.Groups[0].Value, @$"BASIC_{propName}");
+                    }
                 }
             }
         });
@@ -72,8 +87,12 @@ public static partial class OrderUtils
         return stream;
     }
 
-    [GeneratedRegex(@"\{\{(.*?)\}\}")]
+    [GeneratedRegex(@"\{\{(.+?)\}\}")]
     private static partial Regex R_REPLACE_HOLDER();
+    [GeneratedRegex(@"\w+")]
+    private static partial Regex R_BASIC_REPLACE_HOLDER();
+    [GeneratedRegex(@"(\w+?)\[([0-9])+?\]")]
+    private static partial Regex R_ARR_REPLACE_HOLDER();
 }
 
 
