@@ -86,10 +86,61 @@ public static partial class OrderUtils
 		return stream;
 	}
 
+    public static Stream ReplaceByEntity(EOrder e)
+    {
+        var stream = new NPOIStream(false);
+        using var fs = new FileStream(GetInfoByName("随工单.docx").FullPath, FileMode.Open);
+        using var docx = new N_Doc(fs);
+
+        var runs = new List<N_Par>();
+
+        runs.AddRange(GetDocPars(docx));
+        runs.AddRange(GetDocTablePars(docx));
+
+        var t1 = typeof(EOrder);
+        var t2 = typeof(EOrderItem);
+
+        runs.ForEach(r =>
+        {
+            var text = r.Text;
+            if (placeHolder.Matches(text) is IEnumerable<Match> ms && ms.Any())
+            {
+                foreach (Match m in ms)
+                {
+                    string? value = null;
+                    if (arrPlaceHolder.Match(m.Groups[0].Value) is Match am && am.Success)
+                    {
+                        var p = t2.GetProperty(am.Groups[1].Value);
+                        if (p != null)
+                        {
+                            var index = Convert.ToInt32(am.Groups[2].Value);
+                            if (e.Items != null && e.Items.Count > index) value = Convert.ToString(p.GetValue(e.Items[index]));
+                        }
+                    }
+                    else
+                    {
+                        var p = t1.GetProperty(m.Groups[1].Value);
+                        if (p != null)
+                        {
+                            value = Convert.ToString(p.GetValue(e));
+                        }
+                    }
+                    r.ReplaceText(m.Groups[0].Value, value);
+                }
+            }
+        });
+
+        docx.Write(stream);
+        stream.Flush();
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.AllowClose = true;
+
+        return stream;
+    }
+
+
     [GeneratedRegex(@"\{\{(.+?)\}\}")]
     private static partial Regex R_REPLACE_HOLDER();
-    [GeneratedRegex(@"\w+")]
-    private static partial Regex R_BASIC_REPLACE_HOLDER();
     [GeneratedRegex(@"(\w+?)\[([0-9])+?\]")]
     private static partial Regex R_ARR_REPLACE_HOLDER();
 }
