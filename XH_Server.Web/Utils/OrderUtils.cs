@@ -17,13 +17,7 @@ public static partial class OrderUtils
 	private static readonly Regex arrPlaceHolder = R_ARR_REPLACE_HOLDER();
 	private static readonly string templateFilePath = "_template";
 	private static readonly string absTemplateFilePath = Path.Combine(Environment.CurrentDirectory.ToString(), templateFilePath);
-    private static readonly Regex placeHolder = R_REPLACE_HOLDER();
-    private static readonly Regex basicR = R_BASIC_REPLACE_HOLDER();
-    private static readonly Regex arrR = R_ARR_REPLACE_HOLDER();
 
-
-    private static readonly string templateFilePath = "_template";
-    private static readonly string absTemplateFilePath = Path.Combine(Environment.CurrentDirectory.ToString(), templateFilePath);
 
 	private static readonly List<TemplateFileInfo> templateFiles = [
 		new ("随工单.docx", templateFilePath)
@@ -65,7 +59,7 @@ public static partial class OrderUtils
             {
                 foreach (var m in ms)
                 {
-                    if (arrR.Matches(m.Groups[1].Value) is IEnumerable<Match> _arrM
+                    if (arrPlaceHolder.Matches(m.Groups[1].Value) is IEnumerable<Match> _arrM
                         && _arrM.Any()
                         && _arrM.ToList() is { } arrM)
                     {
@@ -73,7 +67,7 @@ public static partial class OrderUtils
                         var index = Convert.ToInt32(arrM[0].Groups[2].Value);
                         r.ReplaceText(m.Groups[0].Value, @$"ARRAY_{propName}_{index}");
                     }
-                    if (basicR.Matches(m.Groups[1].Value) is IEnumerable<Match> _basicM
+                    if (placeHolder.Matches(m.Groups[1].Value) is IEnumerable<Match> _basicM
                         && _basicM.Any()
                         && _basicM.ToList() is { } basicM)
                     {
