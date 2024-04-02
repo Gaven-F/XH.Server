@@ -14,5 +14,6 @@ public class EInvoicing : BasicEntity
 	public string InvoicCompany { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
 	public string LargeAmount { get; set; } = string.Empty;
+	public string ContractNumber { get; set; } = string.Empty;
 }
 

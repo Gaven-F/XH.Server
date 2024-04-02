@@ -11,7 +11,7 @@ public class EContractManagement : BasicEntity
 	public string OppositeCompany { get; set; } = string.Empty;
 	public string Content { get; set; } = string.Empty;
 	public string Picture { get; set; } = string.Empty;
-	public string ApprovalForm { get; set; } = string.Empty;
+	public string AssociateOtherId { get; set; } = string.Empty;
 	public string ApprovalAnnex { get; set; } = string.Empty;
 }
 

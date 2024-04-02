@@ -14,7 +14,7 @@ public class EProcurementConfirmation : BasicEntity
 	public string Unit { get; set; } = string.Empty;
 	public string UnitPrice { get; set; } = string.Empty;
 	public string PaymentMethod { get; set; } = string.Empty;
-	public string ResultReport { get; set; } = string.Empty;
+	public string AssociateOtherId { get; set; } = string.Empty;
 	public string Annex { get; set; } = string.Empty;
 }
 

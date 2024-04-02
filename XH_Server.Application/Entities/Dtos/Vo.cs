@@ -57,11 +57,6 @@ public class Vo
 		new public string Id { get; set; } = string.Empty;
 	}
 
-	public class OrderManagement : EOrderManagement
-	{
-		new public string Id { get; set; } = string.Empty;
-	}
-
 	public class Payment : EPayment
 	{
 		new public string Id { get; set; } = string.Empty;

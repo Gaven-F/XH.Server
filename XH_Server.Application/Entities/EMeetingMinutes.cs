@@ -11,5 +11,6 @@ public class EMeetingMinutes : BasicEntity
 	public string MeetingAttachments { get; set; } = string.Empty;
 	public string MeetingMinutes { get; set; } = string.Empty;
 	public string Notes { get; set; } = string.Empty;
+	public string AssociateOtherId { get; set; } = string.Empty;
 }
 

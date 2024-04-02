@@ -114,7 +114,7 @@ public class DingtalkUtils(ConfigService configService)
     {
 
         var client = GetV2Client(_GET_USER_INFO_URL);
-        var req = new DingTalk.Api.Request.OapiSmartworkHrmEmployeeV2ListRequest
+        var req = new OapiSmartworkHrmEmployeeV2ListRequest
         {
             Agentid = Convert.ToInt64(Agentid),
             UseridList = userId.Aggregate((l, c) => $"{l},{c}")
@@ -200,10 +200,11 @@ public class DingtalkUtils(ConfigService configService)
         if (baseInfo.GetProperty("errcode").GetInt32() == 0)
         {
             var infoClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list");
-            var infoReq = new OapiSmartworkHrmEmployeeV2ListRequest();
-
-            infoReq.Agentid = _AGENTID;
-            infoReq.UseridList = baseInfo.GetProperty("result").GetProperty("userid").GetString();
+            var infoReq = new OapiSmartworkHrmEmployeeV2ListRequest
+            {
+                Agentid = _AGENTID,
+                UseridList = baseInfo.GetProperty("result").GetProperty("userid").GetString()
+            };
 
             var infoRes = infoClient.Execute(infoReq, GetToken());
 
