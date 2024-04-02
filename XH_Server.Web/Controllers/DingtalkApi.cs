@@ -19,4 +19,9 @@ public class DingtalkApi(DingtalkUtils.DingtalkUtils dingtalkUtils) : Controller
 	{
 		dingtalkUtils.SendMsg(userId, msg);
 	}
+
+	public string GetUserInfo(string userCode)
+	{
+		return dingtalkUtils.GetUserInfo(userCode);
+	}
 }
