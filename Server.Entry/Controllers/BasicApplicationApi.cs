@@ -11,7 +11,7 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
 {
 
     [FromServices]
-    public DingtalkUtils.DingtalkUtils DingtalkUtils { get; set; }
+    public Utils.BaseFunc DingtalkUtils { get; set; }
     [FromServices]
     public IBasicEntityService<T> BasicEntityService { get; set; }
     [FromServices]

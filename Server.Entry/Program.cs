@@ -1,10 +1,10 @@
-using System.Text.Json.Serialization;
 using Server.Core.Config;
 using Server.Core.Database;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 using Server.Domain.Converters;
 using Server.Domain.Repository;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
 
@@ -27,7 +27,7 @@ builder.Services
     .AddScoped(typeof(OStorageService))
     .AddScoped(typeof(DatabaseService))
     .AddScoped(typeof(ApprovedPolicyService))
-    .AddSingleton(typeof(DingtalkUtils.DingtalkUtils))
+    .AddSingleton(typeof(Utils.BaseFunc))
     // 伪·领域服务
     .AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>))
     .AddScoped(typeof(IBasicEntityService<>), typeof(BasicEntityService<>));

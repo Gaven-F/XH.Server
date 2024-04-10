@@ -1,8 +1,10 @@
 ﻿using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.XWPF.UserModel;
 using Server.Application.Entities;
 using Server.Web.Utils;
+using Utils.Entity;
 
 namespace Server.Web.Controllers;
 
@@ -27,5 +29,11 @@ public class DemoController : IDynamicApiController
         sw.Seek(0, SeekOrigin.Begin);
         sw.AllowClose = true;
         return new FileStreamResult(sw, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    }
+
+    public ActionResult GetAllUserInfo([FromServices] global::Utils.BaseFunc dingtalk, [FromQuery]List<string>? fileds)
+    {
+        var data = dingtalk.GetAllUsetInfo(fileds ?? []);
+        return new OkObjectResult(data);
     }
 }

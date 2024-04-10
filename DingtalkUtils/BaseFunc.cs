@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Text.Json;
 using Tea;
 using Server.Core.Config;
+using Server.Core;
+using Utils.Entity;
 
-namespace DingtalkUtils;
+namespace Utils;
 
-public class DingtalkUtils(ConfigService configService)
+public class BaseFunc(ConfigService configService)
 {
     public string AppKey { get; set; } = configService.DingtalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
     public string AppSecret { get; set; } = configService.DingtalkConfig.AppSecret ?? "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
@@ -120,9 +122,9 @@ public class DingtalkUtils(ConfigService configService)
             UseridList = userId.Aggregate((l, c) => $"{l},{c}")
         };
 
-        if (fileds != null)
+        if (fileds != null && fileds.Any())
         {
-            req.FieldFilterList = fileds.Aggregate((l, c) => $"{l},{c}");
+            req.FieldFilterList = fileds!.Aggregate((l, c) => $"{l},{c}");
         }
 
         var res = client.Execute(req, GetToken());
@@ -215,5 +217,14 @@ public class DingtalkUtils(ConfigService configService)
             return _ERROR;
         }
 
+    }
+
+    public IEnumerable<UserInfo> GetAllUsetInfo(IEnumerable<string> fileds)
+    {
+        var userIds = GetUserIds();
+        userIds.ThrowExpIfNull();
+
+        return from info in GetUserInfo(userIds!, fileds)
+               select UserInfo.FromJson(info);
     }
 }
