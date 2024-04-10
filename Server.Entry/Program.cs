@@ -1,11 +1,20 @@
 using IGeekFan.AspNetCore.Knife4jUI;
-using Microsoft.AspNetCore.Builder;
-using Server.Entry;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    //.AddJsonOptions(option =>
+    //{
+    //    option.JsonSerializerOptions.PropertyNamingPolicy = null;
+    //    option.JsonSerializerOptions.DictionaryKeyPolicy = null;
+    //})
+    .AddNewtonsoftJson(option =>
+    {
+        option.SerializerSettings.Converters.Add(new StringEnumConverter());
+        option.SerializerSettings.Converters.Add(new JavaScriptDateTimeConverter());
+    });
 
 builder.Services
     .AddEndpointsApiExplorer()
