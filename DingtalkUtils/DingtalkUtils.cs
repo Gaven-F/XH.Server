@@ -3,7 +3,7 @@ using DingTalk.Api.Request;
 using System.Diagnostics;
 using System.Text.Json;
 using Tea;
-using XH_Server.Core.Config;
+using Server.Core.Config;
 
 namespace DingtalkUtils;
 
