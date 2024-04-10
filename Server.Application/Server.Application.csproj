@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DingtalkUtils\DingtalkUtils.csproj" />
+		<ProjectReference Include="..\Server.Core\Server.Core.csproj" />
 		<ProjectReference Include="..\Server.Domain\Server.Domain.csproj" />
 	</ItemGroup>
 
