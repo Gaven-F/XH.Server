@@ -5,8 +5,8 @@ namespace Server.Entry.Controllers;
 [Route("[controller]/[action]")]
 public class DemoController
 {
-    public string Index()
+    public IActionResult Index()
     {
-        return "Hello";
+        return new OkObjectResult(new { Id = "100", Name = "GavenF" });
     }
 }
