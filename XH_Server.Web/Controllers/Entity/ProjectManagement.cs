@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class ProjectManagement(
-	IBasicEntityService<EProjectManagement> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EProjectManagement, Vo.ProjectManagement>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EProjectManagement> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EProjectManagement, Vo.ProjectManagement>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

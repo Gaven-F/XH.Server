@@ -11,9 +11,9 @@ namespace XH_Server.Web.Controllers.Entity;
 /// </summary>
 public class Bind : BasicApplicationApi<EBind, EBind>, IDynamicApiController
 {
-	[NonAction]
-	public override Results<Ok<bool>, BadRequest<string>> Approve(long logId, byte status, string msg = "无")
-	{
-		return base.Approve(logId, status, msg);
-	}
+    [NonAction]
+    public override Results<Ok<bool>, BadRequest<string>> Approve(long logId, byte status, string msg = "无")
+    {
+        return base.Approve(logId, status, msg);
+    }
 }

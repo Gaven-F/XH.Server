@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class Reimbursement(
-	IBasicEntityService<EReimbursement> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EReimbursement, Vo.Reimbursement>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EReimbursement> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EReimbursement, Vo.Reimbursement>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

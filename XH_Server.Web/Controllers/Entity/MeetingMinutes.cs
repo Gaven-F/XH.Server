@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class MeetingMinutes(
-	IBasicEntityService<EMeetingMinutes> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EMeetingMinutes, Vo.MeetingMinutes>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EMeetingMinutes> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EMeetingMinutes, Vo.MeetingMinutes>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

@@ -13,11 +13,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class ConsumableManagement(
-	IBasicEntityService<EConsumableManagement> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EConsumableManagement, Vo.ConsumableManagement>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EConsumableManagement> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EConsumableManagement, Vo.ConsumableManagement>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

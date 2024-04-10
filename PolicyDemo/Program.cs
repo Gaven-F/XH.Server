@@ -9,8 +9,8 @@ List<Task> tasks = [];
 watch.Start();
 Parallel.For(0, taskCount, (i) =>
 {
-	;
-	//Console.WriteLine($"{i:000000} {Environment.CurrentManagedThreadId:000}");
+    ;
+    //Console.WriteLine($"{i:000000} {Environment.CurrentManagedThreadId:000}");
 });
 watch.Stop();
 time[0] = watch.ElapsedMilliseconds / 1000.0;
@@ -18,10 +18,10 @@ time[0] = watch.ElapsedMilliseconds / 1000.0;
 
 for (int i = 0; i < taskCount; i++)
 {
-	tasks.Add(Task.Run(() =>/* Console.WriteLine($"{i:000000} {Environment.CurrentManagedThreadId:000}")*/
-	{
-		;
-	}));
+    tasks.Add(Task.Run(() =>/* Console.WriteLine($"{i:000000} {Environment.CurrentManagedThreadId:000}")*/
+    {
+        ;
+    }));
 }
 watch.Reset();
 watch.Start();
@@ -34,7 +34,7 @@ watch.Reset();
 watch.Start();
 for (int i = 0; i < taskCount; i++)
 {
-	;   //Console.WriteLine($"{i:000000} {Environment.CurrentManagedThreadId:000}");
+    ;   //Console.WriteLine($"{i:000000} {Environment.CurrentManagedThreadId:000}");
 }
 watch.Stop();
 time[2] = watch.ElapsedMilliseconds / 1000.0;

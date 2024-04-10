@@ -14,10 +14,10 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class Leave(
-	IBasicEntityService<ELeave> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<ELeave, Vo.Leave>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<ELeave> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<ELeave, Vo.Leave>(
+        bes, aps)
+    , IDynamicApiController
 {
 }

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using XH_Server.Application;
+﻿using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Mvc;
 using XH_Server.Application.Entities;
 using XH_Server.Core.Database;
 using XH_Server.Domain.Basic;
@@ -8,7 +8,7 @@ namespace XH_Server.Web.Controllers;
 
 
 [ApiDescriptionSettings(Order = 99)]
-public class Database(DatabaseService databaseService) : ControllerBase
+public class Database(DatabaseService databaseService) : IDynamicApiController
 {
     public void DatabaseInit(bool clearData = true)
     {

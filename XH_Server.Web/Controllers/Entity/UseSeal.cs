@@ -15,11 +15,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class UseSeal(
-	IBasicEntityService<EUseSeal> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EUseSeal, Vo.UseSeal>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EUseSeal> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EUseSeal, Vo.UseSeal>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

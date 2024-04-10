@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class ProcurementConfirmation(
-	IBasicEntityService<EProcurementConfirmation> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EProcurementConfirmation, Vo.ProcurementConfirmation>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EProcurementConfirmation> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EProcurementConfirmation, Vo.ProcurementConfirmation>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

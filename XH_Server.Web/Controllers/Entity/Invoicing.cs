@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class Invoicing(
-	IBasicEntityService<EInvoicing> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EInvoicing,Vo.Invoicing>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EInvoicing> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EInvoicing, Vo.Invoicing>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

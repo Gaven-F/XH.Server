@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class PurchaseRequest(
-	IBasicEntityService<EPurchaseRequest> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EPurchaseRequest, Vo.PurchaseRequest>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EPurchaseRequest> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EPurchaseRequest, Vo.PurchaseRequest>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class DeviceManagement(
-	IBasicEntityService<EDeviceManagement> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EDeviceManagement, Vo.DeviceManagement>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EDeviceManagement> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EDeviceManagement, Vo.DeviceManagement>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

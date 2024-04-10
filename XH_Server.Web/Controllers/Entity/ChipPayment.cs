@@ -16,32 +16,32 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class ChipPayment(
-	IBasicEntityService<EChipPayment> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EChipPayment, Vo.ChipPayment>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EChipPayment> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EChipPayment, Vo.ChipPayment>(
+        bes, aps)
+    , IDynamicApiController
 {
 
-	public IBasicEntityService<EChipPayment> Bes { get; set; } = bes;
+    public IBasicEntityService<EChipPayment> Bes { get; set; } = bes;
 
     public Results<Ok<IEnumerable<string>>, BadRequest> GetReceivingUnits()
-	{
-		return TypedResults.Ok(Bes.GetEntities().Select(it => it.ReceivingUnit).ToList().Distinct());
-	}
+    {
+        return TypedResults.Ok(Bes.GetEntities().Select(it => it.ReceivingUnit).ToList().Distinct());
+    }
 
-	public Results<Ok<IEnumerable<string>>, BadRequest> GetBanks()
-	{
-		return TypedResults.Ok(Bes.GetEntities().Select(it => it.Bank).ToList().Distinct());
-	}
+    public Results<Ok<IEnumerable<string>>, BadRequest> GetBanks()
+    {
+        return TypedResults.Ok(Bes.GetEntities().Select(it => it.Bank).ToList().Distinct());
+    }
 
-	public Results<Ok<IEnumerable<string>>, BadRequest> GetAccount()
-	{
-		return TypedResults.Ok(Bes.GetEntities().Select(it => it.Account).ToList().Distinct());
-	}
+    public Results<Ok<IEnumerable<string>>, BadRequest> GetAccount()
+    {
+        return TypedResults.Ok(Bes.GetEntities().Select(it => it.Account).ToList().Distinct());
+    }
 
-	public Results<Ok<string>, BadRequest> GetNextId()
-	{
-		return TypedResults.Ok($"XH_CP_{Bes.GetEntities().Count():000000}");
-	}
+    public Results<Ok<string>, BadRequest> GetNextId()
+    {
+        return TypedResults.Ok($"XH_CP_{Bes.GetEntities().Count():000000}");
+    }
 }

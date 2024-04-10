@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class IssueReceipts(
-	IBasicEntityService<EIssueReceipts> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EIssueReceipts, Vo.IssueReceipts>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EIssueReceipts> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EIssueReceipts, Vo.IssueReceipts>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }

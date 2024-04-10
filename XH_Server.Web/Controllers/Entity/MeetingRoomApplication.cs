@@ -14,11 +14,11 @@ namespace XH_Server.Web.Controllers.Entity;
 /// <param name="bes"></param>
 /// <param name="aps"></param>
 public class MeetingRoomApplication(
-	IBasicEntityService<EMeetingRoomApplication> bes,
-	ApprovedPolicyService aps)
-	: BasicApplicationApi<EMeetingRoomApplication, Vo.MeetingRoomApplication>(
-		bes, aps)
-	, IDynamicApiController
+    IBasicEntityService<EMeetingRoomApplication> bes,
+    ApprovedPolicyService aps)
+    : BasicApplicationApi<EMeetingRoomApplication, Vo.MeetingRoomApplication>(
+        bes, aps)
+    , IDynamicApiController
 {
 
 }
