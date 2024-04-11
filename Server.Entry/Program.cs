@@ -1,32 +1,33 @@
 using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.NewtonsoftJson;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddControllers()
-    //.AddJsonOptions(option =>
-    //{
-    //    option.JsonSerializerOptions.PropertyNamingPolicy = null;
-    //    option.JsonSerializerOptions.DictionaryKeyPolicy = null;
-    //})
     .AddOData(option =>
     {
         option.Select().Count().Filter().OrderBy().SetMaxTop(10);
     })
     .AddODataNewtonsoftJson()
-    .AddNewtonsoftJson(option =>
+    .AddNewtonsoftJson(options =>
     {
-        option.SerializerSettings.Converters.Add(new StringEnumConverter());
-        option.SerializerSettings.Converters.Add(new JavaScriptDateTimeConverter());
-        option.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
-        option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-    })
-    ;
+        // OData use camel case
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new CamelCaseNamingStrategy { ProcessDictionaryKeys = true },
+        };
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
+        options.SerializerSettings.Converters = [
+            new StringEnumConverter(),
+            new JavaScriptDateTimeConverter(),
+        ];
+    });
 
 
 builder.Services
