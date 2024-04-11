@@ -67,7 +67,7 @@ internal static class Converter
     {
         MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
         DateParseHandling = DateParseHandling.None,
-        
+
         Converters =
         {
             GroupIdConverter.Singleton,

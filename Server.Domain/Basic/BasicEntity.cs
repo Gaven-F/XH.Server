@@ -1,6 +1,6 @@
-﻿using SqlSugar;
+﻿using Server.Domain.Converters;
+using SqlSugar;
 using System.Text.Json.Serialization;
-using Server.Domain.Converters;
 
 namespace Server.Domain.Basic;
 

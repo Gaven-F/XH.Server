@@ -1,6 +1,6 @@
-﻿using SqlSugar;
+﻿using Server.Core.Config;
+using SqlSugar;
 using System.Reflection;
-using Server.Core.Config;
 
 namespace Server.Core.Database;
 public class DatabaseService

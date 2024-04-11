@@ -1,5 +1,4 @@
 ﻿using Server.Core.Database;
-using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 
 namespace Server.Domain.T_C;

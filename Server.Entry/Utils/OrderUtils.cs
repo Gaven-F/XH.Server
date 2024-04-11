@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using Server.Application.Entities;
+﻿using Server.Application.Entities;
+using System.Text.RegularExpressions;
 
 namespace Server.Web.Utils;
 

@@ -1,10 +1,10 @@
 ﻿using DingTalk.Api;
 using DingTalk.Api.Request;
+using Server.Core;
+using Server.Core.Config;
 using System.Diagnostics;
 using System.Text.Json;
 using Tea;
-using Server.Core.Config;
-using Server.Core;
 using Utils.Entity;
 
 namespace Utils;
