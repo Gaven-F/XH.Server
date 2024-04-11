@@ -4,6 +4,7 @@ using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 using Server.Domain.Converters;
 using Server.Domain.Repository;
+using Server.Web.Middlewares;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
@@ -36,11 +37,14 @@ builder.Services
 
 var app = builder.Build();
 
-//app.UseMiddleware<GUtilsMiddleware>();
+app.UseMiddleware<GUtilsMiddleware>();
+
+app.UseRouting();
 
 app.UseAuthentication().UseAuthorization();
 
 app.UseInject().UseCorsAccessor();
+
 app.MapControllers();
 
 app.Run();
