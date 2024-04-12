@@ -102,7 +102,6 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
     [HttpGet]
     public IResult DownloadFile([FromServices] DatabaseService dbService, string orderId)
     {
-
         var id = Convert.ToInt64(orderId);
         var db = dbService.Instance;
         var data = db.Queryable<EOrder>()

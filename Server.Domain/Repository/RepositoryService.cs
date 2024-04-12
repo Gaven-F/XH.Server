@@ -27,7 +27,6 @@ public class RepositoryService<T>(DatabaseService dbService) : IRepositoryServic
 
     public long SaveData(T e)
     {
-
         return dbService.Instance.Insertable(e).ExecuteReturnSnowflakeId();
     }
 

@@ -1,4 +1,5 @@
 ﻿namespace Server.Core.Config;
+
 public class DingtalkConfig
 {
     public string? AppKey { get; set; }

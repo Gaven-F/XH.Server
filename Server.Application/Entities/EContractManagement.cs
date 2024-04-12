@@ -14,4 +14,3 @@ public class EContractManagement : BasicEntity
     public string AssociateOtherId { get; set; } = string.Empty;
     public string ApprovalAnnex { get; set; } = string.Empty;
 }
-

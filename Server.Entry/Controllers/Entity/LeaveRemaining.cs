@@ -6,12 +6,12 @@ using Server.Application.Entities;
 using Server.Domain.Repository;
 
 namespace Server.Web.Controllers.Entity;
+
 /// <summary>
 /// 假期剩余
 /// </summary>
 public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository) : BasicApplicationApi<ELeaveRemaining, ELeaveRemaining>, IDynamicApiController
 {
-
     public ELeaveRemaining GetLeaveDate(string userId, string leaveType)
     {
         return repository.GetData(false)

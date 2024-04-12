@@ -24,4 +24,3 @@ public class EPayment : BasicEntity
     public string AssociateOtherId { get; set; } = string.Empty;
     public string ContractNumber { get; set; } = string.Empty;
 }
-

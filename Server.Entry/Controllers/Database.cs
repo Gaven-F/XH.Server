@@ -19,5 +19,7 @@ public class Database(DatabaseService databaseService) : IDynamicApiController
             .. typeof(BasicEntity).Assembly.GetTypes().Where(t => t.BaseType == typeof(BasicEntity)).ToList(),
         ];
         databaseService.InitTable(tables.Distinct(), clearData);
+
+        
     }
 }

@@ -21,7 +21,6 @@ public class ApproveApi(ApprovedPolicyService approveService, DatabaseService db
         return p.Adapt<IList<Vo.ApprovedPolicy>>().Where(it => !it.IsDeleted);
     }
 
-
     public IEnumerable<Vo.ApproLog> GetLog(string entityId)
     {
         var p = approveService.GetLogs(Convert.ToInt64(entityId));

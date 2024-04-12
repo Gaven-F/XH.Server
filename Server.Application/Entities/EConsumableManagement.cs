@@ -11,4 +11,3 @@ public class EConsumableManagement : BasicEntity
     public string Purpose { get; set; } = string.Empty;
     public string EquipmentInvolved { get; set; } = string.Empty;
 }
-

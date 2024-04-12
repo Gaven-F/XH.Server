@@ -1,6 +1,7 @@
 ﻿using Server.Domain.Basic;
 
 namespace Server.Domain.ApprocedPolicy.Condition;
+
 [Obsolete]
 public class ConditionV1
 {
@@ -10,7 +11,9 @@ public class ConditionV1
     private JudgmentType Type { get; set; } = JudgmentType.E;
     private string Value { get; set; } = string.Empty;
 
-    private ConditionV1() { }
+    private ConditionV1()
+    {
+    }
 
     public static ConditionV1 Default() => new()
     {
@@ -60,12 +63,10 @@ public class ConditionV1
         };
     }
 
-
     public override string ToString()
     {
         return $"{JudgmentField}-{Type}-{Value}";
     }
-
 }
 
 [Flags]
@@ -77,8 +78,6 @@ public enum JudgmentType
     E, G, L, GE, LE, NE
 }
 
-
-
 public class ECondition : BasicEntity
 {
     private static readonly char[] _separator = ['-', ' ', ','];
@@ -86,7 +85,6 @@ public class ECondition : BasicEntity
     public string? FiledName { get; set; }
     public string? Value { get; set; }
     public Type T { get; set; }
-
 
     protected static Dictionary<Type, Func<string, string, bool>> _judgmentFunc = new()
     {
@@ -110,7 +108,9 @@ public class ECondition : BasicEntity
         };
         return c;
     }
+
     public static Func<string, string, bool> GetJudgmentFunc(string t) => _judgmentFunc[Enum.Parse<Type>(t)];
+
     public static Func<string, string, bool> GetJudgmentFunc(Type t) => _judgmentFunc[t];
 
     public bool Check(object o)

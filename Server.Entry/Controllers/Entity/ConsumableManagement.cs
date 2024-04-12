@@ -19,5 +19,4 @@ public class ConsumableManagement(
         bes, aps)
     , IDynamicApiController
 {
-
 }

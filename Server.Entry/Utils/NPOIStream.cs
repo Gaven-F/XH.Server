@@ -8,5 +8,4 @@ public class NPOIStream(bool allowClose = true) : MemoryStream
     {
         if (AllowClose) base.Close();
     }
-
 }

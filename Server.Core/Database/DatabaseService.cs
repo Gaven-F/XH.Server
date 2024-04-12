@@ -3,6 +3,7 @@ using SqlSugar;
 using System.Reflection;
 
 namespace Server.Core.Database;
+
 public class DatabaseService
 {
     private const string EntityEndChar = "E";
@@ -51,8 +52,6 @@ public class DatabaseService
                         entity.DbTableName = type.Name[..^EntityEndChar.Length];
                     }
                 }
-
-
             }
         });
     }

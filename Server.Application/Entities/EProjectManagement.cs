@@ -18,4 +18,3 @@ public class EProjectManagement : BasicEntity
     public string ClosingReport { get; set; } = string.Empty;
     public string Annex { get; set; } = string.Empty;
 }
-

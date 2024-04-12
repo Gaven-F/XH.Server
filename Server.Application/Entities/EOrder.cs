@@ -2,6 +2,7 @@
 using Server.Domain.Converters;
 using SqlSugar;
 using System.Text.Json.Serialization;
+
 namespace Server.Application.Entities;
 
 public class EOrder : BasicEntity
@@ -26,8 +27,6 @@ public class EOrder : BasicEntity
     public string? Fabricated { get; set; }
     public string? Review { get; set; }
 
-
-
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
 }
@@ -36,6 +35,7 @@ public class EOrderItem : BasicEntity
 {
     [JsonConverter(typeof(JsonLongToStringConverter))]
     public long OrderId { get; set; }
+
     public string Project { get; set; } = string.Empty;
     public string Condition { get; set; } = string.Empty;
     public string Engineer { get; set; } = string.Empty;

@@ -8,4 +8,5 @@ public class EApprovalLog : BasicEntity
     public byte ApprovalStatus { get; set; } = 0;
     public string ApproveMsg { get; set; } = string.Empty;
     public int Index { get; set; }
+    public bool? Topic { get; set; } = null;
 }

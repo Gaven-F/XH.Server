@@ -5,9 +5,7 @@ using Server.Application.Entities.Dto;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 
-
 namespace Server.Web.Controllers.Entity;
-
 
 /// <summary>
 /// 用印
@@ -21,5 +19,4 @@ public class UseSeal(
         bes, aps)
     , IDynamicApiController
 {
-
 }

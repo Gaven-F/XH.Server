@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Server.Application.Entities.Dto;
+using Server.Core.Database;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 
@@ -16,6 +17,8 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
     public IBasicEntityService<T> BasicEntityService { get; set; }
     [FromServices]
     public ApprovedPolicyService ApprovedPolicyService { get; set; }
+    [FromServices]
+    public DatabaseService Db { get; set; }
 
 #pragma warning disable 8618
     public BasicApplicationApi(IBasicEntityService<T> basicEntityService, ApprovedPolicyService approvedPolicyService)

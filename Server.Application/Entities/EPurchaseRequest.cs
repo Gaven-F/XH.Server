@@ -17,4 +17,3 @@ public class EPurchaseRequest : BasicEntity
     public string LargeAmount { get; set; } = string.Empty;
     public string AmountType { get; set; } = string.Empty;
 }
-

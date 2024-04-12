@@ -5,11 +5,10 @@ using Server.Application.Entities.Dto;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 
-
 namespace Server.Web.Controllers.Entity;
 
 /// <summary>
-/// 报销 
+/// 报销
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
@@ -20,5 +19,4 @@ public class Reimbursement(
         bes, aps)
     , IDynamicApiController
 {
-
 }

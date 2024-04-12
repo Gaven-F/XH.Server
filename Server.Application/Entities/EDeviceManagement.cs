@@ -15,4 +15,3 @@ public class EDeviceManagement : BasicEntity
     public string InternalDuration { get; set; } = string.Empty;
     public string ExternalDuration { get; set; } = string.Empty;
 }
-

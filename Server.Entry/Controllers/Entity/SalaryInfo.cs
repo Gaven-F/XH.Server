@@ -6,5 +6,4 @@ namespace Server.Web.Controllers.Entity;
 
 public class SalaryInfo : BasicApplicationApi<ESalaryInfo, ESalaryInfo>, IDynamicApiController
 {
-
 }

@@ -23,7 +23,6 @@ public class BaseFunc(ConfigService configService)
 
     private static AlibabaCloud.SDK.Dingtalkoauth2_1_0.Client GetClient()
     {
-
         var config = new AlibabaCloud.OpenApiClient.Models.Config
         {
             Protocol = "https",
@@ -100,7 +99,6 @@ public class BaseFunc(ConfigService configService)
 
             Console.BackgroundColor = bg;
             Console.ForegroundColor = fg;
-
         }
         else
         {
@@ -114,7 +112,6 @@ public class BaseFunc(ConfigService configService)
 
     public IEnumerable<string>? GetUserInfo(IEnumerable<string> userId, IEnumerable<string>? fileds)
     {
-
         var client = GetV2Client(_GET_USER_INFO_URL);
         var req = new OapiSmartworkHrmEmployeeV2ListRequest
         {
@@ -148,7 +145,6 @@ public class BaseFunc(ConfigService configService)
 
             Console.BackgroundColor = bg;
             Console.ForegroundColor = fg;
-
         }
 
         return null;
@@ -216,7 +212,6 @@ public class BaseFunc(ConfigService configService)
         {
             return _ERROR;
         }
-
     }
 
     public IEnumerable<UserInfo> GetAllUsetInfo(IEnumerable<string> fileds)

@@ -18,4 +18,3 @@ public class ELeave : BasicEntity
     public string ReasonLeave { get; set; } = string.Empty;
     public string Annex { get; set; } = string.Empty;
 }
-

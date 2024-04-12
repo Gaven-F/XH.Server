@@ -7,7 +7,6 @@ using Server.Application.Entities.Dto;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 
-
 namespace Server.Web.Controllers.Entity;
 
 /// <summary>
@@ -22,7 +21,6 @@ public class ChipPayment(
         bes, aps)
     , IDynamicApiController
 {
-
     public IBasicEntityService<EChipPayment> Bes { get; set; } = bes;
 
     public Results<Ok<IEnumerable<string>>, BadRequest> GetReceivingUnits()

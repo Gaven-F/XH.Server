@@ -16,4 +16,3 @@ public class EInvoicing : BasicEntity
     public string LargeAmount { get; set; } = string.Empty;
     public string ContractNumber { get; set; } = string.Empty;
 }
-

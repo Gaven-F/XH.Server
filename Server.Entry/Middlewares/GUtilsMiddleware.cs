@@ -19,7 +19,7 @@ public class GUtilsMiddleware(RequestDelegate next)
             {{"",6}}{{"Request Path:",-24}}{{"{2}",-5}}{{(context.Request.IsHttps ? "https://" : "http://")}}{3}{4}
             {{"",6}}{{"Status Code:",-24}}{5}
             {{"",6}}{{"Content Type:",-24}}{6}
-            {{"",6}}{{time.ElapsedMilliseconds}}ms 
+            {{"",6}}{{time.ElapsedMilliseconds}}ms {7}
             """",
             DateTime.Now.ToLocalTime(),
             context.Request.HttpContext.GetRemoteIpAddressToIPv4() ?? context.Request.HttpContext.GetRemoteIpAddressToIPv6(),

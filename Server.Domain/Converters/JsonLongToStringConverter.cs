@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace Server.Domain.Converters;
+
 public class JsonLongToStringConverter : JsonConverter<long>
 {
     public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

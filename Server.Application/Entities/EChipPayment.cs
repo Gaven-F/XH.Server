@@ -23,4 +23,3 @@ public class EChipPayment : BasicEntity
     public string ContractOrder { get; set; } = string.Empty;
     public string Remark { get; set; } = string.Empty;
 }
-

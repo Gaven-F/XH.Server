@@ -2,6 +2,7 @@
 using System.Data;
 
 namespace Server.Domain.ApprocedPolicy.Condition;
+
 public class ConditionConvert : ISugarDataConverter
 {
     public SugarParameter ParameterConverter<T>(object columnValue, int columnIndex)

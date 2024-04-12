@@ -14,4 +14,3 @@ public class EIssueReceipts : BasicEntity
     public string Annex { get; set; } = string.Empty;
     public string LargeAmount { get; set; } = string.Empty;
 }
-

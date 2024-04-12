@@ -14,4 +14,3 @@ public class EUseSeal : BasicEntity
     public DateTime EndDate { get; set; }
     public string SealType { get; set; } = string.Empty;
 }
-

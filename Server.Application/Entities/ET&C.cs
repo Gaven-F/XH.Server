@@ -1,6 +1,7 @@
 ﻿using Server.Domain.Basic;
 
 namespace Server.Application.Entities;
+
 public class ET_C : BasicEntity
 {
     public string T_CorpId { get; set; } = string.Empty;
@@ -26,5 +27,4 @@ public class ET_C : BasicEntity
     public string C_Content_B { get; set; } = string.Empty;
     public string C_Picture_B { get; set; } = string.Empty;
     public string C_ApprovalAnnex_B { get; set; } = string.Empty;
-
 }

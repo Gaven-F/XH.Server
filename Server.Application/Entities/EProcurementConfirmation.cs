@@ -17,4 +17,3 @@ public class EProcurementConfirmation : BasicEntity
     public string AssociateOtherId { get; set; } = string.Empty;
     public string Annex { get; set; } = string.Empty;
 }
-

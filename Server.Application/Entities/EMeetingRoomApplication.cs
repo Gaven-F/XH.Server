@@ -11,4 +11,3 @@ public class EMeetingRoomApplication : BasicEntity
     public string ReasonBorrow { get; set; } = string.Empty;
     public string Annex { get; set; } = string.Empty;
 }
-

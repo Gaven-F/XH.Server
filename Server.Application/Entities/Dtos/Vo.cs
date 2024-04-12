@@ -1,6 +1,7 @@
 ﻿using Server.Domain.ApprocedPolicy;
 
 namespace Server.Application.Entities.Dto;
+
 public class Vo
 {
     public class ApproLog : EApprovalLog
@@ -17,6 +18,7 @@ public class Vo
     {
         new public string Id { get; set; } = string.Empty;
     }
+
     public class ConsumableManagement : EConsumableManagement
     {
         new public string Id { get; set; } = string.Empty;
@@ -96,5 +98,4 @@ public class Vo
     {
         new public string Id { get; set; } = string.Empty;
     }
-
 }

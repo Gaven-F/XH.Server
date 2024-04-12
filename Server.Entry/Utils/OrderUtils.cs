@@ -5,7 +5,7 @@ namespace Server.Web.Utils;
 
 public static partial class OrderUtils
 {
-    class TemplateFileInfo(string name, string path, string description = "")
+    private class TemplateFileInfo(string name, string path, string description = "")
     {
         public string Name { get; set; } = name;
         public string? Description { get; set; } = description;
@@ -17,7 +17,6 @@ public static partial class OrderUtils
     private static readonly Regex arrPlaceHolder = R_ARR_REPLACE_HOLDER();
     private static readonly string templateFilePath = "_template";
     private static readonly string absTemplateFilePath = Path.Combine(Environment.CurrentDirectory.ToString(), templateFilePath);
-
 
     private static readonly List<TemplateFileInfo> templateFiles = [
         new ("随工单.docx", templateFilePath)
@@ -138,11 +137,9 @@ public static partial class OrderUtils
         return stream;
     }
 
-
     [GeneratedRegex(@"\{\{(.+?)\}\}")]
     private static partial Regex R_REPLACE_HOLDER();
+
     [GeneratedRegex(@"(\w+?)\[([0-9])+?\]")]
     private static partial Regex R_ARR_REPLACE_HOLDER();
 }
-
-
