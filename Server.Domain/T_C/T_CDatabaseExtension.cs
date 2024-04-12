@@ -1,4 +1,5 @@
 ﻿namespace Server.Domain.T_C;
+
 #pragma warning disable IDE1006
 
 public static class T_CDatabaseExtension

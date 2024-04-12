@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class Invoicing(
-    IBasicEntityService<EInvoicing> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EInvoicing, Vo.Invoicing>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class Invoicing(IBasicEntityService<EInvoicing> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EInvoicing, Vo.Invoicing>(bes, aps),
+        IDynamicApiController { }

@@ -2,7 +2,8 @@
 
 namespace Server.Domain.Basic;
 
-public interface IBasicEntityService<T> where T : BasicEntity
+public interface IBasicEntityService<T>
+    where T : BasicEntity
 {
     long Create(T e);
 

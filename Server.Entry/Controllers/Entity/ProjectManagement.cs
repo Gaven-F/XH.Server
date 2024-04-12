@@ -14,9 +14,7 @@ namespace Server.Web.Controllers.Entity;
 /// <param name="aps"></param>
 public class ProjectManagement(
     IBasicEntityService<EProjectManagement> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EProjectManagement, Vo.ProjectManagement>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+    ApprovedPolicyService aps
+)
+    : BasicApplicationApi<EProjectManagement, Vo.ProjectManagement>(bes, aps),
+        IDynamicApiController { }

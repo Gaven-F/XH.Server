@@ -11,14 +11,9 @@ public class ConditionV1
     private JudgmentType Type { get; set; } = JudgmentType.E;
     private string Value { get; set; } = string.Empty;
 
-    private ConditionV1()
-    {
-    }
+    private ConditionV1() { }
 
-    public static ConditionV1 Default() => new()
-    {
-        JudgmentField = "NONE"
-    };
+    public static ConditionV1 Default() => new() { JudgmentField = "NONE" };
 
     private static ArgumentOutOfRangeException GetException() => new("类型错误");
 
@@ -47,8 +42,11 @@ public class ConditionV1
 
     public static bool Check(ConditionV1 condition, object data, Exception exception)
     {
-        var property = data.GetType().GetProperty(condition.JudgmentField)
-            ?? throw new ArgumentException($"Property {condition.JudgmentField} not found in {data.GetType().Name}");
+        var property =
+            data.GetType().GetProperty(condition.JudgmentField)
+            ?? throw new ArgumentException(
+                $"Property {condition.JudgmentField} not found in {data.GetType().Name}"
+            );
         var value = property.GetValue(obj: data)!.ToString() ?? "";
 
         return condition.Type switch
@@ -75,7 +73,12 @@ public enum JudgmentType
     /// <summary>
     /// Equal,Greate,Less,GreateEqual,LessEqual,NotEqual
     /// </summary>
-    E, G, L, GE, LE, NE
+    E,
+    G,
+    L,
+    GE,
+    LE,
+    NE
 }
 
 public class ECondition : BasicEntity
@@ -86,15 +89,16 @@ public class ECondition : BasicEntity
     public string? Value { get; set; }
     public Type T { get; set; }
 
-    protected static Dictionary<Type, Func<string, string, bool>> _judgmentFunc = new()
-    {
-        {Type.E, (arg1, arg2) => arg1.Equals(arg2)},
-        {Type.G, (arg1, arg2) => arg1.CompareTo(arg2) == 1},
-        {Type.L, (arg1, arg2) => arg1.CompareTo(arg2) == -1},
-        {Type.GE, (arg1, arg2) => arg1.CompareTo(arg2) >= 0 },
-        {Type.LE, (arg1, arg2) => arg1.CompareTo(arg2) <= 0},
-        {Type.NE, (arg1, arg2) => !arg1.Equals(arg2)},
-    };
+    protected static Dictionary<Type, Func<string, string, bool>> _judgmentFunc =
+        new()
+        {
+            { Type.E, (arg1, arg2) => arg1.Equals(arg2) },
+            { Type.G, (arg1, arg2) => arg1.CompareTo(arg2) == 1 },
+            { Type.L, (arg1, arg2) => arg1.CompareTo(arg2) == -1 },
+            { Type.GE, (arg1, arg2) => arg1.CompareTo(arg2) >= 0 },
+            { Type.LE, (arg1, arg2) => arg1.CompareTo(arg2) <= 0 },
+            { Type.NE, (arg1, arg2) => !arg1.Equals(arg2) },
+        };
 
     public static ECondition Parse(string raw)
     {
@@ -109,7 +113,8 @@ public class ECondition : BasicEntity
         return c;
     }
 
-    public static Func<string, string, bool> GetJudgmentFunc(string t) => _judgmentFunc[Enum.Parse<Type>(t)];
+    public static Func<string, string, bool> GetJudgmentFunc(string t) =>
+        _judgmentFunc[Enum.Parse<Type>(t)];
 
     public static Func<string, string, bool> GetJudgmentFunc(Type t) => _judgmentFunc[t];
 
@@ -133,5 +138,13 @@ public class ECondition : BasicEntity
         return $"{FiledName}-{T}-{Value}";
     }
 
-    public enum Type { E, G, L, GE, LE, NE }
+    public enum Type
+    {
+        E,
+        G,
+        L,
+        GE,
+        LE,
+        NE
+    }
 }

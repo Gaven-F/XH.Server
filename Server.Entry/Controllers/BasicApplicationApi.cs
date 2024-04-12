@@ -5,28 +5,38 @@ using Server.Application.Entities.Dto;
 using Server.Core.Database;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
+using Server.Web;
 
 namespace Server.Application;
 
-public class BasicApplicationApi<T, VoT> where T : BasicEntity
+public class BasicApplicationApi<T, VoT>
+    where T : BasicEntity
 {
+    [FromServices]
+    public Utils.BaseFunc DingTalkUtils { get; set; }
 
     [FromServices]
-    public Utils.BaseFunc DingtalkUtils { get; set; }
-    [FromServices]
     public IBasicEntityService<T> BasicEntityService { get; set; }
+
     [FromServices]
     public ApprovedPolicyService ApprovedPolicyService { get; set; }
+
     [FromServices]
     public DatabaseService Db { get; set; }
 
 #pragma warning disable 8618
-    public BasicApplicationApi(IBasicEntityService<T> basicEntityService, ApprovedPolicyService approvedPolicyService)
+
+    public BasicApplicationApi(
+        IBasicEntityService<T> basicEntityService,
+        ApprovedPolicyService approvedPolicyService
+    )
     {
         BasicEntityService = basicEntityService;
         ApprovedPolicyService = approvedPolicyService;
     }
+
     public BasicApplicationApi() { }
+
 #pragma warning restore
 
     public virtual Results<Ok<string>, BadRequest<string>> Add(T entity)
@@ -38,7 +48,10 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
             var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
             if (log != null)
             {
-                DingtalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{entity.Id}");
+                DingTalkUtils.SendMsg(
+                    [log.ApproverId.ToString()],
+                    $"有一个待审核的消息！\r\n数据ID：{entity.Id}"
+                );
             }
 
             return TypedResults.Ok(id.ToString());
@@ -49,11 +62,14 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
         }
     }
 
-    public virtual Results<Ok<bool>, BadRequest<string>> Approve(long logId, byte status, string msg = "无")
+    public virtual Results<Ok<bool>, BadRequest<string>> Approve(
+        long logId,
+        byte status,
+        string msg = "无"
+    )
     {
         try
         {
-
             var eId = ApprovedPolicyService.GetLogById(logId).EntityId;
             ApprovedPolicyService.Approve(logId, status, msg);
             var cLog = ApprovedPolicyService.GetCurrentApprovalLog(eId);
@@ -61,15 +77,18 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
             if (cLog == null)
             {
                 var e = BasicEntityService.GetEntityById(eId);
-                DingtalkUtils.SendMsg(ApprovedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','), $"""
-				抄送信息：
-				{e.CreateTime.ToLongDateString()}
-				""");
+                DingTalkUtils.SendMsg(
+                    ApprovedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','),
+                    $"""
+                    抄送信息：
+                    {e.CreateTime.ToLongDateString()}
+                    """
+                );
 
                 return TypedResults.Ok(true);
             }
 
-            DingtalkUtils.SendMsg([cLog.ApproverId.ToString()], "有一个待审核的消息！");
+            DingTalkUtils.SendMsg([cLog.ApproverId.ToString()], "有一个待审核的消息！");
 
             return TypedResults.Ok(true);
         }
@@ -77,7 +96,6 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
         {
             return TypedResults.BadRequest(e.Message);
         }
-
     }
 
     public virtual Results<Ok<int>, BadRequest<string>> Delete(long eId)
@@ -100,7 +118,9 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
             List<Tuple<VoT, EApprovalLog>> res = new(data.Count());
             foreach (var entity in data)
             {
-                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id).Adapt<Vo.ApproLog>();
+                var log = ApprovedPolicyService
+                    .GetCurrentApprovalLog(entity.Id)
+                    .Adapt<Vo.ApproLog>();
                 res.Add(new(entity.Adapt<VoT>(), log));
             }
             return TypedResults.Ok(res);
@@ -115,9 +135,12 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
     {
         try
         {
-            return TypedResults.Ok(new Tuple<VoT, Vo.ApproLog>(
-                BasicEntityService.GetEntityById(id).Adapt<VoT>(),
-                ApprovedPolicyService.GetCurrentApprovalLog(id).Adapt<Vo.ApproLog>()));
+            return TypedResults.Ok(
+                new Tuple<VoT, Vo.ApproLog>(
+                    BasicEntityService.GetEntityById(id).Adapt<VoT>(),
+                    ApprovedPolicyService.GetCurrentApprovalLog(id).Adapt<Vo.ApproLog>()
+                )
+            );
         }
         catch (Exception e)
         {
@@ -125,4 +148,3 @@ public class BasicApplicationApi<T, VoT> where T : BasicEntity
         }
     }
 }
-

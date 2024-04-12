@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class IssueReceipts(
-    IBasicEntityService<EIssueReceipts> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EIssueReceipts, Vo.IssueReceipts>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class IssueReceipts(IBasicEntityService<EIssueReceipts> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EIssueReceipts, Vo.IssueReceipts>(bes, aps),
+        IDynamicApiController { }

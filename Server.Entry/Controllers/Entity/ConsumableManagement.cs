@@ -14,9 +14,7 @@ namespace Server.Web.Controllers.Entity;
 /// <param name="aps"></param>
 public class ConsumableManagement(
     IBasicEntityService<EConsumableManagement> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EConsumableManagement, Vo.ConsumableManagement>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+    ApprovedPolicyService aps
+)
+    : BasicApplicationApi<EConsumableManagement, Vo.ConsumableManagement>(bes, aps),
+        IDynamicApiController { }

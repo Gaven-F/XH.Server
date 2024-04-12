@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class PurchaseRequest(
-    IBasicEntityService<EPurchaseRequest> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EPurchaseRequest, Vo.PurchaseRequest>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class PurchaseRequest(IBasicEntityService<EPurchaseRequest> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EPurchaseRequest, Vo.PurchaseRequest>(bes, aps),
+        IDynamicApiController { }

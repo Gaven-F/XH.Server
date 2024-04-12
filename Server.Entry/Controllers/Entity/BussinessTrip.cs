@@ -13,11 +13,11 @@ namespace Server.Web.Controllers.Entity;
 /// <param name="basicEntityService"></param>
 /// <param name="approvedPolicyService"></param>
 public class BussinessTrip(
-        IBasicEntityService<EBussinessTrip> basicEntityService,
-        ApprovedPolicyService approvedPolicyService
-    ) : BasicApplicationApi<EBussinessTrip, Vo.BussinessTrip>(
+    IBasicEntityService<EBussinessTrip> basicEntityService,
+    ApprovedPolicyService approvedPolicyService
+)
+    : BasicApplicationApi<EBussinessTrip, Vo.BussinessTrip>(
         basicEntityService,
         approvedPolicyService
-    ), IDynamicApiController
-{
-}
+    ),
+        IDynamicApiController { }

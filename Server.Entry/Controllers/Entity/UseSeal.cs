@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class UseSeal(
-    IBasicEntityService<EUseSeal> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EUseSeal, Vo.UseSeal>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class UseSeal(IBasicEntityService<EUseSeal> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EUseSeal, Vo.UseSeal>(bes, aps),
+        IDynamicApiController { }

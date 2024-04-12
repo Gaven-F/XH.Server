@@ -14,18 +14,17 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class ChipPayment(
-    IBasicEntityService<EChipPayment> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EChipPayment, Vo.ChipPayment>(
-        bes, aps)
-    , IDynamicApiController
+public class ChipPayment(IBasicEntityService<EChipPayment> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EChipPayment, Vo.ChipPayment>(bes, aps),
+        IDynamicApiController
 {
     public IBasicEntityService<EChipPayment> Bes { get; set; } = bes;
 
     public Results<Ok<IEnumerable<string>>, BadRequest> GetReceivingUnits()
     {
-        return TypedResults.Ok(Bes.GetEntities().Select(it => it.ReceivingUnit).ToList().Distinct());
+        return TypedResults.Ok(
+            Bes.GetEntities().Select(it => it.ReceivingUnit).ToList().Distinct()
+        );
     }
 
     public Results<Ok<IEnumerable<string>>, BadRequest> GetBanks()

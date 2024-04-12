@@ -3,11 +3,14 @@ using Server.Domain.Basic;
 
 namespace Server.Domain.Repository;
 
-public class RepositoryService<T>(DatabaseService dbService) : IRepositoryService<T> where T : BasicEntity, new()
+public class RepositoryService<T>(DatabaseService dbService) : IRepositoryService<T>
+    where T : BasicEntity, new()
 {
     public int DeleteData(long eId)
     {
-        var entity = dbService.Instance.Queryable<T>().InSingle(eId) ?? throw new Exception("数据不存在，请检测ID是否正确！");
+        var entity =
+            dbService.Instance.Queryable<T>().InSingle(eId)
+            ?? throw new Exception("数据不存在，请检测ID是否正确！");
 
         entity.IsDeleted = true;
         return dbService.Instance.Updateable(entity).ExecuteCommand();

@@ -4,6 +4,4 @@ using Server.Application.Entities;
 
 namespace Server.Web.Controllers.Entity;
 
-public class SalaryInfo : BasicApplicationApi<ESalaryInfo, ESalaryInfo>, IDynamicApiController
-{
-}
+public class SalaryInfo : BasicApplicationApi<ESalaryInfo, ESalaryInfo>, IDynamicApiController { }

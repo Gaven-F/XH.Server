@@ -5,9 +5,16 @@ namespace Server.Domain.Converters;
 
 public class JsonLongToStringConverter : JsonConverter<long>
 {
-    public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override long Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
     {
-        if (reader.TokenType == JsonTokenType.String && long.TryParse(reader.GetString(), out long result))
+        if (
+            reader.TokenType == JsonTokenType.String
+            && long.TryParse(reader.GetString(), out long result)
+        )
         {
             return result;
         }

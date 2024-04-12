@@ -3,7 +3,8 @@ using Server.Domain.Basic;
 
 namespace Server.Domain.Repository;
 
-public interface IRepositoryService<T> where T : BasicEntity, new()
+public interface IRepositoryService<T>
+    where T : BasicEntity, new()
 {
     T GetDataById(long id);
 

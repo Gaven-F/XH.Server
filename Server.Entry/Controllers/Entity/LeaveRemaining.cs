@@ -10,12 +10,16 @@ namespace Server.Web.Controllers.Entity;
 /// <summary>
 /// 假期剩余
 /// </summary>
-public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository) : BasicApplicationApi<ELeaveRemaining, ELeaveRemaining>, IDynamicApiController
+public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository)
+    : BasicApplicationApi<ELeaveRemaining, ELeaveRemaining>,
+        IDynamicApiController
 {
     public ELeaveRemaining GetLeaveDate(string userId, string leaveType)
     {
-        return repository.GetData(false)
-            .FirstOrDefault(it => it.UserId == userId && it.LeaveType == leaveType) ?? new ELeaveRemaining();
+        return repository
+                .GetData(false)
+                .FirstOrDefault(it => it.UserId == userId && it.LeaveType == leaveType)
+            ?? new ELeaveRemaining();
     }
 
     [HttpPost]
@@ -50,7 +54,11 @@ public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository) : Ba
     }
 
     [NonAction]
-    public override Results<Ok<bool>, BadRequest<string>> Approve(long logId, byte status, string msg = "无")
+    public override Results<Ok<bool>, BadRequest<string>> Approve(
+        long logId,
+        byte status,
+        string msg = "无"
+    )
     {
         return base.Approve(logId, status, msg);
     }

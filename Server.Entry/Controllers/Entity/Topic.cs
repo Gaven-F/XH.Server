@@ -8,6 +8,4 @@ namespace Server.Web.Controllers.Entity;
 /// <summary>
 /// 议题
 /// </summary>
-public class Topic : BasicApplicationApi<ETopic, Vo.Topic>, IDynamicApiController
-{
-}
+public class Topic : BasicApplicationApi<ETopic, Vo.Topic>, IDynamicApiController { }

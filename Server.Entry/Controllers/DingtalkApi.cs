@@ -11,7 +11,10 @@ public class DingtalkApi(global::Utils.BaseFunc dingtalkUtils) : IDynamicApiCont
         return dingtalkUtils.GetUserIds();
     }
 
-    public IEnumerable<string>? GetUserInfo([FromQuery] IEnumerable<string> userId, [FromQuery] IEnumerable<string>? fileds)
+    public IEnumerable<string>? GetUserInfo(
+        [FromQuery] IEnumerable<string> userId,
+        [FromQuery] IEnumerable<string>? fileds
+    )
     {
         return dingtalkUtils.GetUserInfo(userId, fileds);
     }

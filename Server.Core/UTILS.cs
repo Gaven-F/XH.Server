@@ -1,4 +1,5 @@
 ﻿namespace Server.Core;
+
 public static class UTILS
 {
     /// <summary>
@@ -8,7 +9,8 @@ public static class UTILS
     /// <exception cref="Exception"></exception>
     public static void ThrowExpIfNull(this object? obj)
     {
-        if (obj == null) ThrowNullExp();
+        if (obj == null)
+            ThrowNullExp();
     }
 
     /// <summary>

@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class Payment(
-    IBasicEntityService<EPayment> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EPayment, Vo.Payment>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class Payment(IBasicEntityService<EPayment> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EPayment, Vo.Payment>(bes, aps),
+        IDynamicApiController { }

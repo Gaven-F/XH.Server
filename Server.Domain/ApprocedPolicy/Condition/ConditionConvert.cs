@@ -1,5 +1,5 @@
-﻿using SqlSugar;
-using System.Data;
+﻿using System.Data;
+using SqlSugar;
 
 namespace Server.Domain.ApprocedPolicy.Condition;
 

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Globalization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Globalization;
 
 namespace Utils.Entity;
 
@@ -36,14 +36,24 @@ public partial class FieldValueList
     [JsonProperty("item_index"), System.Text.Json.Serialization.JsonIgnore]
     public long ItemIndex { get; set; }
 
-    [JsonProperty("label", NullValueHandling = NullValueHandling.Ignore), System.Text.Json.Serialization.JsonIgnore]
+    [
+        JsonProperty("label", NullValueHandling = NullValueHandling.Ignore),
+        System.Text.Json.Serialization.JsonIgnore
+    ]
     public string? Label { get; set; }
 
     [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
     public string? Value { get; set; }
 }
 
-public enum GroupId { Sys, Sys00, Sys01, Sys02, Sys05 };
+public enum GroupId
+{
+    Sys,
+    Sys00,
+    Sys01,
+    Sys02,
+    Sys05
+};
 
 public partial class UserInfo
 {
@@ -80,8 +90,13 @@ internal class GroupIdConverter : JsonConverter
 {
     public override bool CanConvert(Type t) => t == typeof(GroupId) || t == typeof(GroupId?);
 
-    public override object ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
-        => serializer.Deserialize<string?>(reader) switch
+    public override object ReadJson(
+        JsonReader reader,
+        Type t,
+        object? existingValue,
+        JsonSerializer serializer
+    ) =>
+        serializer.Deserialize<string?>(reader) switch
         {
             "sys" => GroupId.Sys,
             "sys00" => GroupId.Sys00,
@@ -91,7 +106,11 @@ internal class GroupIdConverter : JsonConverter
             _ => throw new Exception("Cannot unmarshal type GroupId"),
         };
 
-    public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
+    public override void WriteJson(
+        JsonWriter writer,
+        object? untypedValue,
+        JsonSerializer serializer
+    )
     {
         if (untypedValue == null)
         {
@@ -102,8 +121,8 @@ internal class GroupIdConverter : JsonConverter
         serializer.Serialize(writer, GroupIdEnumConverter(value));
     }
 
-    private static string GroupIdEnumConverter(GroupId value)
-        => value switch
+    private static string GroupIdEnumConverter(GroupId value) =>
+        value switch
         {
             GroupId.Sys => "sys",
             GroupId.Sys00 => "sys00",

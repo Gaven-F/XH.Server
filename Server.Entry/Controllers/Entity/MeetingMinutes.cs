@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class MeetingMinutes(
-    IBasicEntityService<EMeetingMinutes> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EMeetingMinutes, Vo.MeetingMinutes>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class MeetingMinutes(IBasicEntityService<EMeetingMinutes> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EMeetingMinutes, Vo.MeetingMinutes>(bes, aps),
+        IDynamicApiController { }

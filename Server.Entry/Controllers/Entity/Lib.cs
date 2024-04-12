@@ -13,11 +13,7 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
     public void PostEquipmentLog(string data)
     {
         var val = data.Split('|');
-        var log = new EEquipmentLog
-        {
-            EquipmentId = val[0],
-            GoodsID = val[1],
-        };
+        var log = new EEquipmentLog { EquipmentId = val[0], GoodsID = val[1], };
 
         if (char.ToLower(val[1][0]) == 's')
         {
@@ -27,8 +23,11 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
         {
             log.Type = "E";
             var cacheData = repository.GetData(false);
-            log.BindS = cacheData.OrderByDescending(e => e.CreateTime)
-                .FirstOrDefault(it => it.Type == "S" && it.EquipmentId == val[0])?.GoodsID ?? "ERROR";
+            log.BindS =
+                cacheData
+                    .OrderByDescending(e => e.CreateTime)
+                    .FirstOrDefault(it => it.Type == "S" && it.EquipmentId == val[0])
+                    ?.GoodsID ?? "ERROR";
         }
         repository.SaveData(log);
     }
@@ -39,7 +38,8 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
     /// <returns></returns>
     public IEnumerable<string> GetGoodsId()
     {
-        return repository.GetData(false)
+        return repository
+            .GetData(false)
             .Where(it => it.Type == "S")
             .Select(it => it.GoodsID)
             .Distinct()
@@ -68,7 +68,8 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
     /// <returns></returns>
     public IEnumerable<EEquipmentLog> GetEquipmentLogById(string sId)
     {
-        var rawData = repository.GetData()
+        var rawData = repository
+            .GetData()
             .Where(it => it.BindS == sId && it.Type == "E")
             .OrderBy(it => it.CreateTime)
             .ToList();
@@ -79,7 +80,11 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
         {
             var cache = res.Where(it => it.GoodsID == d.GoodsID).ToList();
 
-            if (cache.Count > 0 && d.CreateTime > cache[0].CreateTime && d.CreateTime > cache[0].EndTime)
+            if (
+                cache.Count > 0
+                && d.CreateTime > cache[0].CreateTime
+                && d.CreateTime > cache[0].EndTime
+            )
             {
                 res[res.FindIndex(it => it.Id == cache[0].Id)].EndTime = d.CreateTime;
             }

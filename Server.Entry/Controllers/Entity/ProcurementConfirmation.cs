@@ -14,9 +14,7 @@ namespace Server.Web.Controllers.Entity;
 /// <param name="aps"></param>
 public class ProcurementConfirmation(
     IBasicEntityService<EProcurementConfirmation> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EProcurementConfirmation, Vo.ProcurementConfirmation>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+    ApprovedPolicyService aps
+)
+    : BasicApplicationApi<EProcurementConfirmation, Vo.ProcurementConfirmation>(bes, aps),
+        IDynamicApiController { }

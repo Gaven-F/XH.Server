@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class DeviceManagement(
-    IBasicEntityService<EDeviceManagement> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EDeviceManagement, Vo.DeviceManagement>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class DeviceManagement(IBasicEntityService<EDeviceManagement> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<EDeviceManagement, Vo.DeviceManagement>(bes, aps),
+        IDynamicApiController { }

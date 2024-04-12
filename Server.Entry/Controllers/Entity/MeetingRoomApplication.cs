@@ -14,9 +14,7 @@ namespace Server.Web.Controllers.Entity;
 /// <param name="aps"></param>
 public class MeetingRoomApplication(
     IBasicEntityService<EMeetingRoomApplication> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<EMeetingRoomApplication, Vo.MeetingRoomApplication>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+    ApprovedPolicyService aps
+)
+    : BasicApplicationApi<EMeetingRoomApplication, Vo.MeetingRoomApplication>(bes, aps),
+        IDynamicApiController { }

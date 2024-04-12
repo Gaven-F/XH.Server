@@ -8,7 +8,8 @@ using Server.Domain.ApprocedPolicy;
 namespace Server.Web.Controllers;
 
 [ApiDescriptionSettings(Order = 99)]
-public class ApproveApi(ApprovedPolicyService approveService, DatabaseService dbService) : IDynamicApiController
+public class ApproveApi(ApprovedPolicyService approveService, DatabaseService dbService)
+    : IDynamicApiController
 {
     public void CreateApproval(EApprovedPolicy data)
     {
@@ -35,7 +36,8 @@ public class ApproveApi(ApprovedPolicyService approveService, DatabaseService db
     public int DeleteApproval(string policyId)
     {
         var id = Convert.ToInt64(policyId);
-        return dbService.Instance.Updateable<EApprovedPolicy>()
+        return dbService
+            .Instance.Updateable<EApprovedPolicy>()
             .Where(it => it.Id == id)
             .SetColumns(it => new EApprovedPolicy() { IsDeleted = true, UpdateTime = DateTime.Now })
             .ExecuteCommand();

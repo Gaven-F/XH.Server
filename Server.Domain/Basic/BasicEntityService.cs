@@ -3,7 +3,8 @@ using Server.Domain.Repository;
 
 namespace Server.Domain.Basic;
 
-public class BasicEntityService<T>(IRepositoryService<T> repositoryService) : IBasicEntityService<T> where T : BasicEntity, new()
+public class BasicEntityService<T>(IRepositoryService<T> repositoryService) : IBasicEntityService<T>
+    where T : BasicEntity, new()
 {
     public long Create(T e)
     {

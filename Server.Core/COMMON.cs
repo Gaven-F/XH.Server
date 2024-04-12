@@ -1,4 +1,5 @@
 ﻿namespace Server.Core;
+
 public static class COMMON
 {
     public static readonly string TC = "T_C";
@@ -10,9 +11,9 @@ public static class COMMON
     static COMMON()
     {
         var c = typeof(COMMON);
-        var fs =
-            c.GetFields(System.Reflection.BindingFlags.Public
-            | System.Reflection.BindingFlags.Default)
+        var fs = c.GetFields(
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Default
+            )
             .ToList();
         var set = new HashSet<string>();
 
@@ -34,5 +35,4 @@ public static class COMMON
         });
         set = null;
     }
-
 }

@@ -6,6 +6,9 @@ public class NPOIStream(bool allowClose = true) : MemoryStream
 
     public override void Close()
     {
-        if (AllowClose) base.Close();
+        if (AllowClose)
+        {
+            base.Close();
+        }
     }
 }

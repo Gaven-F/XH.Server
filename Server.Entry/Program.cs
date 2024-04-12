@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Server.Core.Config;
 using Server.Core.Database;
 using Server.Domain.ApprocedPolicy;
@@ -5,13 +6,10 @@ using Server.Domain.Basic;
 using Server.Domain.Converters;
 using Server.Domain.Repository;
 using Server.Web.Middlewares;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
 
-builder.Services
-    .AddControllers()
-    .AddInject();
+builder.Services.AddControllers().AddInject();
 
 builder.Services.AddJsonOptions(options =>
 {
@@ -22,7 +20,8 @@ builder.Services.AddJsonOptions(options =>
 builder.Services.AddCorsAccessor();
 
 // 应用服务及其依赖服务注入
-builder.Services
+builder
+    .Services
     // 核心服务
     .AddSingleton(typeof(ConfigService))
     .AddScoped(typeof(OStorageService))
@@ -32,6 +31,7 @@ builder.Services
     // 伪·领域服务
     .AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>))
     .AddScoped(typeof(IBasicEntityService<>), typeof(BasicEntityService<>));
+
 //// 应用服务
 //.AddScoped(typeof(BasicApplicationApi<>));
 

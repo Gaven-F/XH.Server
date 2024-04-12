@@ -12,11 +12,6 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 /// <param name="bes"></param>
 /// <param name="aps"></param>
-public class Leave(
-    IBasicEntityService<ELeave> bes,
-    ApprovedPolicyService aps)
-    : BasicApplicationApi<ELeave, Vo.Leave>(
-        bes, aps)
-    , IDynamicApiController
-{
-}
+public class Leave(IBasicEntityService<ELeave> bes, ApprovedPolicyService aps)
+    : BasicApplicationApi<ELeave, Vo.Leave>(bes, aps),
+        IDynamicApiController { }

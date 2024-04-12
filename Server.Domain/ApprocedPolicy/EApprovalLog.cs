@@ -1,6 +1,7 @@
 ﻿using Server.Domain.Basic;
 
 namespace Server.Domain.ApprocedPolicy;
+
 public class EApprovalLog : BasicEntity
 {
     public long EntityId { get; set; }

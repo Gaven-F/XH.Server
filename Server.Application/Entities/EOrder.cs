@@ -1,7 +1,7 @@
-﻿using Server.Domain.Basic;
+﻿using System.Text.Json.Serialization;
+using Server.Domain.Basic;
 using Server.Domain.Converters;
 using SqlSugar;
-using System.Text.Json.Serialization;
 
 namespace Server.Application.Entities;
 

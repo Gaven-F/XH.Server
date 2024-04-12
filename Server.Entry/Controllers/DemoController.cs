@@ -14,6 +14,15 @@ public class DemoController : IDynamicApiController
         return new OkObjectResult(new ETopic() { Id = 31231L });
     }
 
+    public ActionResult GetAllUserInfo(
+        [FromServices] global::Utils.BaseFunc dingtalk,
+        [FromQuery] List<string>? fileds
+    )
+    {
+        var data = dingtalk.GetAllUserInfo(fileds ?? []);
+        return new OkObjectResult(data);
+    }
+
     [HttpGet]
     public ActionResult ReturnDocx()
     {
@@ -26,12 +35,9 @@ public class DemoController : IDynamicApiController
         sw.Flush();
         sw.Seek(0, SeekOrigin.Begin);
         sw.AllowClose = true;
-        return new FileStreamResult(sw, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    }
-
-    public ActionResult GetAllUserInfo([FromServices] global::Utils.BaseFunc dingtalk, [FromQuery] List<string>? fileds)
-    {
-        var data = dingtalk.GetAllUsetInfo(fileds ?? []);
-        return new OkObjectResult(data);
+        return new FileStreamResult(
+            sw,
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        );
     }
 }

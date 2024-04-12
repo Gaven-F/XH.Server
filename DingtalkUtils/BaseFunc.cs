@@ -1,9 +1,9 @@
-﻿using DingTalk.Api;
+﻿using System.Diagnostics;
+using System.Text.Json;
+using DingTalk.Api;
 using DingTalk.Api.Request;
 using Server.Core;
 using Server.Core.Config;
-using System.Diagnostics;
-using System.Text.Json;
 using Tea;
 using Utils.Entity;
 
@@ -11,14 +11,19 @@ namespace Utils;
 
 public class BaseFunc(ConfigService configService)
 {
-    public string AppKey { get; set; } = configService.DingtalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
-    public string AppSecret { get; set; } = configService.DingtalkConfig.AppSecret ?? "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
-    public string Agentid { get; set; } = configService.DingtalkConfig.AgentId ?? "2791318037";
+    public string AppKey { get; set; } =
+        configService.DingtalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
+    public string AppSecret { get; set; } =
+        configService.DingtalkConfig.AppSecret
+        ?? "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
+    public string AgentId { get; set; } = configService.DingtalkConfig.AgentId ?? "2791318037";
 
     private const string _GET_USER_INFO = "https://oapi.dingtalk.com/topapi/v2/user/getuserinfo";
     private const string _ERROR = "ERROR";
-    private const string _GET_WORK_USER_ID_LIST_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";
-    private const string _GET_USER_INFO_URL = "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list";
+    private const string _GET_WORK_USER_ID_LIST_URL =
+        "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";
+    private const string _GET_USER_INFO_URL =
+        "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list";
     private const uint _AGENTID = 2791318037;
 
     private static AlibabaCloud.SDK.Dingtalkoauth2_1_0.Client GetClient()
@@ -53,7 +58,10 @@ public class BaseFunc(ConfigService configService)
         }
         catch (TeaException _err)
         {
-            if (!AlibabaCloud.TeaUtil.Common.Empty(_err.Code) && !AlibabaCloud.TeaUtil.Common.Empty(_err.Message))
+            if (
+                !AlibabaCloud.TeaUtil.Common.Empty(_err.Code)
+                && !AlibabaCloud.TeaUtil.Common.Empty(_err.Message)
+            )
             {
                 Debug.WriteLine(_err.Message);
                 Console.WriteLine(_err.Message);
@@ -62,12 +70,14 @@ public class BaseFunc(ConfigService configService)
         }
         catch (Exception _err)
         {
-            var err = new TeaException(new Dictionary<string, object>
-            {
-                { "message", _err.Message }
-            });
+            var err = new TeaException(
+                new Dictionary<string, object> { { "message", _err.Message } }
+            );
 
-            if (!AlibabaCloud.TeaUtil.Common.Empty(err.Code) && !AlibabaCloud.TeaUtil.Common.Empty(err.Message))
+            if (
+                !AlibabaCloud.TeaUtil.Common.Empty(err.Code)
+                && !AlibabaCloud.TeaUtil.Common.Empty(err.Message)
+            )
             {
                 Console.WriteLine(err.Message);
             }
@@ -104,7 +114,11 @@ public class BaseFunc(ConfigService configService)
         {
             var jsonRes = JsonDocument.Parse(res.Body).RootElement;
             Trace.WriteLine(res.Body);
-            return jsonRes.GetProperty("result").GetProperty("data_list").EnumerateArray().Select(x => x.GetString() ?? "");
+            return jsonRes
+                .GetProperty("result")
+                .GetProperty("data_list")
+                .EnumerateArray()
+                .Select(x => x.GetString() ?? "");
         }
 
         return null;
@@ -115,7 +129,7 @@ public class BaseFunc(ConfigService configService)
         var client = GetV2Client(_GET_USER_INFO_URL);
         var req = new OapiSmartworkHrmEmployeeV2ListRequest
         {
-            Agentid = Convert.ToInt64(Agentid),
+            Agentid = Convert.ToInt64(AgentId),
             UseridList = userId.Aggregate((l, c) => $"{l},{c}")
         };
 
@@ -152,19 +166,23 @@ public class BaseFunc(ConfigService configService)
 
     public void SendMsg(IEnumerable<string> userId, string msg)
     {
-        var client = GetV2Client("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+        var client = GetV2Client(
+            "https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2"
+        );
         var req = new DingTalk.Api.Request.OapiMessageCorpconversationAsyncsendV2Request
         {
-            AgentId = Convert.ToInt64(Agentid),
+            AgentId = Convert.ToInt64(AgentId),
             ToAllUser = false,
-            Msg_ = new DingTalk.Api.Request.OapiMessageCorpconversationAsyncsendV2Request.MsgDomain()
-            {
-                Msgtype = "text",
-                Text = new DingTalk.Api.Request.OapiMessageCorpconversationAsyncsendV2Request.TextDomain()
+            Msg_ =
+                new DingTalk.Api.Request.OapiMessageCorpconversationAsyncsendV2Request.MsgDomain()
                 {
-                    Content = msg
-                }
-            },
+                    Msgtype = "text",
+                    Text =
+                        new DingTalk.Api.Request.OapiMessageCorpconversationAsyncsendV2Request.TextDomain()
+                        {
+                            Content = msg
+                        }
+                },
             UseridList = userId.Aggregate((l, c) => $"{l},{c}"),
         };
         var res = client.Execute(req, GetToken());
@@ -188,16 +206,15 @@ public class BaseFunc(ConfigService configService)
     public string GetUserInfo(string code)
     {
         var client = GetV2Client(_GET_USER_INFO);
-        var req = new OapiV2UserGetuserinfoRequest()
-        {
-            Code = code
-        };
+        var req = new OapiV2UserGetuserinfoRequest() { Code = code };
 
         var res = client.Execute(req, GetToken());
         var baseInfo = JsonDocument.Parse(res.Body).RootElement;
         if (baseInfo.GetProperty("errcode").GetInt32() == 0)
         {
-            var infoClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list");
+            var infoClient = new DefaultDingTalkClient(
+                "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list"
+            );
             var infoReq = new OapiSmartworkHrmEmployeeV2ListRequest
             {
                 Agentid = _AGENTID,
@@ -214,12 +231,12 @@ public class BaseFunc(ConfigService configService)
         }
     }
 
-    public IEnumerable<UserInfo> GetAllUsetInfo(IEnumerable<string> fileds)
+    public IEnumerable<UserInfo> GetAllUserInfo(IEnumerable<string> fileds)
     {
         var userIds = GetUserIds();
         userIds.ThrowExpIfNull();
 
         return from info in GetUserInfo(userIds!, fileds)
-               select UserInfo.FromJson(info);
+            select UserInfo.FromJson(info);
     }
 }

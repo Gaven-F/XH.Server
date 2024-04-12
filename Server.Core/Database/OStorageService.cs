@@ -1,5 +1,3 @@
 ﻿namespace Server.Core.Database;
 
-public class OStorageService
-{
-}
+public class OStorageService { }

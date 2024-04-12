@@ -12,7 +12,11 @@ namespace Server.Web.Controllers.Entity;
 public class Bind : BasicApplicationApi<EBind, EBind>, IDynamicApiController
 {
     [NonAction]
-    public override Results<Ok<bool>, BadRequest<string>> Approve(long logId, byte status, string msg = "无")
+    public override Results<Ok<bool>, BadRequest<string>> Approve(
+        long logId,
+        byte status,
+        string msg = "无"
+    )
     {
         return base.Approve(logId, status, msg);
     }

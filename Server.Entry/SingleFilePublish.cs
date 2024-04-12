@@ -1,5 +1,5 @@
-﻿using Furion;
-using System.Reflection;
+﻿using System.Reflection;
+using Furion;
 
 namespace Server.Web;
 
@@ -12,11 +12,6 @@ public class SingleFilePublish : ISingleFilePublish
 
     public string[] IncludeAssemblyNames()
     {
-        return [
-            "Server.Core",
-            "Server.Common",
-            "Server.Domain",
-            "Server.Application",
-        ];
+        return ["Server.Core", "Server.Common", "Server.Domain", "Server.Application",];
     }
 }

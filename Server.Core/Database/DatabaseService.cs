@@ -1,6 +1,6 @@
-﻿using Server.Core.Config;
+﻿using System.Reflection;
+using Server.Core.Config;
 using SqlSugar;
-using System.Reflection;
 
 namespace Server.Core.Database;
 
@@ -18,7 +18,8 @@ public class DatabaseService
 
         if (clearData)
         {
-            Instance.DbMaintenance.GetTableInfoList()
+            Instance
+                .DbMaintenance.GetTableInfoList()
                 .Select(it => it.Name)
                 .ToList()
                 .ForEach(tableName => Instance.DbMaintenance.DropTable(tableName));
@@ -29,30 +30,35 @@ public class DatabaseService
 
     public DatabaseService(ConfigService config)
     {
-        Instance = new SqlSugarScope(new ConnectionConfig()
-        {
-            ConnectionString = config.DatabaseConfig.ConnectionString,
-            DbType = Enum.Parse<DbType>(config.DatabaseConfig.DatabaseType),
-            IsAutoCloseConnection = true,
-            ConfigureExternalServices = new ConfigureExternalServices()
+        Instance = new SqlSugarScope(
+            new ConnectionConfig()
             {
-                EntityService = (propInfo, entity) =>
+                ConnectionString = config.DatabaseConfig.ConnectionString,
+                DbType = Enum.Parse<DbType>(config.DatabaseConfig.DatabaseType),
+                IsAutoCloseConnection = true,
+                ConfigureExternalServices = new ConfigureExternalServices()
                 {
-                    if (!entity.IsPrimarykey
-                        && new NullabilityInfoContext().Create(propInfo).WriteState is NullabilityState.Nullable)
+                    EntityService = (propInfo, entity) =>
                     {
-                        entity.IsNullable = true;
-                    }
-                    entity.DbColumnName = char.ToLower(propInfo.Name[0]) + propInfo.Name[1..^0];
-                },
-                EntityNameService = (type, entity) =>
-                {
-                    if (type.Name.EndsWith(EntityEndChar))
+                        if (
+                            !entity.IsPrimarykey
+                            && new NullabilityInfoContext().Create(propInfo).WriteState
+                                is NullabilityState.Nullable
+                        )
+                        {
+                            entity.IsNullable = true;
+                        }
+                        entity.DbColumnName = char.ToLower(propInfo.Name[0]) + propInfo.Name[1..^0];
+                    },
+                    EntityNameService = (type, entity) =>
                     {
-                        entity.DbTableName = type.Name[..^EntityEndChar.Length];
+                        if (type.Name.EndsWith(EntityEndChar))
+                        {
+                            entity.DbTableName = type.Name[..^EntityEndChar.Length];
+                        }
                     }
                 }
             }
-        });
+        );
     }
 }
