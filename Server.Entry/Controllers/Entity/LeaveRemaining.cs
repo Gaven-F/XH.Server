@@ -14,19 +14,13 @@ public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository)
     : BasicApplicationApi<ELeaveRemaining, ELeaveRemaining>,
         IDynamicApiController
 {
-    public ELeaveRemaining GetLeaveDate(string userId, string leaveType)
-    {
-        return repository
-                .GetData(false)
-                .FirstOrDefault(it => it.UserId == userId && it.LeaveType == leaveType)
-            ?? new ELeaveRemaining();
-    }
+    public ELeaveRemaining GetLeaveDate(string userId, string leaveType) => repository
+                        .GetData(false)
+                        .FirstOrDefault(it => it.UserId == userId && it.LeaveType == leaveType)
+                    ?? new ELeaveRemaining();
 
     [HttpPost]
-    public void SetLeaveDate(ELeaveRemaining data)
-    {
-        repository.SaveData(data);
-    }
+    public void SetLeaveDate(ELeaveRemaining data) => repository.SaveData(data);
 
     [HttpPost]
     public void SetLeaveDates(IEnumerable<ELeaveRemaining> data)
@@ -38,7 +32,7 @@ public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository)
     }
 
     [HttpPut]
-    public void Update(string id, int cnt)
+    public void Update(string id, double cnt)
     {
         var e = repository.GetDataById(Convert.ToInt64(id));
         e.Cnt = cnt;
@@ -46,7 +40,7 @@ public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository)
     }
 
     [HttpPut]
-    public void Minus(string id, int cnt)
+    public void Minus(string id, double cnt)
     {
         var e = repository.GetDataById(Convert.ToInt64(id));
         e.Cnt -= cnt;
