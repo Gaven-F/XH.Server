@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Server.Web.Middlewares;
+namespace Server.Web.MiddleWares;
 
 public class GUtilsMiddleware(RequestDelegate next)
 {
@@ -15,15 +15,15 @@ public class GUtilsMiddleware(RequestDelegate next)
         Console.WriteLine(
             string.Format(
                 $$""""
-                {{"log:", -6}}Request Log
-                {{"", 6}}{{"Time:", -24}}{0}
-                {{"", 6}}{{"Origin:", -24}}{1}
-                {{"", 6}}{{"Request Path:", -24}}{{"{2}", -5}}{{(
+                {{"log:",-6}}Request Log
+                {{string.Empty,6}}{{"Time:",-24}}{0}
+                {{string.Empty,6}}{{"Origin:",-24}}{1}
+                {{string.Empty,6}}{{"Request Path:",-24}}{{"{2}",-5}}{{(
                     context.Request.IsHttps ? "https://" : "http://"
                 )}}{3}{4}
-                {{"", 6}}{{"Status Code:", -24}}{5}
-                {{"", 6}}{{"Content Type:", -24}}{6}
-                {{"", 6}}{{time.ElapsedMilliseconds}}ms {7}
+                {{string.Empty,6}}{{"Status Code:",-24}}{5}
+                {{string.Empty,6}}{{"Content Type:",-24}}{6}
+                {{string.Empty,6}}{{$"{time.ElapsedMilliseconds}ms",-24}}{7}bytes
                 """",
                 DateTime.Now.ToLocalTime(),
                 context.Request.HttpContext.GetRemoteIpAddressToIPv4()
@@ -33,7 +33,7 @@ public class GUtilsMiddleware(RequestDelegate next)
                 context.Request.Path.Value,
                 context.Response.StatusCode,
                 context.Response.ContentType,
-                context.Response.ContentLength
+                context.Response.ContentLength??0
             )
         );
 

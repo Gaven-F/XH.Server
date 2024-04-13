@@ -5,7 +5,7 @@ using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
 using Server.Domain.Converters;
 using Server.Domain.Repository;
-using Server.Web.Middlewares;
+using Server.Web.MiddleWares;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
 
