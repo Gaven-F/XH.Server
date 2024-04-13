@@ -9,7 +9,7 @@ public class Vo
         public new string Id { get; set; } = string.Empty;
     }
 
-    public class BussinessTrip : EBussinessTrip
+    public class BussinessTrip : EBusinessTrip
     {
         public new string Id { get; set; } = string.Empty;
     }

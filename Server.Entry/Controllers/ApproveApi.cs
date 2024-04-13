@@ -10,7 +10,7 @@ namespace Server.Web.Controllers;
 [ApiDescriptionSettings(Order = 99)]
 public class ApproveApi(ApprovedPolicyService approveService, DatabaseService dbService) : IDynamicApiController
 {
-    public void CreateApproval(EApprovedPolicy data) { approveService.Create(data); }
+    public void CreateApproval(EApprovedPolicy data) => approveService.Create(data);
 
     public IEnumerable<Vo.ApprovedPolicy> GetAllApproval(string? entityName = null)
     {

@@ -13,10 +13,10 @@ namespace Server.Web.Controllers.Entity;
 /// <param name="basicEntityService"></param>
 /// <param name="approvedPolicyService"></param>
 public class BussinessTrip(
-    IBasicEntityService<EBussinessTrip> basicEntityService,
+    IBasicEntityService<EBusinessTrip> basicEntityService,
     ApprovedPolicyService approvedPolicyService
 )
-    : BasicApplicationApi<EBussinessTrip, Vo.BussinessTrip>(
+    : BasicApplicationApi<EBusinessTrip, Vo.BussinessTrip>(
         basicEntityService,
         approvedPolicyService
     ),

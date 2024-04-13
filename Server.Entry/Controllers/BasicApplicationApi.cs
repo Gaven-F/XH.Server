@@ -5,7 +5,6 @@ using Server.Application.Entities.Dto;
 using Server.Core.Database;
 using Server.Domain.ApprocedPolicy;
 using Server.Domain.Basic;
-using Server.Web;
 
 namespace Server.Application;
 
@@ -25,19 +24,6 @@ public class BasicApplicationApi<T, VoT>
     public DatabaseService Db { get; set; }
 
 #pragma warning disable 8618
-
-    public BasicApplicationApi(
-        IBasicEntityService<T> basicEntityService,
-        ApprovedPolicyService approvedPolicyService
-    )
-    {
-        BasicEntityService = basicEntityService;
-        ApprovedPolicyService = approvedPolicyService;
-    }
-
-    public BasicApplicationApi() { }
-
-#pragma warning restore
 
     public virtual Results<Ok<string>, BadRequest<string>> Add(T entity)
     {
@@ -62,6 +48,66 @@ public class BasicApplicationApi<T, VoT>
         }
     }
 
+    public virtual Results<Ok<int>, BadRequest<string>> Delete(long eId)
+    {
+        try
+        {
+            return TypedResults.Ok(BasicEntityService.Delete(eId));
+        }
+        catch (Exception e)
+        {
+            return TypedResults.BadRequest(e.Message);
+        }
+    }
+    public virtual Results<Ok<List<Tuple<VoT, EApprovalLog>>>, BadRequest<string>> GetData()
+    {
+        try
+        {
+            var data = BasicEntityService.GetEntities();
+            List<Tuple<VoT, EApprovalLog>> res = new(data.Count());
+            foreach (var entity in data)
+            {
+                var log = ApprovedPolicyService
+                    .GetCurrentApprovalLog(entity.Id)
+                    .Adapt<Vo.ApproLog>();
+                res.Add(new(entity.Adapt<VoT>(), log));
+            }
+            return TypedResults.Ok(res);
+        }
+        catch (Exception e)
+        {
+            return TypedResults.BadRequest(e.Message);
+        }
+    }
+    public virtual Results<Ok<Tuple<VoT, Vo.ApproLog>>, BadRequest<string>> GetDataById(long id)
+    {
+        try
+        {
+            return TypedResults.Ok(
+                new Tuple<VoT, Vo.ApproLog>(
+                    BasicEntityService.GetEntityById(id).Adapt<VoT>(),
+                    ApprovedPolicyService.GetCurrentApprovalLog(id).Adapt<Vo.ApproLog>()
+                )
+            );
+        }
+        catch (Exception e)
+        {
+            return TypedResults.BadRequest(e.Message);
+        }
+    }
+
+    public BasicApplicationApi(
+        IBasicEntityService<T> basicEntityService,
+        ApprovedPolicyService approvedPolicyService
+    )
+    {
+        BasicEntityService = basicEntityService;
+        ApprovedPolicyService = approvedPolicyService;
+    }
+
+    public BasicApplicationApi() { }
+
+#pragma warning restore
     public virtual Results<Ok<bool>, BadRequest<string>> Approve(
         long logId,
         byte status,
@@ -91,56 +137,6 @@ public class BasicApplicationApi<T, VoT>
             DingTalkUtils.SendMsg([cLog.ApproverId.ToString()], "有一个待审核的消息！");
 
             return TypedResults.Ok(true);
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
-
-    public virtual Results<Ok<int>, BadRequest<string>> Delete(long eId)
-    {
-        try
-        {
-            return TypedResults.Ok(BasicEntityService.Delete(eId));
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
-
-    public virtual Results<Ok<List<Tuple<VoT, EApprovalLog>>>, BadRequest<string>> GetData()
-    {
-        try
-        {
-            var data = BasicEntityService.GetEntities();
-            List<Tuple<VoT, EApprovalLog>> res = new(data.Count());
-            foreach (var entity in data)
-            {
-                var log = ApprovedPolicyService
-                    .GetCurrentApprovalLog(entity.Id)
-                    .Adapt<Vo.ApproLog>();
-                res.Add(new(entity.Adapt<VoT>(), log));
-            }
-            return TypedResults.Ok(res);
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
-
-    public virtual Results<Ok<Tuple<VoT, Vo.ApproLog>>, BadRequest<string>> GetDataById(long id)
-    {
-        try
-        {
-            return TypedResults.Ok(
-                new Tuple<VoT, Vo.ApproLog>(
-                    BasicEntityService.GetEntityById(id).Adapt<VoT>(),
-                    ApprovedPolicyService.GetCurrentApprovalLog(id).Adapt<Vo.ApproLog>()
-                )
-            );
         }
         catch (Exception e)
         {

@@ -1,6 +1,6 @@
-﻿using System.Globalization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Globalization;
 
 namespace Utils.Entity;
 
@@ -13,7 +13,7 @@ public partial class UserInfo
     public List<FieldDataList> FieldDataList { get; set; } = [];
 
     [JsonProperty("userid")]
-    public string? Userid { get; set; }
+    public string? UserId { get; set; }
 }
 
 public partial class FieldDataList
@@ -73,7 +73,7 @@ public static class Serialize
 
 internal static class Converter
 {
-    public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+    public static readonly JsonSerializerSettings Settings = new()
     {
         MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
         DateParseHandling = DateParseHandling.None,
@@ -88,23 +88,21 @@ internal static class Converter
 
 internal class GroupIdConverter : JsonConverter
 {
-    public override bool CanConvert(Type t) => t == typeof(GroupId) || t == typeof(GroupId?);
 
     public override object ReadJson(
         JsonReader reader,
         Type t,
         object? existingValue,
         JsonSerializer serializer
-    ) =>
-        serializer.Deserialize<string?>(reader) switch
-        {
-            "sys" => GroupId.Sys,
-            "sys00" => GroupId.Sys00,
-            "sys01" => GroupId.Sys01,
-            "sys02" => GroupId.Sys02,
-            "sys05" => (object)GroupId.Sys05,
-            _ => throw new Exception("Cannot unmarshal type GroupId"),
-        };
+    ) => serializer.Deserialize<string?>(reader) switch
+    {
+        "sys" => GroupId.Sys,
+        "sys00" => GroupId.Sys00,
+        "sys01" => GroupId.Sys01,
+        "sys02" => GroupId.Sys02,
+        "sys05" => (object)GroupId.Sys05,
+        _ => throw new Exception("Cannot unmarshal type GroupId"),
+    };
 
     public override void WriteJson(
         JsonWriter writer,
@@ -121,16 +119,16 @@ internal class GroupIdConverter : JsonConverter
         serializer.Serialize(writer, GroupIdEnumConverter(value));
     }
 
-    private static string GroupIdEnumConverter(GroupId value) =>
-        value switch
-        {
-            GroupId.Sys => "sys",
-            GroupId.Sys00 => "sys00",
-            GroupId.Sys01 => "sys01",
-            GroupId.Sys02 => "sys02",
-            GroupId.Sys05 => "sys05",
-            _ => throw new Exception("Cannot marshal type GroupId"),
-        };
+    public override bool CanConvert(Type t) => t == typeof(GroupId) || t == typeof(GroupId?);
+    private static string GroupIdEnumConverter(GroupId value) => value switch
+    {
+        GroupId.Sys => "sys",
+        GroupId.Sys00 => "sys00",
+        GroupId.Sys01 => "sys01",
+        GroupId.Sys02 => "sys02",
+        GroupId.Sys05 => "sys05",
+        _ => throw new Exception("Cannot marshal type GroupId"),
+    };
 
     public static readonly GroupIdConverter Singleton = new();
 }
