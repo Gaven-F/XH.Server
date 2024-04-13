@@ -51,5 +51,7 @@ public class ET_C : BasicEntity
 
     public string C_ApprovalAnnex_B { get; set; } = string.Empty;
 
+    public string AssociateOtherId { get; set; } = string.Empty;
+
 #pragma warning restore IDE1006
 }
