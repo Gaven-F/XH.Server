@@ -3,7 +3,7 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Server.Application.Entities.Dto;
 using Server.Core.Database;
-using Server.Domain.ApprocedPolicy;
+using Server.Domain.ApprovedPolicy;
 
 namespace Server.Web.Controllers;
 
@@ -20,7 +20,9 @@ public class ApproveApi(ApprovedPolicyService approveService, DatabaseService db
 
     public IEnumerable<Vo.ApproLog> GetLog(string entityId)
     {
-        var p = approveService.GetLogs(Convert.ToInt64(entityId));
+        var p = approveService
+            .GetLogs(Convert.ToInt64(entityId))
+            .Where(it => !it.IsDeleted);
         return p.Adapt<List<Vo.ApproLog>>();
     }
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Server.Application;
 using Server.Application.Entities;
 using Server.Application.Entities.Dto;
-using Server.Domain.ApprocedPolicy;
+using Server.Domain.ApprovedPolicy;
 using Server.Domain.Basic;
 
 namespace Server.Web.Controllers.Entity;

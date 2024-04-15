@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Server.Core.Config;
 using Server.Core.Database;
-using Server.Domain.ApprocedPolicy;
+using Server.Domain.ApprovedPolicy;
 using Server.Domain.Basic;
 using Server.Domain.Converters;
 using Server.Domain.Repository;

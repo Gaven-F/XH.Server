@@ -1,4 +1,4 @@
-﻿using Server.Domain.ApprocedPolicy;
+﻿using Server.Domain.ApprovedPolicy;
 
 namespace Server.Application.Entities.Dto;
 

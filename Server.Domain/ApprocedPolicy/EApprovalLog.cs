@@ -1,6 +1,6 @@
 ﻿using Server.Domain.Basic;
 
-namespace Server.Domain.ApprocedPolicy;
+namespace Server.Domain.ApprovedPolicy;
 
 public class EApprovalLog : BasicEntity
 {

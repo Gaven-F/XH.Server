@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Server.Application;
 using Server.Application.Entities;
-using Server.Domain.ApprocedPolicy;
+using Server.Domain.ApprovedPolicy;
 
 namespace Server.Web.Controllers.Entity;
 

@@ -1,7 +1,7 @@
-﻿using Server.Domain.ApprocedPolicy.Condition;
+﻿using Server.Domain.ApprovedPolicy.Condition;
 using Server.Domain.Basic;
 
-namespace Server.Domain.ApprocedPolicy;
+namespace Server.Domain.ApprovedPolicy;
 
 public class EApprovedPolicy : BasicEntity
 {

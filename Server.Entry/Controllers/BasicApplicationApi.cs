@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Server.Application.Entities.Dto;
 using Server.Core.Database;
-using Server.Domain.ApprocedPolicy;
+using Server.Domain.ApprovedPolicy;
 using Server.Domain.Basic;
 
 namespace Server.Application;

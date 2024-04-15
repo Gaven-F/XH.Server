@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using SqlSugar;
 
-namespace Server.Domain.ApprocedPolicy.Condition;
+namespace Server.Domain.ApprovedPolicy.Condition;
 
 public class ConditionConvert : ISugarDataConverter
 {

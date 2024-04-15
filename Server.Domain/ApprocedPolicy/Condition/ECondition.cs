@@ -1,6 +1,6 @@
 ﻿using Server.Domain.Basic;
 
-namespace Server.Domain.ApprocedPolicy.Condition;
+namespace Server.Domain.ApprovedPolicy.Condition;
 
 [Obsolete]
 public class ConditionV1
