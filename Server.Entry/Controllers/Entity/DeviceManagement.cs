@@ -6,5 +6,4 @@ namespace Server.Web.Controllers.Entity;
 /// 设备管理
 /// </summary>
 
-
 public class DeviceManagement : BasicApplicationApi<EDeviceManagement>, IDynamicApiController { }

@@ -25,4 +25,10 @@ public class EEquipmentLog : BasicEntity
     public string? BindS { get; set; }
     public string? Info { get; set; }
     public string? Operate { get; set; }
+    public string? Annex { get; set; }
+}
+
+public class EStopEquipment : BasicEntity
+{
+    public string StopCode { get; set; } = string.Empty;
 }

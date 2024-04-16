@@ -1,4 +1,5 @@
-﻿using Furion.DatabaseAccessor;
+﻿using AngleSharp.Dom;
+using Furion.DatabaseAccessor;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +15,11 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 {
-    private new ISqlSugarClient Db
-    {
-        get => base.Db.Instance;
-    }
+    private ISqlSugarClient Database => Db.Instance;
 
     public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) =>
         TypedResults.Ok(
-            Db.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString()
+            Database.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString()
         );
 
 #pragma warning disable IDE0060 // 删除未使用的参数
@@ -52,17 +50,47 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     [HttpPut("{id}")]
     public ActionResult UpdateItem(string id, EOrderItem item)
     {
+        var _id = Convert.ToInt64(id);
+        if (_id != item.Id)
         {
-            var _id = Convert.ToInt64(id);
-            if (_id != item.Id)
-            {
-                return new BadRequestObjectResult("id不匹配！");
-            }
-            item.UpdateTime = DateTime.Now;
-            var res = Db.Updateable(item).ExecuteCommand();
-            return new OkObjectResult(res);
+            return new BadRequestObjectResult("id不匹配！");
         }
+        item.UpdateTime = DateTime.Now;
+        var res = Database.Updateable(item).ExecuteCommand();
+        return new OkObjectResult(res);
     }
+
+    [HttpPut("{id}")]
+    public ActionResult Update(string id, EOrder item)
+    {
+        var _id = Convert.ToInt64(id);
+        if (_id != item.Id)
+        {
+            return new BadRequestObjectResult("id不匹配！");
+        }
+        item.UpdateTime = DateTime.Now;
+
+        item.StartApprove = true;
+        item.UpdateTime = DateTime.Now;
+
+        var res = Database
+            .UpdateNav(item)
+            .Include(it => it.Items)
+        .ExecuteCommand();
+
+        ApprovedPolicyService.CreateApproveBasicLog(item);
+        var log = ApprovedPolicyService.GetCurrentApprovalLog(item.Id);
+        if (log != null)
+        {
+            DingTalkUtils.SendMsg(
+                [log.ApproverId.ToString()],
+                $"有一个待审核的消息！\r\n数据ID：{item.Id}"
+            );
+        }
+
+        return new OkObjectResult(res);
+    }
+
 
     [HttpGet]
     public IResult DownloadFile([FromServices] DatabaseService dbService, string orderId)
@@ -98,7 +126,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// </param>
     public ActionResult GetOrderWithLibLog(string code)
     {
-        var db = Db;
+        var db = Database;
 
         var rawOrderData = db.Queryable<EOrder>()
             .Includes(it => it.Items)
@@ -171,7 +199,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     {
         try
         {
-            var data = Db.Queryable<EOrder>()
+            var data = Database.Queryable<EOrder>()
                 .Where(it => !it.IsDeleted)
                 .Includes(it => it.Items)
                 .ToList();
@@ -192,7 +220,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     [NonAction]
     public override Results<Ok<TUPLE>, BadRequest<string>> GetDataById(long id)
     {
-        var data = Db.Queryable<EOrder>()
+        var data = Database.Queryable<EOrder>()
             .Includes(it => it.Items)
             .Where(it => !it.IsDeleted)
             .InSingle(id);
