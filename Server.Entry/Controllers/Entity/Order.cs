@@ -37,29 +37,6 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         BasicEntityService.GetEntityById(Convert.ToInt64(id));
 
 #pragma warning restore IDE0060 // 删除未使用的参数
-
-
-    [NonAction]
-    public override Results<Ok<Tuple<EOrder, EApprovalLog>>, BadRequest<string>> GetDataById(
-        long id
-    )
-    {
-        var data = Db
-            .Queryable<EOrder>()
-            .Includes(it => it.Items)
-            .Where(it => !it.IsDeleted)
-            .InSingle(id);
-
-        if (data == null)
-        {
-            return TypedResults.BadRequest("未找到实例！");
-        }
-
-        var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
-
-        return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
-    }
-
     /// <summary>
     /// 订单更新
     /// </summary>
@@ -69,14 +46,16 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     [HttpPut("{id}")]
     public ActionResult UpdateItem(string id, EOrderItem item)
     {
-        var _id = Convert.ToInt64(id);
-        if (_id != item.Id)
         {
-            return new BadRequestObjectResult("id不匹配！");
+            var _id = Convert.ToInt64(id);
+            if (_id != item.Id)
+            {
+                return new BadRequestObjectResult("id不匹配！");
+            }
+            item.UpdateTime = DateTime.Now;
+            var res = Db.Updateable(item).ExecuteCommand();
+            return new OkObjectResult(res);
         }
-        item.UpdateTime = DateTime.Now;
-        var res = Db.Updateable(item).ExecuteCommand();
-        return new OkObjectResult(res);
     }
 
     [HttpGet]
@@ -100,54 +79,6 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "demo.docx"
         );
-    }
-
-    public ActionResult GetDataByName(string name)
-    {
-        var data = Db
-            .Queryable<EOrder>()
-            .Where(it => !it.IsDeleted)
-            .Includes(it => it.Items)
-            .ToList();
-
-        var res = data.Where(d => d.Items != null && d.ProductsName == name);
-
-        return new OkObjectResult(res);
-    }
-
-    public ActionResult GetDataByCode(string code)
-    {
-        var data = Db
-            .Queryable<EOrder>()
-            .Where(it => !it.IsDeleted)
-            .Includes(it => it.Items)
-            .ToList();
-
-        var res = data.Where(d => d.Items != null && d.Code.Contains(code));
-
-        return new OkObjectResult(res);
-    }
-
-    public void CompleteOrder(string orderId)
-    {
-        var id = Convert.ToInt32(orderId);
-        var order = Db.Queryable<EOrder>().Includes(it => it.Items).InSingle(id);
-
-        order.IsComplete = true;
-        order.UpdateTime = DateTime.Now;
-
-        Db.Updateable(order).ExecuteCommand();
-    }
-
-    public void DeleteOrder(string orderId)
-    {
-        var id = Convert.ToInt32(orderId);
-        var order = Db.Queryable<EOrder>().Includes(it => it.Items).InSingle(id);
-
-        order.IsDeleted = true;
-        order.UpdateTime = DateTime.Now;
-
-        Db.Updateable(order).ExecuteCommand();
     }
 
     /// <summary>
@@ -253,5 +184,28 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
             return TypedResults.BadRequest(e.Message);
         }
     }
+
+
+    [NonAction]
+    public override Results<Ok<Tuple<EOrder, EApprovalLog>>, BadRequest<string>> GetDataById(
+        long id
+    )
+    {
+        var data = Db
+            .Queryable<EOrder>()
+            .Includes(it => it.Items)
+            .Where(it => !it.IsDeleted)
+            .InSingle(id);
+
+        if (data == null)
+        {
+            return TypedResults.BadRequest("未找到实例！");
+        }
+
+        var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
+
+        return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
+    }
+
 
 }
