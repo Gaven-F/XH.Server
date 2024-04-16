@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Server.Web.Controllers;
 
 [ApiDescriptionSettings(Order = 99)]
-public class DingtalkApi(global::Utils.BaseFunc dingtalkUtils) : IDynamicApiController
+public class DingTalkApi(global::Utils.BaseFunc dingtalkUtils) : IDynamicApiController
 {
     public IEnumerable<string>? GetAllUserId()
     {

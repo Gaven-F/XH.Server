@@ -15,11 +15,10 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
         var val = data.Split('|');
         var log = new EEquipmentLog { EquipmentId = val[0], GoodsID = val[1], };
 
-        if (char.ToLower(val[1][0]) == 's')
+        if(char.ToLower(val[1][0]) == 's')
         {
             log.Type = "S";
-        }
-        else if (char.ToLower(val[1][0]) == 'e')
+        } else if(char.ToLower(val[1][0]) == 'e')
         {
             log.Type = "E";
             var cacheData = repository.GetData(false);
@@ -27,7 +26,8 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
                 cacheData
                     .OrderByDescending(e => e.CreateTime)
                     .FirstOrDefault(it => it.Type == "S" && it.EquipmentId == val[0])
-                    ?.GoodsID ?? "ERROR";
+                    ?.GoodsID ??
+                "ERROR";
         }
         repository.SaveData(log);
     }
@@ -76,23 +76,19 @@ public class Lib(IRepositoryService<EEquipmentLog> repository) : IDynamicApiCont
 
         var res = new List<EEquipmentLog>();
 
-        rawData.ForEach(d =>
-        {
-            var cache = res.Where(it => it.GoodsID == d.GoodsID).ToList();
+        rawData.ForEach(
+            d =>
+            {
+                var cache = res.Where(it => it.GoodsID == d.GoodsID).ToList();
 
-            if (
-                cache.Count > 0
-                && d.CreateTime > cache[0].CreateTime
-                && d.CreateTime > cache[0].EndTime
-            )
-            {
-                res[res.FindIndex(it => it.Id == cache[0].Id)].EndTime = d.CreateTime;
-            }
-            else
-            {
-                res.Add(d);
-            }
-        });
+                if(cache.Count > 0 && d.CreateTime > cache[0].CreateTime && d.CreateTime > cache[0].EndTime)
+                {
+                    res[res.FindIndex(it => it.Id == cache[0].Id)].EndTime = d.CreateTime;
+                } else
+                {
+                    res.Add(d);
+                }
+            });
 
         return res;
     }

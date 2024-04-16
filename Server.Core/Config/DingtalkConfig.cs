@@ -1,6 +1,6 @@
 ﻿namespace Server.Core.Config;
 
-public class DingtalkConfig
+public class DingTalkConfig
 {
     public string? AppKey { get; set; }
     public string? AppSecret { get; set; }

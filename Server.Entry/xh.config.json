@@ -1,7 +1,15 @@
 {
+  // WSY数据接口
+  //"DingtalkConfig": {
+  //  "AppKey": "dingifzl2bbmtmajc48t",
+  //  "AppSecret": "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz",
+  //  "AgentId": "2791318037"
+  //}
+
+  // 芯火数据ID
   "DingtalkConfig": {
-    "AppKey": "dingifzl2bbmtmajc48t",
-    "AppSecret": "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz",
-    "AgentId": "2791318037"
+    "AppKey": "dingh23286utoligpz1j",
+    "AppSecret": "TKIOe8LcS5J49_JpveQ6-5Y51jJ8ZhplmpTql5PlkEY2xRxuVMj9oArKq6AGgKkU",
+    "AgentId": "2810361637"
   }
 }

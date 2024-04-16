@@ -12,11 +12,11 @@ namespace Utils;
 public class BaseFunc(ConfigService configService)
 {
     public string AppKey { get; set; } =
-        configService.DingtalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
+        configService.DingTalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
     public string AppSecret { get; set; } =
-        configService.DingtalkConfig.AppSecret
+        configService.DingTalkConfig.AppSecret
         ?? "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
-    public string AgentId { get; set; } = configService.DingtalkConfig.AgentId ?? "2791318037";
+    public string AgentId { get; set; } = configService.DingTalkConfig.AgentId ?? "2791318037";
 
     private const string _GET_USER_INFO = "https://oapi.dingtalk.com/topapi/v2/user/getuserinfo";
     private const string _ERROR = "ERROR";
@@ -24,7 +24,6 @@ public class BaseFunc(ConfigService configService)
         "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";
     private const string _GET_USER_INFO_URL =
         "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list";
-    private const uint _AGENTID = 2791318037;
 
     private static AlibabaCloud.SDK.Dingtalkoauth2_1_0.Client GetClient()
     {
@@ -217,7 +216,7 @@ public class BaseFunc(ConfigService configService)
             );
             var infoReq = new OapiSmartworkHrmEmployeeV2ListRequest
             {
-                Agentid = _AGENTID,
+                Agentid = Convert.ToUInt32(AgentId),
                 UseridList = baseInfo.GetProperty("result").GetProperty("userid").GetString()
             };
 
