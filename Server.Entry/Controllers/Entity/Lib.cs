@@ -1,4 +1,5 @@
 ﻿using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Mvc;
 using Server.Application.Entities;
 using Server.Core.Database;
 using Server.Domain.Repository;
@@ -45,6 +46,14 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
                 return;
         }
         repository.SaveData(log);
+    }
+
+    public int DeleteLog(string sId)
+    {
+        return database.Instance.Updateable<EEquipmentLog>()
+            .Where(it => it.GoodsID == sId || it.BindS == sId)
+            .SetColumns(it => new EEquipmentLog() { IsDeleted = true, UpdateTime = DateTime.Now })
+            .ExecuteCommand();
     }
 
     private static bool CheckGoodHas(DatabaseService database, string goodsId)
