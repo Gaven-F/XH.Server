@@ -37,6 +37,7 @@ public class EOrder : BasicEntity
 
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
+    public bool StartApprove { get; set; }
 }
 
 public class EOrderItem : BasicEntity
@@ -55,4 +56,5 @@ public class EOrderItem : BasicEntity
     public string TrialTime { get; set; } = string.Empty;
     public string VirtualTrialTime { get; set; } = string.Empty;
     public string Sign { get; set; } = string.Empty;
+    public string Info { get; set; } = string.Empty;
 }

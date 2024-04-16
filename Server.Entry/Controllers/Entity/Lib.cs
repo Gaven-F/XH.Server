@@ -5,6 +5,78 @@ namespace Server.Web.Controllers.Entity;
 public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService database)
     : IDynamicApiController
 {
+    private ISqlSugarClient Db => database.Instance;
+    public void StopLog(string sCode)
+    {
+        Db.Insertable(new EStopEquipment { StopCode = sCode }).ExecuteCommand();
+
+        var order = Db.Queryable<EOrder>()
+            .Single(it => it.Code.Contains(sCode));
+
+        bool complete =
+            Db.Queryable<EStopEquipment>()
+            .Any(it => order.Code.Contains(it.StopCode));
+
+        CompleteOrder(order, complete);
+    }
+
+    private void CompleteOrder(EOrder order, bool complete)
+    {
+        if (!complete) return;
+
+        order.IsComplete = true;
+        order.UpdateTime = DateTime.Now;
+        Db.Updateable(order).ExecuteCommand();
+
+        var codes = order.Code;
+
+        var logs = new Queue<EEquipmentLog>(Db.Queryable<EEquipmentLog>()
+            .Where(it => codes.Contains(it.BindS ?? it.GoodsID))
+            .ToList());
+
+        var processedLogs = new Queue<EEquipmentLog>();
+
+        while (logs.Count > 0)
+        {
+            var log = logs.Dequeue();
+            if (processedLogs.Peek()?.GoodsID == log.GoodsID)
+            {
+                processedLogs.Peek().EndTime = log.CreateTime;
+            }
+            else
+            {
+                processedLogs.Enqueue(log);
+            }
+        }
+
+        var cnt = 0;
+
+        while (processedLogs.Count > 0)
+        {
+            var log = processedLogs.Dequeue();
+            order.Items ??= [];
+            if (cnt - 1 >= order.Items.Count)
+            {
+                order.Items.Add(new()
+                {
+                    DeviceNumber = log.GoodsID,
+                    StartTime = log.CreateTime.ToString(),
+                    EndTime = log.EndTime.ToString(),
+                    Engineer = log.EquipmentId,
+                    Info = log.Info ?? ""
+                });
+            }
+            order.Items[cnt].DeviceNumber = log.GoodsID;
+            order.Items[cnt].DeviceNumber = log.GoodsID;
+            order.Items[cnt].StartTime = log.CreateTime.ToString();
+            order.Items[cnt].EndTime = log.EndTime.ToString();
+            order.Items[cnt].Engineer = log.EquipmentId;
+            order.Items[cnt].Info = log.Info ?? "";
+        }
+
+        Db.Updateable(order).ExecuteCommand();
+    }
+
     /// <summary>
     /// 提交扫码记录
     /// </summary>
@@ -62,12 +134,14 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
     /// <param name="id"></param>
     /// <param name="info"></param>
     /// <param name="operate"></param>
-    public void PostGoodsInfo(long id, string info, string operate)
+    /// <param name="annex"></param>
+    public void PostGoodsInfo(long id, string info, string operate, string annex)
     {
         var d = repository.GetDataById(id);
         d.Info = info;
         d.UpdateTime = DateTime.Now;
         d.Operate = operate;
+        d.Annex = annex;
         repository.UpdateData(d);
     }
 
