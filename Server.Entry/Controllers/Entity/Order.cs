@@ -50,8 +50,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
             List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
             foreach (var entity in data)
             {
-                var log = ApprovedPolicyService
-                    .GetCurrentApprovalLog(entity.Id);
+                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
                 res.Add(new(entity, log));
             }
             return TypedResults.Ok(res);
