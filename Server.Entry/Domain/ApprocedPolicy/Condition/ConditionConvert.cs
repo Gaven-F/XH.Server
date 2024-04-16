@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using SqlSugar;
 
 namespace Server.Domain.ApprovedPolicy.Condition;
 
