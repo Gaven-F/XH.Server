@@ -36,7 +36,7 @@ public class EOrder : BasicEntity
     /// <summary>
     /// 样品绑定代码
     /// </summary>
-    public string? Code { get; set; }
+    public List<string> Code { get; set; } = [];
 }
 
 public class EOrderItem : BasicEntity

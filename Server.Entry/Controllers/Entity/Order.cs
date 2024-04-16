@@ -4,13 +4,11 @@ using Mapster;
 using Masuit.Tools;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.Util;
 using Server.Application;
 using Server.Application.Entities;
 using Server.Application.Entities.Dto;
 using Server.Core.Database;
 using Server.Domain.ApprovedPolicy;
-using System.Dynamic;
 
 namespace Server.Web.Controllers.Entity;
 
@@ -163,7 +161,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             .ToList();
 
         var res = data
-            .Where(d => d.Items != null && d.Code == code);
+            .Where(d => d.Items != null && d.Code.Contains(code));
 
         return new OkObjectResult(res);
     }
@@ -207,7 +205,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             .Queryable<EOrder>()
             .Includes(it => it.Items)
             .Where(it => !it.IsDeleted && it.IsComplete)
-            .Where(it => it.Code == code)
+            .Where(it => it.Code.Contains(code))
             .ToList();
 
         if (rawOrderData.Count > 1)
@@ -225,8 +223,8 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
         var rawLibData = new Queue<EEquipmentLog>(db
             .Queryable<EEquipmentLog>()
             .Where(it => !it.IsDeleted)
-            .Where(it => it.GoodsID == orderData.Code ||
-                it.BindS == orderData.Code)
+            .Where(it => orderData.Code.Contains(it.GoodsID) ||
+                orderData.Code.Contains(it.BindS ?? ""))
             .ToList());
 
         var logData = new Queue<EEquipmentLog>();
@@ -245,12 +243,12 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             }
         }
 
-        var pOrder= orderData.DeepClone();
+        var pOrder = orderData.DeepClone();
         var pLog = logData.DeepClone();
 
         pOrder.Items!.ForEach(i =>
         {
-            if(logData.Count > 0)
+            if (logData.Count > 0)
             {
                 var data = logData.Dequeue();
                 i.StartTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -258,6 +256,6 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             }
         });
 
-        return new OkObjectResult(new {pOrder, pLog, rawOrderData });
+        return new OkObjectResult(new { pOrder, pLog, rawOrderData });
     }
 }
