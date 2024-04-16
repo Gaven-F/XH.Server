@@ -26,7 +26,7 @@ public class Topic : BasicApplicationApi<ETopic>, IDynamicApiController
             List<Tuple<ETopic, IEnumerable<EApprovalLog>>> res = new(data.Count());
             foreach (var entity in data)
             {
-                var log = ApprovedPolicyService.GetLogs(entity.Id).Adapt<List<EApprovalLog>>();
+                var log = ApprovedPolicyService.GetLogs(entity.Id);
                 res.Add(new(entity, log));
             }
             return TypedResults.Ok(res);

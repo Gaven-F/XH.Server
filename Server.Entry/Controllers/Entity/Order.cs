@@ -51,8 +51,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
             foreach (var entity in data)
             {
                 var log = ApprovedPolicyService
-                    .GetCurrentApprovalLog(entity.Id)
-                    .Adapt<EApprovalLog>();
+                    .GetCurrentApprovalLog(entity.Id);
                 res.Add(new(entity, log));
             }
             return TypedResults.Ok(res);
@@ -96,7 +95,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 
         var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
 
-        return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log.Adapt<EApprovalLog>()));
+        return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
     }
 
     [HttpPut("{id}")]
