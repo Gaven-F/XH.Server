@@ -1,21 +1,14 @@
 ﻿using Furion.DatabaseAccessor;
 using Furion.DynamicApiController;
-using Mapster;
-using Masuit.Tools;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Server.Application;
-using Server.Application.Entities;
-using Server.Application.Entities.Dto;
-using Server.Core.Database;
-using Server.Domain.ApprovedPolicy;
 
 namespace Server.Web.Controllers.Entity;
 
 /// <summary>
 /// 订单_V2
 /// </summary>
-public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
+public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 {
     public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity)
     {
@@ -23,8 +16,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
         {
             var id = BasicEntityService
                 .GetDb()
-                .Instance
-                .InsertNav(entity)
+                .Instance.InsertNav(entity)
                 .Include(it => it.Items)
                 .ExecuteReturnEntity()
                 .Id;
@@ -32,7 +24,10 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
             if (log != null)
             {
-                DingTalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{entity.Id}");
+                DingTalkUtils.SendMsg(
+                    [log.ApproverId.ToString()],
+                    $"有一个待审核的消息！\r\n数据ID：{entity.Id}"
+                );
             }
 
             return TypedResults.Ok(id.ToString());
@@ -48,8 +43,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
         try
         {
             var data = Db
-                .Instance
-                .Queryable<EOrder>()
+                .Instance.Queryable<EOrder>()
                 .Where(it => !it.IsDeleted)
                 .Includes(it => it.Items)
                 .ToList();
@@ -58,7 +52,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             {
                 var log = ApprovedPolicyService
                     .GetCurrentApprovalLog(entity.Id)
-                    .Adapt<Vo.ApproLog>();
+                    .Adapt<EApprovalLog>();
                 res.Add(new(entity, log));
             }
             return TypedResults.Ok(res);
@@ -74,21 +68,23 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
     {
         var data = BasicEntityService
             .GetDb()
-            .Instance
-            .Queryable<EOrder>()
+            .Instance.Queryable<EOrder>()
             .Where(it => !it.IsDeleted)
             .Includes(it => it.Items)
             .ToList();
-        var res = data.Where(d => d.Items != null && d.Items.Where(i => i.Engineer == engineerId).Any());
+        var res = data.Where(d =>
+            d.Items != null && d.Items.Where(i => i.Engineer == engineerId).Any()
+        );
         return res.ToList();
     }
 
-    public override Results<Ok<Tuple<EOrder, Vo.ApproLog>>, BadRequest<string>> GetDataById(long id)
+    public override Results<Ok<Tuple<EOrder, EApprovalLog>>, BadRequest<string>> GetDataById(
+        long id
+    )
     {
         var data = BasicEntityService
             .GetDb()
-            .Instance
-            .Queryable<EOrder>()
+            .Instance.Queryable<EOrder>()
             .Includes(it => it.Items)
             .Where(it => !it.IsDeleted)
             .InSingle(id);
@@ -100,7 +96,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
 
         var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
 
-        return TypedResults.Ok(new Tuple<EOrder, Vo.ApproLog>(data, log.Adapt<Vo.ApproLog>()));
+        return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log.Adapt<EApprovalLog>()));
     }
 
     [HttpPut("{id}")]
@@ -122,7 +118,10 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
     {
         var id = Convert.ToInt64(orderId);
         var db = dbService.Instance;
-        var data = db.Queryable<EOrder>().Includes(it => it.Items).Where(it => !it.IsDeleted).InSingle(id);
+        var data = db.Queryable<EOrder>()
+            .Includes(it => it.Items)
+            .Where(it => !it.IsDeleted)
+            .InSingle(id);
 
         if (data == null)
         {
@@ -133,20 +132,19 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
         return TypedResults.Stream(
             stream,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "demo.docx");
+            "demo.docx"
+        );
     }
 
     public ActionResult GetDataByName(string name)
     {
         var data = Db
-            .Instance
-            .Queryable<EOrder>()
+            .Instance.Queryable<EOrder>()
             .Where(it => !it.IsDeleted)
             .Includes(it => it.Items)
             .ToList();
 
-        var res = data
-            .Where(d => d.Items != null && d.ProductsName == name);
+        var res = data.Where(d => d.Items != null && d.ProductsName == name);
 
         return new OkObjectResult(res);
     }
@@ -154,14 +152,12 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
     public ActionResult GetDataByCode(string code)
     {
         var data = Db
-            .Instance
-            .Queryable<EOrder>()
+            .Instance.Queryable<EOrder>()
             .Where(it => !it.IsDeleted)
             .Includes(it => it.Items)
             .ToList();
 
-        var res = data
-            .Where(d => d.Items != null && d.Code.Contains(code));
+        var res = data.Where(d => d.Items != null && d.Code.Contains(code));
 
         return new OkObjectResult(res);
     }
@@ -192,7 +188,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
     /// 获取订单记录
     /// </summary>
     /// <remarks>
-    /// *注：*此订单获取数据应当在订单完成后进行调用  
+    /// *注：*此订单获取数据应当在订单完成后进行调用
     /// </remarks>
     /// <param name="code">
     /// 查询订单样品绑定代码
@@ -201,8 +197,7 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
     {
         var db = Db.Instance;
 
-        var rawOrderData = db
-            .Queryable<EOrder>()
+        var rawOrderData = db.Queryable<EOrder>()
             .Includes(it => it.Items)
             .Where(it => !it.IsDeleted && it.IsComplete)
             .Where(it => it.Code.Contains(code))
@@ -220,12 +215,14 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             return new BadRequestObjectResult("订单无制作工艺！");
         }
 
-        var rawLibData = new Queue<EEquipmentLog>(db
-            .Queryable<EEquipmentLog>()
-            .Where(it => !it.IsDeleted)
-            .Where(it => orderData.Code.Contains(it.GoodsID) ||
-                orderData.Code.Contains(it.BindS ?? ""))
-            .ToList());
+        var rawLibData = new Queue<EEquipmentLog>(
+            db.Queryable<EEquipmentLog>()
+                .Where(it => !it.IsDeleted)
+                .Where(it =>
+                    orderData.Code.Contains(it.GoodsID) || orderData.Code.Contains(it.BindS ?? "")
+                )
+                .ToList()
+        );
 
         var logData = new Queue<EEquipmentLog>();
 
@@ -256,6 +253,13 @@ public class Order : BasicApplicationApi<EOrder, EOrder>, IDynamicApiController
             }
         });
 
-        return new OkObjectResult(new { pOrder, pLog, rawOrderData });
+        return new OkObjectResult(
+            new
+            {
+                pOrder,
+                pLog,
+                rawOrderData
+            }
+        );
     }
 }

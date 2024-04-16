@@ -1,7 +1,6 @@
 ﻿using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.XWPF.UserModel;
-using Server.Application.Entities;
 using Server.Entry.Utils;
 
 namespace Server.Web.Controllers;
@@ -22,8 +21,6 @@ public class DemoController : IDynamicApiController
         var data = dingtalk.GetAllUserInfo(fileds ?? []);
         return new OkObjectResult(data);
     }
-
-
 
     [HttpGet]
     public ActionResult ReturnDocx()

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Server.Web.MiddleWares;
+namespace Server.Entry.MiddleWares;
 
 public class GUtilsMiddleware(RequestDelegate next)
 {
@@ -33,7 +33,7 @@ public class GUtilsMiddleware(RequestDelegate next)
                 context.Request.Path.Value,
                 context.Response.StatusCode,
                 context.Response.ContentType,
-                context.Response.ContentLength??0
+                context.Response.ContentLength ?? 0
             )
         );
 

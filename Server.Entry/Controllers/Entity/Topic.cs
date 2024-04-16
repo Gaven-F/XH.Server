@@ -1,37 +1,33 @@
 ﻿using Furion.DynamicApiController;
-using Mapster;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Server.Application;
-using Server.Application.Entities;
-using Server.Application.Entities.Dto;
-using Server.Domain.ApprovedPolicy;
 
 namespace Server.Web.Controllers.Entity;
 
 /// <summary>
 /// 议题
 /// </summary>
-public class Topic : BasicApplicationApi<ETopic, Vo.Topic>, IDynamicApiController
+public class Topic : BasicApplicationApi<ETopic>, IDynamicApiController
 {
     [NonAction]
-    public override Results<Ok<List<Tuple<Vo.Topic, EApprovalLog>>>, BadRequest<string>> GetData()
+    public override Results<Ok<List<Tuple<ETopic, EApprovalLog>>>, BadRequest<string>> GetData()
     {
         return base.GetData();
     }
 
-    public Results<Ok<List<Tuple<Vo.Topic, IEnumerable<EApprovalLog>>>>, BadRequest<string>> GetDataWithLogs()
+    public Results<
+        Ok<List<Tuple<ETopic, IEnumerable<EApprovalLog>>>>,
+        BadRequest<string>
+    > GetDataWithLogs()
     {
         try
         {
             var data = BasicEntityService.GetEntities();
-            List<Tuple<Vo.Topic, IEnumerable<EApprovalLog>>> res = new(data.Count());
+            List<Tuple<ETopic, IEnumerable<EApprovalLog>>> res = new(data.Count());
             foreach (var entity in data)
             {
-                var log = ApprovedPolicyService
-                    .GetLogs(entity.Id)
-                    .Adapt<List<Vo.ApproLog>>();
-                res.Add(new(entity.Adapt<Vo.Topic>(), log));
+                var log = ApprovedPolicyService.GetLogs(entity.Id).Adapt<List<EApprovalLog>>();
+                res.Add(new(entity, log));
             }
             return TypedResults.Ok(res);
         }
@@ -41,4 +37,3 @@ public class Topic : BasicApplicationApi<ETopic, Vo.Topic>, IDynamicApiControlle
         }
     }
 }
-

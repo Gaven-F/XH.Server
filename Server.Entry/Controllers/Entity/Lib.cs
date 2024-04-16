@@ -1,12 +1,9 @@
 ﻿using Furion.DynamicApiController;
-using Microsoft.AspNetCore.Mvc;
-using Server.Application.Entities;
-using Server.Core.Database;
-using Server.Domain.Repository;
 
 namespace Server.Web.Controllers.Entity;
 
-public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService database) : IDynamicApiController
+public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService database)
+    : IDynamicApiController
 {
     /*
      * S为样品，E为设备
@@ -22,12 +19,11 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
         var val = data.Split('|');
         var log = new EEquipmentLog { EquipmentId = val[0], GoodsID = val[1], };
 
-        if(char.ToLower(val[1][0]) == 's')
+        if (char.ToLower(val[1][0]) == 's')
         {
             log.Type = "S";
-            if(!CheckGoodHas(database, log.GoodsID))
-                return;
-        } else if(char.ToLower(val[1][0]) == 'e')
+        }
+        else if (char.ToLower(val[1][0]) == 'e')
         {
             // 若为设备，则查找最近的样品记录
             // 若没有找到，则记录错误
@@ -38,34 +34,18 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
                 cacheData
                     .OrderByDescending(e => e.CreateTime)
                     .FirstOrDefault(it => it.Type == "S" && it.EquipmentId == val[0])
-                    ?.GoodsID ??
-                "ERROR";
-
-            if(!CheckGoodHas(database, log.BindS))
-                return;
+                    ?.GoodsID ?? "ERROR";
         }
         repository.SaveData(log);
     }
 
     public int DeleteLog(string sId)
     {
-        return database.Instance
-            .Updateable<EEquipmentLog>()
+        return database
+            .Instance.Updateable<EEquipmentLog>()
             .Where(it => it.GoodsID == sId || it.BindS == sId)
             .SetColumns(it => new EEquipmentLog() { IsDeleted = true, UpdateTime = DateTime.Now })
             .ExecuteCommand();
-    }
-
-    private static bool CheckGoodHas(DatabaseService database, string goodsId)
-    {
-        // 判断样品订单是否存在以及是否结束
-        return database.Instance
-            .Queryable<EOrder>()
-            .Where(
-                order => order.Code.Contains(goodsId) ||
-                    (order.Code).Any(it => ('s' + it).Equals(goodsId, StringComparison.OrdinalIgnoreCase)))
-            .Where(order => !order.IsComplete)
-            .Any();
     }
 
     /// <summary>
@@ -107,18 +87,20 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
         var res = new List<EEquipmentLog>();
         var cacheData = new Queue<EEquipmentLog>(
             repository
-            .GetData()
+                .GetData()
                 .Where(it => it.BindS == sId && it.Type == "E")
-                .OrderBy(it => it.CreateTime));
+                .OrderBy(it => it.CreateTime)
+        );
 
-        while(cacheData.Count > 0)
+        while (cacheData.Count > 0)
         {
             var data = cacheData.Dequeue();
 
-            if(res.Count != 0 && res[^1].GoodsID == data.GoodsID)
+            if (res.Count != 0 && res[^1].GoodsID == data.GoodsID)
             {
                 res[^1].EndTime = data.CreateTime;
-            } else
+            }
+            else
             {
                 res.Add(data);
             }

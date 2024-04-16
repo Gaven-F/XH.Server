@@ -1,15 +1,13 @@
 ﻿using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Server.Application;
-using Server.Application.Entities;
 
 namespace Server.Web.Controllers.Entity;
 
 /// <summary>
 /// 设备绑定
 /// </summary>
-public class Bind : BasicApplicationApi<EBind, EBind>, IDynamicApiController
+public class Bind : BasicApplicationApi<EBind>, IDynamicApiController
 {
     [NonAction]
     public override Results<Ok<bool>, BadRequest<string>> Approve(

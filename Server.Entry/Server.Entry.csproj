@@ -18,15 +18,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AlibabaCloud.SDK.Dingtalk" Version="2.0.98" />
+		<PackageReference Include="dingtalk-sdk-netCore" Version="1.0.4" />
 		<PackageReference Include="Furion" Version="4.9.2.19" />
 		<PackageReference Include="Masuit.Tools.AspNetCore" Version="2024.1.0" />
 		<PackageReference Include="NPOI" Version="2.7.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Server.Application\Server.Application.csproj" />
-		<ProjectReference Include="..\Server.Core\Server.Core.csproj" />
-		<ProjectReference Include="..\Server.Domain\Server.Domain.csproj" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.152" />
 	</ItemGroup>
 
 	<Target Name="CopyTemplateFile" BeforeTargets="PrepareForBuild">

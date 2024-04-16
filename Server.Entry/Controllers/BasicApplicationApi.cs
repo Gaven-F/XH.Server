@@ -1,14 +1,9 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Server.Application.Entities.Dto;
-using Server.Core.Database;
-using Server.Domain.ApprovedPolicy;
-using Server.Domain.Basic;
 
 namespace Server.Application;
 
-public class BasicApplicationApi<T, VoT>
+public class BasicApplicationApi<T>
     where T : BasicEntity
 {
     [FromServices]
@@ -59,18 +54,17 @@ public class BasicApplicationApi<T, VoT>
             return TypedResults.BadRequest(e.Message);
         }
     }
-    public virtual Results<Ok<List<Tuple<VoT, EApprovalLog>>>, BadRequest<string>> GetData()
+
+    public virtual Results<Ok<List<Tuple<T, EApprovalLog>>>, BadRequest<string>> GetData()
     {
         try
         {
             var data = BasicEntityService.GetEntities();
-            List<Tuple<VoT, EApprovalLog>> res = new(data.Count());
+            List<Tuple<T, EApprovalLog>> res = new(data.Count());
             foreach (var entity in data)
             {
-                var log = ApprovedPolicyService
-                    .GetCurrentApprovalLog(entity.Id)
-                    .Adapt<Vo.ApproLog>();
-                res.Add(new(entity.Adapt<VoT>(), log));
+                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
+                res.Add(new(entity, log));
             }
             return TypedResults.Ok(res);
         }
@@ -79,14 +73,15 @@ public class BasicApplicationApi<T, VoT>
             return TypedResults.BadRequest(e.Message);
         }
     }
-    public virtual Results<Ok<Tuple<VoT, Vo.ApproLog>>, BadRequest<string>> GetDataById(long id)
+
+    public virtual Results<Ok<Tuple<T, EApprovalLog>>, BadRequest<string>> GetDataById(long id)
     {
         try
         {
             return TypedResults.Ok(
-                new Tuple<VoT, Vo.ApproLog>(
-                    BasicEntityService.GetEntityById(id).Adapt<VoT>(),
-                    ApprovedPolicyService.GetCurrentApprovalLog(id).Adapt<Vo.ApproLog>()
+                new Tuple<T, EApprovalLog>(
+                    BasicEntityService.GetEntityById(id),
+                    ApprovedPolicyService.GetCurrentApprovalLog(id)
                 )
             );
         }

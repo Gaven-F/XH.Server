@@ -1,9 +1,6 @@
 ﻿using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Server.Application;
-using Server.Application.Entities;
-using Server.Domain.Repository;
 
 namespace Server.Web.Controllers.Entity;
 
@@ -11,13 +8,14 @@ namespace Server.Web.Controllers.Entity;
 /// 假期剩余
 /// </summary>
 public class LeaveRemaining(IRepositoryService<ELeaveRemaining> repository)
-    : BasicApplicationApi<ELeaveRemaining, ELeaveRemaining>,
+    : BasicApplicationApi<ELeaveRemaining>,
         IDynamicApiController
 {
-    public ELeaveRemaining GetLeaveDate(string userId, string leaveType) => repository
-                        .GetData(false)
-                        .FirstOrDefault(it => it.UserId == userId && it.LeaveType == leaveType)
-                    ?? new ELeaveRemaining();
+    public ELeaveRemaining GetLeaveDate(string userId, string leaveType) =>
+        repository
+            .GetData(false)
+            .FirstOrDefault(it => it.UserId == userId && it.LeaveType == leaveType)
+        ?? new ELeaveRemaining();
 
     [HttpPost]
     public void SetLeaveDate(ELeaveRemaining data) => repository.SaveData(data);

@@ -1,15 +1,12 @@
 ﻿using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
-using Server.Application;
-using Server.Application.Entities;
-using Server.Application.Entities.Dto;
 
 namespace Server.Web.Controllers.Entity;
 
 /// <summary>
 /// 付款
 /// </summary>
-public class Payment : BasicApplicationApi<EPayment, Vo.Payment>, IDynamicApiController
+public class Payment : BasicApplicationApi<EPayment>, IDynamicApiController
 {
     [HttpPut("{id}")]
     public IResult Update(string id, string sourcesFunding)

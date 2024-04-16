@@ -1,12 +1,9 @@
 ﻿using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Server.Application;
-using Server.Application.Entities;
-using Server.Domain.ApprovedPolicy;
 
 namespace Server.Web.Controllers.Entity;
 
-public class Topic_Contract : BasicApplicationApi<ET_C, ET_C>, IDynamicApiController
+public class Topic_Contract : BasicApplicationApi<ET_C>, IDynamicApiController
 {
     public override Results<Ok<string>, BadRequest<string>> Add(ET_C entity)
     {
