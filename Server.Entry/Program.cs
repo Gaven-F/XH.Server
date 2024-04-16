@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Server.Core.Config;
 using Server.Core.Database;
 using Server.Domain.ApprovedPolicy;
@@ -6,6 +5,7 @@ using Server.Domain.Basic;
 using Server.Domain.Converters;
 using Server.Domain.Repository;
 using Server.Web.MiddleWares;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args).Inject();
 

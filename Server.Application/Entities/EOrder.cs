@@ -11,9 +11,12 @@ public class EOrder : BasicEntity
     public string? Numbering { get; set; }
     public string? WorkNumber { get; set; }
     public string? CustomerName { get; set; }
-    public string? CommissioneEngineers { get; set; }
+    public string? CommissionEngineers { get; set; }
     public string? ContactNumber { get; set; }
     public string? ProductsNumber { get; set; }
+    /// <summary>
+    /// 样品名称
+    /// </summary>
     public string? ProductsName { get; set; }
     public string? ProductsModel { get; set; }
     public string? ProductsLots { get; set; }
@@ -29,13 +32,17 @@ public class EOrder : BasicEntity
 
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
+    public bool IsComplete { get; set; }
+    /// <summary>
+    /// 样品绑定代码
+    /// </summary>
+    public string? Code { get; set; }
 }
 
 public class EOrderItem : BasicEntity
 {
     [JsonConverter(typeof(JsonLongToStringConverter))]
     public long OrderId { get; set; }
-
     public string Project { get; set; } = string.Empty;
     public string Condition { get; set; } = string.Empty;
     public string Engineer { get; set; } = string.Empty;

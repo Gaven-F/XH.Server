@@ -1,4 +1,4 @@
-﻿namespace Server.Web.Utils;
+﻿namespace Server.Entry.Utils;
 
 public class NPOIStream(bool allowClose = true) : MemoryStream
 {
