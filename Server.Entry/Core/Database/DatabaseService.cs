@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Server.Core.Config;
-using SqlSugar;
 
 namespace Server.Core.Database;
 

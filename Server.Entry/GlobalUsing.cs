@@ -7,5 +7,6 @@ global using Server.Domain.ApprovedPolicy;
 global using Server.Domain.Basic;
 global using Server.Domain.Repository;
 global using Server.Entry.MiddleWares;
+global using SqlSugar;
 global using N_Doc = NPOI.XWPF.UserModel.XWPFDocument;
 global using N_Par = NPOI.XWPF.UserModel.XWPFParagraph;

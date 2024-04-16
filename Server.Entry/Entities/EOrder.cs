@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using Server.Domain.Converters;
-using SqlSugar;
 
 namespace Server.Application.Entities;
 
@@ -30,10 +29,12 @@ public class EOrder : BasicEntity
     public string? Fabricated { get; set; }
     public string? Review { get; set; }
     public bool IsComplete { get; set; }
+
     /// <summary>
     /// 样品绑定代码
     /// </summary>
     public List<string> Code { get; set; } = [];
+
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
 }

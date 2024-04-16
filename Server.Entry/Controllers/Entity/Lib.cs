@@ -5,17 +5,13 @@ namespace Server.Web.Controllers.Entity;
 public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService database)
     : IDynamicApiController
 {
-    /*
-     * S为样品，E为设备
-     * G为扫描枪
-     */
-
     /// <summary>
     /// 提交扫码记录
     /// </summary>
     /// <param name="data"></param>
     public void PostEquipmentLog(string data)
     {
+        //S为样品，E为设备 G为扫描枪
         var val = data.Split('|');
         var log = new EEquipmentLog { EquipmentId = val[0], GoodsID = val[1], };
 
@@ -25,9 +21,7 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
         }
         else if (char.ToLower(val[1][0]) == 'e')
         {
-            // 若为设备，则查找最近的样品记录
-            // 若没有找到，则记录错误
-            // 若找到，则绑定样品
+            // 若为设备，则查找最近的样品记录 若没有找到，则记录错误 若找到，则绑定样品
             log.Type = "E";
             var cacheData = repository.GetData(false);
             log.BindS =

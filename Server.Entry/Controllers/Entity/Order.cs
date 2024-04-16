@@ -2,7 +2,10 @@
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using SqlSugar;
+using TUPLE = System.Tuple<
+    Server.Application.Entities.EOrder,
+    Server.Domain.ApprovedPolicy.EApprovalLog
+>;
 
 namespace Server.Web.Controllers.Entity;
 
@@ -11,12 +14,15 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 {
-    new private ISqlSugarClient Db { get => base.Db.Instance; }
+    private new ISqlSugarClient Db
+    {
+        get => base.Db.Instance;
+    }
+
     public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) =>
-        TypedResults.Ok(Db
-            .InsertNav(entity)
-            .Include(it => it.Items)
-            .ExecuteReturnEntity().ToString());
+        TypedResults.Ok(
+            Db.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString()
+        );
 
 #pragma warning disable IDE0060 // 删除未使用的参数
     /// <summary>
@@ -161,13 +167,11 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     }
 
     [NonAction]
-    public override Results<Ok<List<Tuple<EOrder, EApprovalLog>>>,
-        BadRequest<string>> GetData()
+    public override Results<Ok<List<TUPLE>>, BadRequest<string>> GetData()
     {
         try
         {
-            var data = Db
-                .Queryable<EOrder>()
+            var data = Db.Queryable<EOrder>()
                 .Where(it => !it.IsDeleted)
                 .Includes(it => it.Items)
                 .ToList();
@@ -185,14 +189,10 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         }
     }
 
-
     [NonAction]
-    public override Results<Ok<Tuple<EOrder, EApprovalLog>>, BadRequest<string>> GetDataById(
-        long id
-    )
+    public override Results<Ok<TUPLE>, BadRequest<string>> GetDataById(long id)
     {
-        var data = Db
-            .Queryable<EOrder>()
+        var data = Db.Queryable<EOrder>()
             .Includes(it => it.Items)
             .Where(it => !it.IsDeleted)
             .InSingle(id);
@@ -206,6 +206,4 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 
         return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
     }
-
-
 }
