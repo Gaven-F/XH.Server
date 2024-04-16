@@ -2,6 +2,7 @@
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 
 namespace Server.Web.Controllers.Entity;
 
@@ -10,79 +11,41 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 {
-    public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity)
-    {
-        try
-        {
-            var id = BasicEntityService
-                .GetDb()
-                .Instance.InsertNav(entity)
-                .Include(it => it.Items)
-                .ExecuteReturnEntity()
-                .Id;
-            ApprovedPolicyService.CreateApproveBasicLog(entity);
-            var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
-            if (log != null)
-            {
-                DingTalkUtils.SendMsg(
-                    [log.ApproverId.ToString()],
-                    $"有一个待审核的消息！\r\n数据ID：{entity.Id}"
-                );
-            }
+    new private ISqlSugarClient Db { get => base.Db.Instance; }
+    public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) =>
+        TypedResults.Ok(Db
+            .InsertNav(entity)
+            .Include(it => it.Items)
+            .ExecuteReturnEntity().ToString());
 
-            return TypedResults.Ok(id.ToString());
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
+#pragma warning disable IDE0060 // 删除未使用的参数
+    /// <summary>
+    /// 获取所有订单数据
+    /// </summary>
+    /// <param name="null">无需传值</param>
+    /// <returns></returns>
+    public ActionResult<IEnumerable<EOrder>> GetData(string @null = "") =>
+        BasicEntityService.GetEntities().ToList();
 
-    public override Results<Ok<List<Tuple<EOrder, EApprovalLog>>>, BadRequest<string>> GetData()
-    {
-        try
-        {
-            var data = Db
-                .Instance.Queryable<EOrder>()
-                .Where(it => !it.IsDeleted)
-                .Includes(it => it.Items)
-                .ToList();
-            List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
-            foreach (var entity in data)
-            {
-                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
-                res.Add(new(entity, log));
-            }
-            return TypedResults.Ok(res);
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
+    /// <summary>
+    /// 获取订单数据
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="null">无需传值</param>
+    /// <returns></returns>
+    public ActionResult<EOrder> GetDataById(string id, string @null = "") =>
+        BasicEntityService.GetEntityById(Convert.ToInt64(id));
 
-    [HttpGet("{engineerId}")]
-    public ActionResult<IEnumerable<EOrder>> GetDataByEngineer(string engineerId)
-    {
-        var data = BasicEntityService
-            .GetDb()
-            .Instance.Queryable<EOrder>()
-            .Where(it => !it.IsDeleted)
-            .Includes(it => it.Items)
-            .ToList();
-        var res = data.Where(d =>
-            d.Items != null && d.Items.Where(i => i.Engineer == engineerId).Any()
-        );
-        return res.ToList();
-    }
+#pragma warning restore IDE0060 // 删除未使用的参数
 
+
+    [NonAction]
     public override Results<Ok<Tuple<EOrder, EApprovalLog>>, BadRequest<string>> GetDataById(
         long id
     )
     {
-        var data = BasicEntityService
-            .GetDb()
-            .Instance.Queryable<EOrder>()
+        var data = Db
+            .Queryable<EOrder>()
             .Includes(it => it.Items)
             .Where(it => !it.IsDeleted)
             .InSingle(id);
@@ -97,17 +60,22 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
     }
 
+    /// <summary>
+    /// 订单更新
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     public ActionResult UpdateItem(string id, EOrderItem item)
     {
-        var db = BasicEntityService.GetDb();
         var _id = Convert.ToInt64(id);
         if (_id != item.Id)
         {
             return new BadRequestObjectResult("id不匹配！");
         }
         item.UpdateTime = DateTime.Now;
-        var res = db.Instance.Updateable(item).ExecuteCommand();
+        var res = Db.Updateable(item).ExecuteCommand();
         return new OkObjectResult(res);
     }
 
@@ -137,7 +105,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     public ActionResult GetDataByName(string name)
     {
         var data = Db
-            .Instance.Queryable<EOrder>()
+            .Queryable<EOrder>()
             .Where(it => !it.IsDeleted)
             .Includes(it => it.Items)
             .ToList();
@@ -150,7 +118,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     public ActionResult GetDataByCode(string code)
     {
         var data = Db
-            .Instance.Queryable<EOrder>()
+            .Queryable<EOrder>()
             .Where(it => !it.IsDeleted)
             .Includes(it => it.Items)
             .ToList();
@@ -163,23 +131,23 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     public void CompleteOrder(string orderId)
     {
         var id = Convert.ToInt32(orderId);
-        var order = Db.Instance.Queryable<EOrder>().Includes(it => it.Items).InSingle(id);
+        var order = Db.Queryable<EOrder>().Includes(it => it.Items).InSingle(id);
 
         order.IsComplete = true;
         order.UpdateTime = DateTime.Now;
 
-        Db.Instance.Updateable(order).ExecuteCommand();
+        Db.Updateable(order).ExecuteCommand();
     }
 
     public void DeleteOrder(string orderId)
     {
         var id = Convert.ToInt32(orderId);
-        var order = Db.Instance.Queryable<EOrder>().Includes(it => it.Items).InSingle(id);
+        var order = Db.Queryable<EOrder>().Includes(it => it.Items).InSingle(id);
 
         order.IsDeleted = true;
         order.UpdateTime = DateTime.Now;
 
-        Db.Instance.Updateable(order).ExecuteCommand();
+        Db.Updateable(order).ExecuteCommand();
     }
 
     /// <summary>
@@ -193,7 +161,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// </param>
     public ActionResult GetOrderWithLibLog(string code)
     {
-        var db = Db.Instance;
+        var db = Db;
 
         var rawOrderData = db.Queryable<EOrder>()
             .Includes(it => it.Items)
@@ -260,4 +228,30 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
             }
         );
     }
+
+    [NonAction]
+    public override Results<Ok<List<Tuple<EOrder, EApprovalLog>>>,
+        BadRequest<string>> GetData()
+    {
+        try
+        {
+            var data = Db
+                .Queryable<EOrder>()
+                .Where(it => !it.IsDeleted)
+                .Includes(it => it.Items)
+                .ToList();
+            List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
+            foreach (var entity in data)
+            {
+                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
+                res.Add(new(entity, log));
+            }
+            return TypedResults.Ok(res);
+        }
+        catch (Exception e)
+        {
+            return TypedResults.BadRequest(e.Message);
+        }
+    }
+
 }

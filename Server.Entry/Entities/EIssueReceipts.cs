@@ -4,7 +4,7 @@ public class EIssueReceipts : BasicEntity
 {
     public string CorpId { get; set; } = string.Empty;
     public string InvoiceType { get; set; } = string.Empty;
-    public string ApplicatDepart { get; set; } = string.Empty;
+    public string ApplicantDepart { get; set; } = string.Empty;
     public string ReasonReceipt { get; set; } = string.Empty;
     public string ReceiptAmount { get; set; } = string.Empty;
     public DateTime ReceiptDate { get; set; }
