@@ -8,10 +8,20 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
     private ISqlSugarClient Db => database.Instance;
     public void StopLog(string sCode)
     {
-        Db.Insertable(new EStopEquipment { StopCode = sCode }).ExecuteCommand();
+        Db.Insertable(new EStopEquipment { StopCode = sCode }).ExecuteReturnSnowflakeId();
 
         var order = Db.Queryable<EOrder>()
-            .Single(it => it.Code.Contains(sCode));
+            .ToList()
+            .Find(it => it.Code.Contains(sCode))!;
+
+        if (order == null)
+        {
+            throw new Exception("无数据！");
+        }
+        else if (order.IsComplete)
+        {
+            throw new Exception("订单已完成！无法再次操作！");
+        }
 
         bool complete =
             Db.Queryable<EStopEquipment>()
@@ -31,7 +41,7 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
         var codes = order.Code;
 
         var logs = new Queue<EEquipmentLog>(Db.Queryable<EEquipmentLog>()
-            .Where(it => codes.Contains(it.BindS ?? it.GoodsID))
+            .Where(it => codes.Contains(it.BindS ?? it.GoodsID) && it.Type == "E")
             .ToList());
 
         var processedLogs = new Queue<EEquipmentLog>();
@@ -39,7 +49,7 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
         while (logs.Count > 0)
         {
             var log = logs.Dequeue();
-            if (processedLogs.Peek()?.GoodsID == log.GoodsID)
+            if (processedLogs.Count > 0 && processedLogs.Peek()?.GoodsID == log.GoodsID)
             {
                 processedLogs.Peek().EndTime = log.CreateTime;
             }
@@ -55,7 +65,7 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
         {
             var log = processedLogs.Dequeue();
             order.Items ??= [];
-            if (cnt - 1 >= order.Items.Count)
+            if (cnt >= order.Items.Count)
             {
                 order.Items.Add(new()
                 {
@@ -65,13 +75,16 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
                     Engineer = log.EquipmentId,
                     Info = log.Info ?? ""
                 });
+            }else
+            {
+                order.Items[cnt].DeviceNumber = log.GoodsID;
+                order.Items[cnt].DeviceNumber = log.GoodsID;
+                order.Items[cnt].StartTime = log.CreateTime.ToString();
+                order.Items[cnt].EndTime = log.EndTime.ToString();
+                order.Items[cnt].Engineer = log.EquipmentId;
+                order.Items[cnt].Info = log.Info ?? "";
             }
-            order.Items[cnt].DeviceNumber = log.GoodsID;
-            order.Items[cnt].DeviceNumber = log.GoodsID;
-            order.Items[cnt].StartTime = log.CreateTime.ToString();
-            order.Items[cnt].EndTime = log.EndTime.ToString();
-            order.Items[cnt].Engineer = log.EquipmentId;
-            order.Items[cnt].Info = log.Info ?? "";
+            cnt++;
         }
 
         Db.Updateable(order).ExecuteCommand();

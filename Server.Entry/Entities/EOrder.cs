@@ -33,6 +33,7 @@ public class EOrder : BasicEntity
     /// <summary>
     /// 样品绑定代码
     /// </summary>
+    [SugarColumn(IsJson = true)]
     public List<string> Code { get; set; } = [];
 
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]

@@ -3,9 +3,7 @@ using Furion.DatabaseAccessor;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using TUPLE = System.Tuple<
-    Server.Application.Entities.EOrder,
-    Server.Domain.ApprovedPolicy.EApprovalLog
+using TUPLE = System.Tuple<Server.Application.Entities.EOrder, Server.Domain.ApprovedPolicy.EApprovalLog
 >;
 
 namespace Server.Web.Controllers.Entity;
@@ -17,10 +15,8 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 {
     private ISqlSugarClient Database => Db.Instance;
 
-    public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) =>
-        TypedResults.Ok(
-            Database.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString()
-        );
+    public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) => TypedResults.Ok(
+        Database.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString());
 
 #pragma warning disable IDE0060 // 删除未使用的参数
     /// <summary>
@@ -29,7 +25,10 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// <param name="null">无需传值</param>
     /// <returns></returns>
     public ActionResult<IEnumerable<EOrder>> GetData(string @null = "") =>
-        BasicEntityService.GetEntities().ToList();
+        Database.Queryable<EOrder>()
+        .Where(it => !it.IsDeleted)
+        .Includes(it => it.Items)
+        .ToList();
 
     /// <summary>
     /// 获取订单数据
@@ -38,7 +37,10 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// <param name="null">无需传值</param>
     /// <returns></returns>
     public ActionResult<EOrder> GetDataById(string id, string @null = "") =>
-        BasicEntityService.GetEntityById(Convert.ToInt64(id));
+        Database.Queryable<EOrder>()
+        .Where(it => !it.IsDeleted)
+        .Includes(it => it.Items)
+        .InSingle(Convert.ToInt64(id));
 
 #pragma warning restore IDE0060 // 删除未使用的参数
     /// <summary>
@@ -47,7 +49,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// <param name="id"></param>
     /// <param name="item"></param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut]
     public ActionResult UpdateItem(string id, EOrderItem item)
     {
         var _id = Convert.ToInt64(id);
@@ -60,8 +62,8 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         return new OkObjectResult(res);
     }
 
-    [HttpPut("{id}")]
-    public ActionResult Update(string id, EOrder item)
+    [HttpPut]
+    public ActionResult UpdateOrder(string id, EOrder item)
     {
         var _id = Convert.ToInt64(id);
         if (_id != item.Id)
@@ -76,31 +78,24 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         var res = Database
             .UpdateNav(item)
             .Include(it => it.Items)
-        .ExecuteCommand();
+            .ExecuteCommand();
 
         ApprovedPolicyService.CreateApproveBasicLog(item);
         var log = ApprovedPolicyService.GetCurrentApprovalLog(item.Id);
         if (log != null)
         {
-            DingTalkUtils.SendMsg(
-                [log.ApproverId.ToString()],
-                $"有一个待审核的消息！\r\n数据ID：{item.Id}"
-            );
+            DingTalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{item.Id}");
         }
 
         return new OkObjectResult(res);
     }
-
 
     [HttpGet]
     public IResult DownloadFile([FromServices] DatabaseService dbService, string orderId)
     {
         var id = Convert.ToInt64(orderId);
         var db = dbService.Instance;
-        var data = db.Queryable<EOrder>()
-            .Includes(it => it.Items)
-            .Where(it => !it.IsDeleted)
-            .InSingle(id);
+        var data = db.Queryable<EOrder>().Includes(it => it.Items).Where(it => !it.IsDeleted).InSingle(id);
 
         if (data == null)
         {
@@ -111,8 +106,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         return TypedResults.Stream(
             stream,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "demo.docx"
-        );
+            "demo.docx");
     }
 
     /// <summary>
@@ -149,11 +143,8 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         var rawLibData = new Queue<EEquipmentLog>(
             db.Queryable<EEquipmentLog>()
                 .Where(it => !it.IsDeleted)
-                .Where(it =>
-                    orderData.Code.Contains(it.GoodsID) || orderData.Code.Contains(it.BindS ?? "")
-                )
-                .ToList()
-        );
+                .Where(it => orderData.Code.Contains(it.GoodsID) || orderData.Code.Contains(it.BindS ?? ""))
+                .ToList());
 
         var logData = new Queue<EEquipmentLog>();
 
@@ -174,24 +165,18 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         var pOrder = orderData.DeepClone();
         var pLog = logData.DeepClone();
 
-        pOrder.Items!.ForEach(i =>
-        {
-            if (logData.Count > 0)
+        pOrder.Items!.ForEach(
+            i =>
             {
-                var data = logData.Dequeue();
-                i.StartTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
-                i.EndTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
-            }
-        });
+                if (logData.Count > 0)
+                {
+                    var data = logData.Dequeue();
+                    i.StartTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    i.EndTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+            });
 
-        return new OkObjectResult(
-            new
-            {
-                pOrder,
-                pLog,
-                rawOrderData
-            }
-        );
+        return new OkObjectResult(new { pOrder, pLog, rawOrderData });
     }
 
     [NonAction]
@@ -199,10 +184,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     {
         try
         {
-            var data = Database.Queryable<EOrder>()
-                .Where(it => !it.IsDeleted)
-                .Includes(it => it.Items)
-                .ToList();
+            var data = Database.Queryable<EOrder>().Where(it => !it.IsDeleted).Includes(it => it.Items).ToList();
             List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
             foreach (var entity in data)
             {
@@ -220,10 +202,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     [NonAction]
     public override Results<Ok<TUPLE>, BadRequest<string>> GetDataById(long id)
     {
-        var data = Database.Queryable<EOrder>()
-            .Includes(it => it.Items)
-            .Where(it => !it.IsDeleted)
-            .InSingle(id);
+        var data = Database.Queryable<EOrder>().Includes(it => it.Items).Where(it => !it.IsDeleted).InSingle(id);
 
         if (data == null)
         {
