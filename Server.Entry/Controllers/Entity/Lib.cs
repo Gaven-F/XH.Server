@@ -1,50 +1,55 @@
 ﻿using Furion.DynamicApiController;
+using NPOI.Util;
+using SharpCompress;
 
 namespace Server.Web.Controllers.Entity;
 
-public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService database)
-    : IDynamicApiController
+public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService database) : IDynamicApiController
 {
     private ISqlSugarClient Db => database.Instance;
+
     public void StopLog(string sCode)
     {
-        Db.Insertable(new EStopEquipment { StopCode = sCode }).ExecuteReturnSnowflakeId();
+        if (Db.Queryable<EStopEquipment>().Any(it => it.StopCode == sCode))
+            throw new Exception("订单已完成！无法再次操作！");
 
         var order = Db.Queryable<EOrder>()
-            .ToList()
-            .Find(it => it.Code.Contains(sCode))!;
+            .Includes(it => it.Items)
+            .ToList().Find(it => it.Code.Contains(sCode))!;
 
         if (order == null)
         {
             throw new Exception("无数据！");
         }
-        else if (order.IsComplete)
+        else if (order.CompleteOrderId != 0)
         {
             throw new Exception("订单已完成！无法再次操作！");
         }
 
-        bool complete =
-            Db.Queryable<EStopEquipment>()
-            .Any(it => order.Code.Contains(it.StopCode));
+        Db.Insertable(new EStopEquipment { StopCode = sCode }).ExecuteReturnSnowflakeId();
 
-        CompleteOrder(order, complete);
+        var complete =
+            Db.Queryable<EStopEquipment>()
+            .Where(it => order.Code.Contains(it.StopCode))
+            .ToList()
+            .Count;
+
+        CompleteOrder(order, complete >= order.Code.Count);
     }
 
     private void CompleteOrder(EOrder order, bool complete)
     {
-        if (!complete) return;
-
-        order.IsComplete = true;
-        order.UpdateTime = DateTime.Now;
-        Db.Updateable(order).ExecuteCommand();
+        if (!complete)
+        {
+            return;
+        }
 
         var codes = order.Code;
 
-        var logs = new Queue<EEquipmentLog>(Db.Queryable<EEquipmentLog>()
-            .Where(it => codes.Contains(it.BindS ?? it.GoodsID) && it.Type == "E")
-            .ToList());
+        var logs = new Queue<EEquipmentLog>(
+            Db.Queryable<EEquipmentLog>().Where(it => codes.Contains(it.BindS ?? it.GoodsID) && it.Type == "E").ToList());
 
-        var processedLogs = new Queue<EEquipmentLog>();
+        var processedLogs = new Stack<EEquipmentLog>();
 
         while (logs.Count > 0)
         {
@@ -55,39 +60,60 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
             }
             else
             {
-                processedLogs.Enqueue(log);
+                processedLogs.Push(log);
             }
         }
 
         var cnt = 0;
+        var completeOrder = order.DeepClone();
+        completeOrder.Items = order.Items.DeepClone();
+        completeOrder.Id = 0;
 
         while (processedLogs.Count > 0)
         {
-            var log = processedLogs.Dequeue();
-            order.Items ??= [];
-            if (cnt >= order.Items.Count)
+            var log = processedLogs.Pop();
+            completeOrder.Items ??= [];
+            if (cnt >= completeOrder.Items.Count)
             {
-                order.Items.Add(new()
+                completeOrder.Items.Add(new()
                 {
                     DeviceNumber = log.GoodsID,
                     StartTime = log.CreateTime.ToString(),
                     EndTime = log.EndTime.ToString(),
                     Engineer = log.EquipmentId,
-                    Info = log.Info ?? ""
+                    Info = log.Info ?? "",
+                    Annex = log.Annex??"",
+                    Operate = log.Operate??"",
                 });
-            }else
+            }
+            else
             {
-                order.Items[cnt].DeviceNumber = log.GoodsID;
-                order.Items[cnt].DeviceNumber = log.GoodsID;
-                order.Items[cnt].StartTime = log.CreateTime.ToString();
-                order.Items[cnt].EndTime = log.EndTime.ToString();
-                order.Items[cnt].Engineer = log.EquipmentId;
-                order.Items[cnt].Info = log.Info ?? "";
+                completeOrder.Items[cnt].DeviceNumber = log.GoodsID;
+                completeOrder.Items[cnt].DeviceNumber = log.GoodsID;
+                completeOrder.Items[cnt].StartTime = log.CreateTime.ToString();
+                completeOrder.Items[cnt].EndTime = log.EndTime.ToString();
+                completeOrder.Items[cnt].Engineer = log.EquipmentId;
+                completeOrder.Items[cnt].Info = log.Info ?? "";
+                completeOrder.Items[cnt].Id = 0;
+                completeOrder.Items[cnt].Operate = log.Operate ?? "";
+                completeOrder.Items[cnt].Annex = log.Annex ?? "";
             }
             cnt++;
         }
 
-        Db.Updateable(order).ExecuteCommand();
+        Db.InsertNav(completeOrder)
+            .Include(it => it.Items)
+            .ExecuteCommand();
+
+        order.CompleteOrderId = completeOrder.Id;
+        order.UpdateTime = DateTime.Now;
+        completeOrder.CompleteOrderId = completeOrder.Id;
+        completeOrder.UpdateTime = DateTime.Now;
+        completeOrder.CreateTime = DateTime.Now;
+
+        Db.Updateable(new List<EOrder> { order, completeOrder })
+            .UpdateColumns(it => new { it.CompleteOrderId, it.UpdateTime, it.CreateTime })
+            .ExecuteCommand();
     }
 
     /// <summary>
@@ -113,7 +139,8 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
                 cacheData
                     .OrderByDescending(e => e.CreateTime)
                     .FirstOrDefault(it => it.Type == "S" && it.EquipmentId == val[0])
-                    ?.GoodsID ?? "ERROR";
+                    ?.GoodsID ??
+                "ERROR";
         }
         repository.SaveData(log);
     }
@@ -121,7 +148,8 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
     public int DeleteLog(string sId)
     {
         return database
-            .Instance.Updateable<EEquipmentLog>()
+            .Instance
+            .Updateable<EEquipmentLog>()
             .Where(it => it.GoodsID == sId || it.BindS == sId)
             .SetColumns(it => new EEquipmentLog() { IsDeleted = true, UpdateTime = DateTime.Now })
             .ExecuteCommand();
@@ -170,8 +198,7 @@ public class Lib(IRepositoryService<EEquipmentLog> repository, DatabaseService d
             repository
                 .GetData()
                 .Where(it => it.BindS == sId && it.Type == "E")
-                .OrderBy(it => it.CreateTime)
-        );
+                .OrderBy(it => it.CreateTime));
 
         while (cacheData.Count > 0)
         {

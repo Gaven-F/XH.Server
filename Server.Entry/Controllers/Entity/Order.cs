@@ -1,6 +1,4 @@
-﻿using AngleSharp.Dom;
-using Furion.DatabaseAccessor;
-using Furion.DynamicApiController;
+﻿using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TUPLE = System.Tuple<Server.Application.Entities.EOrder, Server.Domain.ApprovedPolicy.EApprovalLog
@@ -62,29 +60,25 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         return new OkObjectResult(res);
     }
 
-    [HttpPut]
-    public ActionResult UpdateOrder(string id, EOrder item)
+    [HttpPost]
+    public ActionResult ApprovalNewOrder(EOrder order)
     {
-        var _id = Convert.ToInt64(id);
-        if (_id != item.Id)
-        {
-            return new BadRequestObjectResult("id不匹配！");
-        }
-        item.UpdateTime = DateTime.Now;
-
-        item.StartApprove = true;
-        item.UpdateTime = DateTime.Now;
+        order.Id = 0;
+        order.Items?.ForEach(it => it.Id = 0);
+        order.UpdateTime = DateTime.Now;
+        order.StartApprove = true;
+        order.UpdateTime = DateTime.Now;
 
         var res = Database
-            .UpdateNav(item)
+            .InsertNav(order)
             .Include(it => it.Items)
             .ExecuteCommand();
 
-        ApprovedPolicyService.CreateApproveBasicLog(item);
-        var log = ApprovedPolicyService.GetCurrentApprovalLog(item.Id);
+        ApprovedPolicyService.CreateApproveBasicLog(order);
+        var log = ApprovedPolicyService.GetCurrentApprovalLog(order.Id);
         if (log != null)
         {
-            DingTalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{item.Id}");
+            DingTalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{order.Id}");
         }
 
         return new OkObjectResult(res);
@@ -118,13 +112,14 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// <param name="code">
     /// 查询订单样品绑定代码
     /// </param>
+    [NonAction]
     public ActionResult GetOrderWithLibLog(string code)
     {
         var db = Database;
 
         var rawOrderData = db.Queryable<EOrder>()
             .Includes(it => it.Items)
-            .Where(it => !it.IsDeleted && it.IsComplete)
+            .Where(it => !it.IsDeleted && it.CompleteOrderId != 0)
             .Where(it => it.Code.Contains(code))
             .ToList();
 

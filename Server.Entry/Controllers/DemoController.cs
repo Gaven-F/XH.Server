@@ -2,15 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using NPOI.XWPF.UserModel;
 using Server.Entry.Utils;
+using Utils;
 
 namespace Server.Web.Controllers;
 
 [Route("[controller]/[action]")]
-public class DemoController : IDynamicApiController
+[ApiDescriptionSettings(Order = 99)]
+public class DemoController(BaseFunc dingtalk) : IDynamicApiController
 {
     public ActionResult Index()
     {
-        return new OkObjectResult(new ETopic() { Id = 31231L });
+        var userInfo =
+           dingtalk
+           .GetAllUserInfo(["职位", "姓名"])
+           .ToList();
+
+        return new OkObjectResult(userInfo);
     }
 
     public ActionResult GetAllUserInfo(

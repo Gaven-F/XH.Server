@@ -28,7 +28,8 @@ public class EOrder : BasicEntity
     public string? Laboratory { get; set; }
     public string? Fabricated { get; set; }
     public string? Review { get; set; }
-    public bool IsComplete { get; set; }
+    [JsonConverter(typeof(JsonLongToStringConverter))]
+    public long CompleteOrderId { get; set; }
 
     /// <summary>
     /// 样品绑定代码
@@ -58,4 +59,7 @@ public class EOrderItem : BasicEntity
     public string VirtualTrialTime { get; set; } = string.Empty;
     public string Sign { get; set; } = string.Empty;
     public string Info { get; set; } = string.Empty;
+    public string Operate { get; set; } = string.Empty;
+    public string Annex { get; set; } = string.Empty;
+    public double TotalTime { get; set; }
 }
