@@ -40,6 +40,7 @@ public class EOrder : BasicEntity
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
     public bool StartApprove { get; set; }
+    public double TotalTime { get; set; }
 }
 
 public class EOrderItem : BasicEntity

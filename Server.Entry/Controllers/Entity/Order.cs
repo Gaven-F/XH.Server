@@ -17,16 +17,27 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         Database.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString());
 
 #pragma warning disable IDE0060 // 删除未使用的参数
+
     /// <summary>
     /// 获取所有订单数据
     /// </summary>
     /// <param name="null">无需传值</param>
     /// <returns></returns>
-    public ActionResult<IEnumerable<EOrder>> GetData(string @null = "") =>
-        Database.Queryable<EOrder>()
-        .Where(it => !it.IsDeleted)
-        .Includes(it => it.Items)
-        .ToList();
+    public ActionResult GetData(string @null = "")
+    {
+        var data = Database.Queryable<EOrder>()
+            //.Includes(it => it.Items.C_Where(i => !i.IsDeleted))
+            .Includes(it => it.Items)
+            .Where(it => !it.IsDeleted)
+            .ToList();
+        List<TUPLE> res = new(data.Count);
+        foreach (var entity in data)
+        {
+            var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
+            res.Add(new(entity, log));
+        }
+        return new OkObjectResult(res);
+    }
 
     /// <summary>
     /// 获取订单数据
@@ -34,8 +45,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
     /// <param name="id"></param>
     /// <param name="null">无需传值</param>
     /// <returns></returns>
-    public ActionResult<EOrder> GetDataById(string id, string @null = "") =>
-        Database.Queryable<EOrder>()
+    public ActionResult<EOrder> GetDataById(string id, string @null = "") => Database.Queryable<EOrder>()
         .Where(it => !it.IsDeleted)
         .Includes(it => it.Items)
         .InSingle(Convert.ToInt64(id));
