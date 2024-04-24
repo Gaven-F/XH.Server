@@ -5,9 +5,9 @@ namespace Server.Web.Utils;
 
 public static partial class OrderUtils
 {
-    const string STR_NO_TEMPLATE_FILE = "模板文件不存在！";
-    const string STR_NO_TEMPLATE_FILE_NAME = "不存在的模板文件名！";
-    const string STR_ORDER_DOCX = "随工单.docx";
+    private const string STR_NO_TEMPLATE_FILE = "模板文件不存在！";
+    private const string STR_NO_TEMPLATE_FILE_NAME = "不存在的模板文件名！";
+    private const string STR_ORDER_DOCX = "随工单.docx";
 
     private class TemplateFileInfo(string name, string path, string description = "")
     {

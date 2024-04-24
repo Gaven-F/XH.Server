@@ -1,4 +1,4 @@
-﻿namespace Server.Core;
+﻿namespace Server.Entry.Utils;
 
 public static class UTILS
 {
