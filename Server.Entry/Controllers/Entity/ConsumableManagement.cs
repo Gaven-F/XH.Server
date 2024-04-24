@@ -1,4 +1,5 @@
 ﻿using Furion.DynamicApiController;
+using Utils;
 
 namespace Server.Web.Controllers.Entity;
 
@@ -7,6 +8,13 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 
 
-public class ConsumableManagement
-    : BasicApplicationApi<EConsumableManagement>,
-        IDynamicApiController { }
+public class ConsumableManagement(BaseFunc DingTalk)
+	: BasicApplicationApi<EConsumableManagement>,
+		IDynamicApiController
+{
+	//public ActionResult PostFile(string coperId, string spaceId, string fileId)
+	//{
+	//	var unioId = DingTalk.GetUserUid(coperId);
+	//}
+
+}
