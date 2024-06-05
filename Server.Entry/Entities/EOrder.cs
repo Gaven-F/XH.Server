@@ -41,6 +41,9 @@ public class EOrder : BasicEntity
     public List<EOrderItem>? Items { get; set; }
     public bool StartApprove { get; set; }
     public double TotalTime { get; set; }
+	public DateTime EstimatedTime { get; set; } = DateTime.Now;
+	public DateTime ProposedDate { get; set; } = DateTime.Now;
+	public DateTime ReviewDate { get; set; } = DateTime.Now;
 }
 
 public class EOrderItem : BasicEntity
@@ -63,4 +66,10 @@ public class EOrderItem : BasicEntity
     public string Operate { get; set; } = string.Empty;
     public string Annex { get; set; } = string.Empty;
     public double TotalTime { get; set; }
+    public DateTime EstimatedTime { get; set; } = DateTime.Now;
+    public string ReasonExtension { get; set; } = string.Empty;
+    public DateTime FinalTime { get; set; } = DateTime.Now;
+    public string TestResult { get; set; } = string.Empty;
+    public string SampleNumber { get; set; } = string.Empty;
 }
+
