@@ -134,7 +134,18 @@ public static partial class OrderUtils
                         {
                             var index = Convert.ToInt32(am.Groups[2].Value);
                             if (e.Items != null && e.Items.Count > index)
-                                value = Convert.ToString(p.GetValue(e.Items[index]));
+                            {
+                                if (p.Name.Contains("Time"))
+                                {
+                                    value = DateTime
+                                        .Parse(Convert.ToString(p.GetValue(e.Items[index]))!)
+                                        .ToString("G");
+                                }
+                                else
+                                {
+                                    value = Convert.ToString(p.GetValue(e.Items[index]));
+                                }
+                            }
                         }
                     }
                     else
