@@ -6,6 +6,4 @@ namespace Server.Web.Controllers.Entity;
 /// 采购确认
 /// </summary>
 
-public class ProcurementConfirmation
-    : BasicApplicationApi<EProcurementConfirmation>,
-        IDynamicApiController { }
+public class ProcurementConfirmation : BasicApplicationApi<EProcurementConfirmation>, IDynamicApiController { }

@@ -5,20 +5,46 @@ namespace Server.Application.Entities;
 
 public class EOrder : BasicEntity
 {
-    public string? CorpId { get; set; }
+    /// <summary>
+    /// 编号
+    /// </summary>
     public string? Numbering { get; set; }
+
+    /// <summary>
+    /// 随工单号
+    /// </summary>
     public string? WorkNumber { get; set; }
+
+    /// <summary>
+    /// 客户名称
+    /// </summary>
     public string? CustomerName { get; set; }
-    public string? CommissionEngineers { get; set; }
-    public string? ContactNumber { get; set; }
-    public string? ProductsNumber { get; set; }
 
     /// <summary>
     /// 样品名称
     /// </summary>
     public string? ProductsName { get; set; }
+
+    /// <summary>
+    /// 产品数量
+    /// </summary>
+    public string? ProductsNumber { get; set; }
+
+    /// <summary>
+    /// 产品型号
+    /// </summary>
     public string? ProductsModel { get; set; }
+
+    /// <summary>
+    /// 产品批次
+    /// </summary>
     public string? ProductsLots { get; set; }
+    public double TotalTime { get; set; }
+    public double TotalPrice { get; set; }
+
+    public string? CorpId { get; set; }
+    public string? CommissionEngineers { get; set; }
+    public string? ContactNumber { get; set; }
     public string? FormFactor { get; set; }
     public string? Scene { get; set; }
     public string? Urgency { get; set; }
@@ -28,6 +54,7 @@ public class EOrder : BasicEntity
     public string? Laboratory { get; set; }
     public string? Fabricated { get; set; }
     public string? Review { get; set; }
+
     [JsonConverter(typeof(JsonLongToStringConverter))]
     public long CompleteOrderId { get; set; }
 

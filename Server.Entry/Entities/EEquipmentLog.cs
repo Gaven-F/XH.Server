@@ -30,6 +30,5 @@ public class EEquipmentLog : BasicEntity
 
 public class EStopEquipment : BasicEntity
 {
-    public string StopCode { get; set; } = 
-        string.Empty;
+    public string StopCode { get; set; } = string.Empty;
 }

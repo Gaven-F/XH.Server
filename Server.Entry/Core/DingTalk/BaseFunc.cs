@@ -2,8 +2,8 @@
 using System.Text.Json;
 using DingTalk.Api;
 using DingTalk.Api.Request;
-using Server.Core;
 using Server.Core.Config;
+using Server.Entry.Utils;
 using Tea;
 using Utils.Entity;
 
@@ -13,9 +13,11 @@ public class BaseFunc(ConfigService configService)
 {
     public string AppKey { get; set; } =
         configService.DingTalkConfig.AppKey ?? "dingifzl2bbmtmajc48t";
+
     public string AppSecret { get; set; } =
         configService.DingTalkConfig.AppSecret
         ?? "7r8UJvYuLl81pmksnak--ssRvzesG9H4nc7PydTOfOMxShFDS1w1R7qvZFOrUYoz";
+
     public string AgentId { get; set; } = configService.DingTalkConfig.AgentId ?? "2791318037";
 
     private const string _GET_USER_INFO = "https://oapi.dingtalk.com/topapi/v2/user/getuserinfo";
@@ -24,6 +26,7 @@ public class BaseFunc(ConfigService configService)
         "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/queryonjob";
     private const string _GET_USER_INFO_URL =
         "https://oapi.dingtalk.com/topapi/smartwork/hrm/employee/v2/list";
+    private const string _GET_USER_GET = "https://oapi.dingtalk.com/topapi/v2/user/get";
 
     private static AlibabaCloud.SDK.Dingtalkoauth2_1_0.Client GetClient()
     {
@@ -38,7 +41,7 @@ public class BaseFunc(ConfigService configService)
 
     private static DefaultDingTalkClient GetV2Client(string url)
     {
-        return new DingTalk.Api.DefaultDingTalkClient(url);
+        return new DefaultDingTalkClient(url);
     }
 
     public string GetToken()
@@ -52,7 +55,7 @@ public class BaseFunc(ConfigService configService)
         try
         {
             var response = client.GetAccessToken(request);
-            Trace.WriteLine(JsonSerializer.Serialize(response));
+            Trace.WriteLine(response.ToJsonString());
             return response.Body.AccessToken;
         }
         catch (TeaException _err)
@@ -96,7 +99,7 @@ public class BaseFunc(ConfigService configService)
         var res = client.Execute(req, GetToken());
         if (res.IsError)
         {
-            Debug.WriteLine(JsonSerializer.Serialize(res));
+            Debug.WriteLine((res).ToJsonString());
             //throw new Exception("返回值错误！");
             var bg = Console.BackgroundColor;
             Console.BackgroundColor = ConsoleColor.Red;
@@ -117,7 +120,7 @@ public class BaseFunc(ConfigService configService)
                 .GetProperty("result")
                 .GetProperty("data_list")
                 .EnumerateArray()
-                .Select(x => x.GetString() ?? "");
+                .Select(x => x.GetString() ?? string.Empty);
         }
 
         return null;
@@ -146,7 +149,7 @@ public class BaseFunc(ConfigService configService)
         }
         else
         {
-            Debug.WriteLine(JsonSerializer.Serialize(res));
+            Debug.WriteLine((res).ToJsonString());
             //throw new Exception("返回值错误！");
             var bg = Console.BackgroundColor;
             Console.BackgroundColor = ConsoleColor.Red;
@@ -187,7 +190,7 @@ public class BaseFunc(ConfigService configService)
         var res = client.Execute(req, GetToken());
         if (res.IsError)
         {
-            Debug.WriteLine(JsonSerializer.Serialize(res));
+            Debug.WriteLine((res).ToJsonString());
             //throw new Exception("返回值错误！");
             var bg = Console.BackgroundColor;
             Console.BackgroundColor = ConsoleColor.Red;
@@ -222,12 +225,9 @@ public class BaseFunc(ConfigService configService)
 
             var infoRes = infoClient.Execute(infoReq, GetToken());
 
-            return JsonSerializer.Serialize(new { baseInfo = res.Body, details = infoRes.Body });
+            return (new { baseInfo = res.Body, details = infoRes.Body }).ToJsonString();
         }
-        else
-        {
-            return _ERROR;
-        }
+        return _ERROR;
     }
 
     public IEnumerable<UserInfo> GetAllUserInfo(IEnumerable<string> fileds)
@@ -237,5 +237,70 @@ public class BaseFunc(ConfigService configService)
 
         return from info in GetUserInfo(userIds!, fileds)
             select UserInfo.FromJson(info);
+    }
+
+    public string GetUserUid(string coperId)
+    {
+        var client = GetV2Client(_GET_USER_GET);
+        var req = new OapiUserGetRequest() { Userid = coperId };
+        var res = client.Execute(req, GetToken());
+        if (res.IsError)
+            throw new Exception(nameof(GetUserIds), new(res.ErrMsg + res.Errmsg));
+        var val = JsonDocument.Parse(res.Body).RootElement;
+        if (val.TryGetProperty("result", out var result))
+        {
+            return result.GetProperty("unionid").GetString() ?? _ERROR;
+        }
+        return _ERROR;
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="uId"></param>
+    /// <param name="spaceId"></param>
+    /// <param name="fileId"></param>
+    /// <returns>
+    /// ResourceUrls
+    /// Authorization
+    /// x-oss-date
+    /// </returns>
+    public (string url, string authorization, string date) GetFileDownload(
+        string uId,
+        string spaceId,
+        string fileId
+    )
+    {
+        var config = new AlibabaCloud.OpenApiClient.Models.Config
+        {
+            Protocol = "https",
+            RegionId = "central"
+        };
+        var client = new AlibabaCloud.SDK.Dingtalkstorage_1_0.Client(config);
+
+        var getFileDownloadInfoHeaders =
+            new AlibabaCloud.SDK.Dingtalkstorage_1_0.Models.GetFileDownloadInfoHeaders()
+            {
+                XAcsDingtalkAccessToken = GetToken(),
+            };
+        var getFileDownloadInfoRequest =
+            new AlibabaCloud.SDK.Dingtalkstorage_1_0.Models.GetFileDownloadInfoRequest
+            {
+                UnionId = uId,
+            };
+
+        var res = client.GetFileDownloadInfoWithOptions(
+            spaceId,
+            fileId,
+            getFileDownloadInfoRequest,
+            getFileDownloadInfoHeaders,
+            new()
+        );
+
+        return (
+            res.Body.HeaderSignatureInfo.ResourceUrls[0],
+            res.Body.HeaderSignatureInfo.Headers["Authorization"],
+            res.Body.HeaderSignatureInfo.Headers["x-oss-date"]
+        );
     }
 }

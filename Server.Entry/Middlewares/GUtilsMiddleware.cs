@@ -19,8 +19,8 @@ public class GUtilsMiddleware(RequestDelegate next)
                 {{string.Empty,6}}{{"Time:",-24}}{0}
                 {{string.Empty,6}}{{"Origin:",-24}}{1}
                 {{string.Empty,6}}{{"Request Path:",-24}}{{"{2}",-5}}{{(
-                    context.Request.IsHttps ? "https://" : "http://"
-                )}}{3}{4}
+					context.Request.IsHttps ? "https://" : "http://"
+				)}}{3}{4}
                 {{string.Empty,6}}{{"Status Code:",-24}}{5}
                 {{string.Empty,6}}{{"Content Type:",-24}}{6}
                 {{string.Empty,6}}{{$"{time.ElapsedMilliseconds}ms",-24}}{7}bytes

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Server.Entry.Utils;
 
 namespace Server.Application;
 
@@ -118,13 +119,25 @@ public class BasicApplicationApi<T>
             if (cLog == null)
             {
                 var e = BasicEntityService.GetEntityById(eId);
-                DingTalkUtils.SendMsg(
-                    ApprovedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','),
-                    $"""
-                    抄送信息：
-                    {e.CreateTime.ToLongDateString()}
-                    """
-                );
+
+                var formatFunc = CopyMsgFormat.FormatMapper[nameof(T)];
+                if (formatFunc != null)
+                {
+                    DingTalkUtils.SendMsg(
+                        ApprovedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','),
+                        formatFunc(e)
+                    );
+                }
+                else
+                {
+                    DingTalkUtils.SendMsg(
+                        ApprovedPolicyService.GetPolicy<T>(eId).CopyIds.Split(','),
+                        $"""
+                        您有一条抄送消息：
+                        {e.CreateTime.ToLongDateString()}
+                        """
+                    );
+                }
 
                 return TypedResults.Ok(true);
             }

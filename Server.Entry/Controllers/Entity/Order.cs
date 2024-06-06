@@ -1,7 +1,12 @@
 ﻿using Furion.DynamicApiController;
+using Masuit.Tools.Mime;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using TUPLE = System.Tuple<Server.Application.Entities.EOrder, Server.Domain.ApprovedPolicy.EApprovalLog
+using NPOI.XSSF.UserModel;
+using Server.Entry.Utils;
+using TUPLE = System.Tuple<
+	Server.Application.Entities.EOrder,
+	Server.Domain.ApprovedPolicy.EApprovalLog
 >;
 
 namespace Server.Web.Controllers.Entity;
@@ -11,211 +16,278 @@ namespace Server.Web.Controllers.Entity;
 /// </summary>
 public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 {
-    private ISqlSugarClient Database => Db.Instance;
+	private ISqlSugarClient Database => Db.Instance;
 
-    public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) => TypedResults.Ok(
-        Database.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString());
+	public override Results<Ok<string>, BadRequest<string>> Add(EOrder entity) =>
+		TypedResults.Ok(
+			Database.InsertNav(entity).Include(it => it.Items).ExecuteReturnEntity().ToString()
+		);
 
 #pragma warning disable IDE0060 // 删除未使用的参数
 
-    /// <summary>
-    /// 获取所有订单数据
-    /// </summary>
-    /// <param name="null">无需传值</param>
-    /// <returns></returns>
-    public ActionResult GetData(string @null = "")
-    {
-        var data = Database.Queryable<EOrder>()
-            //.Includes(it => it.Items.C_Where(i => !i.IsDeleted))
-            .Includes(it => it.Items)
-            .Where(it => !it.IsDeleted)
-            .ToList();
-        List<TUPLE> res = new(data.Count);
-        foreach (var entity in data)
-        {
-            var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
-            res.Add(new(entity, log));
-        }
-        return new OkObjectResult(res);
-    }
+	/// <summary>
+	/// 获取所有订单数据
+	/// </summary>
+	/// <param name="null">无需传值</param>
+	/// <returns></returns>
+	public ActionResult GetData(string @null = "")
+	{
+		var data = Database
+			.Queryable<EOrder>()
+			//.Includes(it => it.Items.C_Where(i => !i.IsDeleted))
+			.Includes(it => it.Items)
+			.Where(it => !it.IsDeleted)
+			.ToList();
+		List<TUPLE> res = new(data.Count);
+		foreach (var entity in data)
+		{
+			var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
+			res.Add(new(entity, log));
+		}
+		return new OkObjectResult(res);
+	}
 
-    /// <summary>
-    /// 获取订单数据
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="null">无需传值</param>
-    /// <returns></returns>
-    public ActionResult<EOrder> GetDataById(string id, string @null = "") => Database.Queryable<EOrder>()
-        .Where(it => !it.IsDeleted)
-        .Includes(it => it.Items)
-        .InSingle(Convert.ToInt64(id));
+	/// <summary>
+	/// 获取订单数据
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="null">无需传值</param>
+	/// <returns></returns>
+	public ActionResult<EOrder> GetDataById(string id, string @null = "") =>
+		Database
+			.Queryable<EOrder>()
+			.Where(it => !it.IsDeleted)
+			.Includes(it => it.Items)
+			.InSingle(Convert.ToInt64(id));
 
 #pragma warning restore IDE0060 // 删除未使用的参数
-    /// <summary>
-    /// 订单更新
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    [HttpPut]
-    public ActionResult UpdateItem(string id, EOrderItem item)
-    {
-        var _id = Convert.ToInt64(id);
-        if (_id != item.Id)
-        {
-            return new BadRequestObjectResult("id不匹配！");
-        }
-        item.UpdateTime = DateTime.Now;
-        var res = Database.Updateable(item).ExecuteCommand();
-        return new OkObjectResult(res);
-    }
+	/// <summary>
+	/// 订单更新
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="item"></param>
+	/// <returns></returns>
+	[HttpPut]
+	public ActionResult UpdateItem(string id, EOrderItem item)
+	{
+		var _id = Convert.ToInt64(id);
+		if (_id != item.Id)
+		{
+			return new BadRequestObjectResult("id不匹配！");
+		}
+		item.UpdateTime = DateTime.Now;
+		var res = Database.Updateable(item).ExecuteCommand();
+		return new OkObjectResult(res);
+	}
 
-    [HttpPost]
-    public ActionResult ApprovalNewOrder(EOrder order)
-    {
-        order.Id = 0;
-        order.Items?.ForEach(it => it.Id = 0);
-        order.UpdateTime = DateTime.Now;
-        order.StartApprove = true;
-        order.UpdateTime = DateTime.Now;
+	[HttpPost]
+	public ActionResult ApprovalNewOrder(EOrder order)
+	{
+		order.Id = 0;
+		order.Items?.ForEach(it => it.Id = 0);
+		order.UpdateTime = DateTime.Now;
+		order.StartApprove = true;
+		order.UpdateTime = DateTime.Now;
 
-        var res = Database
-            .InsertNav(order)
-            .Include(it => it.Items)
-            .ExecuteCommand();
+		var res = Database.InsertNav(order).Include(it => it.Items).ExecuteCommand();
 
-        ApprovedPolicyService.CreateApproveBasicLog(order);
-        var log = ApprovedPolicyService.GetCurrentApprovalLog(order.Id);
-        if (log != null)
-        {
-            DingTalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{order.Id}");
-        }
+		ApprovedPolicyService.CreateApproveBasicLog(order);
+		var log = ApprovedPolicyService.GetCurrentApprovalLog(order.Id);
+		if (log != null)
+		{
+			DingTalkUtils.SendMsg([log.ApproverId.ToString()], $"有一个待审核的消息！\r\n数据ID：{order.Id}");
+		}
 
-        return new OkObjectResult(res);
-    }
+		return new OkObjectResult(res);
+	}
 
-    [HttpGet]
-    public IResult DownloadFile([FromServices] DatabaseService dbService, string orderId)
-    {
-        var id = Convert.ToInt64(orderId);
-        var db = dbService.Instance;
-        var data = db.Queryable<EOrder>().Includes(it => it.Items).Where(it => !it.IsDeleted).InSingle(id);
+	[HttpGet]
+	public IResult DownloadFile([FromServices] DatabaseService dbService, string orderId)
+	{
+		var id = Convert.ToInt64(orderId);
+		var db = dbService.Instance;
+		var data = db.Queryable<EOrder>()
+			.Includes(it => it.Items)
+			.Where(it => !it.IsDeleted)
+			.InSingle(id);
 
-        if (data == null)
-        {
-            return Results.BadRequest();
-        }
-        ;
-        var stream = Utils.OrderUtils.ReplaceByEntity(data);
-        return TypedResults.Stream(
-            stream,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "demo.docx");
-    }
+		if (data == null)
+		{
+			return Results.BadRequest();
+		}
+		;
+		var stream = Utils.OrderUtils.ReplaceByEntity(data);
+		return TypedResults.Stream(
+			stream,
+			"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			"demo.docx"
+		);
+	}
 
-    /// <summary>
-    /// 获取订单记录
-    /// </summary>
-    /// <remarks>
-    /// *注：*此订单获取数据应当在订单完成后进行调用
-    /// </remarks>
-    /// <param name="code">
-    /// 查询订单样品绑定代码
-    /// </param>
-    [NonAction]
-    public ActionResult GetOrderWithLibLog(string code)
-    {
-        var db = Database;
+	/// <summary>
+	/// 获取订单记录
+	/// </summary>
+	/// <remarks>
+	/// *注：*此订单获取数据应当在订单完成后进行调用
+	/// </remarks>
+	/// <param name="code">
+	/// 查询订单样品绑定代码
+	/// </param>
+	[NonAction]
+	public ActionResult GetOrderWithLibLog(string code)
+	{
+		var db = Database;
 
-        var rawOrderData = db.Queryable<EOrder>()
-            .Includes(it => it.Items)
-            .Where(it => !it.IsDeleted && it.CompleteOrderId != 0)
-            .Where(it => it.Code.Contains(code))
-            .ToList();
+		var rawOrderData = db.Queryable<EOrder>()
+			.Includes(it => it.Items)
+			.Where(it => !it.IsDeleted && it.CompleteOrderId != 0)
+			.Where(it => it.Code.Contains(code))
+			.ToList();
 
-        if (rawOrderData.Count > 1)
-        {
-            return new BadRequestObjectResult("绑定Id并不唯一！无法获取正常数据");
-        }
+		if (rawOrderData.Count > 1)
+		{
+			return new BadRequestObjectResult("绑定Id并不唯一！无法获取正常数据");
+		}
 
-        var orderData = rawOrderData.FirstOrDefault()!;
+		var orderData = rawOrderData.FirstOrDefault()!;
 
-        if (orderData.Items == null)
-        {
-            return new BadRequestObjectResult("订单无制作工艺！");
-        }
+		if (orderData.Items == null)
+		{
+			return new BadRequestObjectResult("订单无制作工艺！");
+		}
 
-        var rawLibData = new Queue<EEquipmentLog>(
-            db.Queryable<EEquipmentLog>()
-                .Where(it => !it.IsDeleted)
-                .Where(it => orderData.Code.Contains(it.GoodsID) || orderData.Code.Contains(it.BindS ?? ""))
-                .ToList());
+		var rawLibData = new Queue<EEquipmentLog>(
+			db.Queryable<EEquipmentLog>()
+				.Where(it => !it.IsDeleted)
+				.Where(it =>
+					orderData.Code.Contains(it.GoodsID) || orderData.Code.Contains(it.BindS ?? "")
+				)
+				.ToList()
+		);
 
-        var logData = new Queue<EEquipmentLog>();
+		var logData = new Queue<EEquipmentLog>();
 
-        while (rawLibData.Count > 0)
-        {
-            var data = rawLibData.Dequeue();
+		while (rawLibData.Count > 0)
+		{
+			var data = rawLibData.Dequeue();
 
-            if (logData.Count != 0 && logData.Peek().GoodsID == data.GoodsID)
-            {
-                logData.Peek().EndTime = data.CreateTime;
-            }
-            else
-            {
-                logData.Enqueue(data);
-            }
-        }
+			if (logData.Count != 0 && logData.Peek().GoodsID == data.GoodsID)
+			{
+				logData.Peek().EndTime = data.CreateTime;
+			}
+			else
+			{
+				logData.Enqueue(data);
+			}
+		}
 
-        var pOrder = orderData.DeepClone();
-        var pLog = logData.DeepClone();
+		var pOrder = orderData.DeepClone();
+		var pLog = logData.DeepClone();
 
-        pOrder.Items!.ForEach(
-            i =>
-            {
-                if (logData.Count > 0)
-                {
-                    var data = logData.Dequeue();
-                    i.StartTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
-                    i.EndTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
-                }
-            });
+		pOrder.Items!.ForEach(i =>
+		{
+			if (logData.Count > 0)
+			{
+				var data = logData.Dequeue();
+				i.StartTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
+				i.EndTime = data.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
+			}
+		});
 
-        return new OkObjectResult(new { pOrder, pLog, rawOrderData });
-    }
+		return new OkObjectResult(
+			new
+			{
+				pOrder,
+				pLog,
+				rawOrderData
+			}
+		);
+	}
 
-    [NonAction]
-    public override Results<Ok<List<TUPLE>>, BadRequest<string>> GetData()
-    {
-        try
-        {
-            var data = Database.Queryable<EOrder>().Where(it => !it.IsDeleted).Includes(it => it.Items).ToList();
-            List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
-            foreach (var entity in data)
-            {
-                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
-                res.Add(new(entity, log));
-            }
-            return TypedResults.Ok(res);
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
+	[NonAction]
+	public override Results<Ok<List<TUPLE>>, BadRequest<string>> GetData()
+	{
+		try
+		{
+			var data = Database
+				.Queryable<EOrder>()
+				.Where(it => !it.IsDeleted)
+				.Includes(it => it.Items)
+				.ToList();
+			List<Tuple<EOrder, EApprovalLog>> res = new(data.Count);
+			foreach (var entity in data)
+			{
+				var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
+				res.Add(new(entity, log));
+			}
+			return TypedResults.Ok(res);
+		}
+		catch (Exception e)
+		{
+			return TypedResults.BadRequest(e.Message);
+		}
+	}
 
-    [NonAction]
-    public override Results<Ok<TUPLE>, BadRequest<string>> GetDataById(long id)
-    {
-        var data = Database.Queryable<EOrder>().Includes(it => it.Items).Where(it => !it.IsDeleted).InSingle(id);
+	[NonAction]
+	public override Results<Ok<TUPLE>, BadRequest<string>> GetDataById(long id)
+	{
+		var data = Database
+			.Queryable<EOrder>()
+			.Includes(it => it.Items)
+			.Where(it => !it.IsDeleted)
+			.InSingle(id);
 
-        if (data == null)
-        {
-            return TypedResults.BadRequest("未找到实例！");
-        }
+		if (data == null)
+		{
+			return TypedResults.BadRequest("未找到实例！");
+		}
 
-        var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
+		var log = ApprovedPolicyService.GetCurrentApprovalLog(id);
 
-        return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
-    }
+		return TypedResults.Ok(new Tuple<EOrder, EApprovalLog>(data, log));
+	}
+
+	[HttpGet]
+	public ActionResult DownloadFile()
+	{
+		var data = Db.Instance
+			.Queryable<EOrder>()
+			.Where(it => !it.IsDeleted)
+			.ToArray();
+
+		var workbook = new XSSFWorkbook();
+		var sheet = workbook.CreateSheet();
+
+		var header = sheet.CreateRow(0);
+		string[] headerVal = ["编号", "随工单单号", "客户名称", "样品名称", "产品数量", "产品型号", "产品批次", "总时间", "总价格"];
+		for (int i = 0; i < headerVal.Length; i++)
+		{
+			header.CreateCell(i).SetCellValue(headerVal[i]);
+		}
+
+		for (int i = 0; i < data.Length; i++)
+		{
+			var item = data[i];
+			var row = sheet.CreateRow(i + 1);
+			row.CreateCell(0).SetCellValue(item.Numbering);
+			row.CreateCell(1).SetCellValue(item.WorkNumber);
+			row.CreateCell(2).SetCellValue(item.CustomerName);
+			row.CreateCell(3).SetCellValue(item.ProductsName);
+			row.CreateCell(4).SetCellValue(item.ProductsNumber);
+			row.CreateCell(5).SetCellValue(item.ProductsModel);
+			row.CreateCell(6).SetCellValue(item.ProductsLots);
+			row.CreateCell(7).SetCellValue(item.TotalTime);
+			row.CreateCell(8).SetCellValue(item.TotalPrice);
+		}
+
+		var stream = new NPOIStream(false);
+		workbook.Write(stream);
+		stream.Flush();
+		stream.Seek(0, SeekOrigin.Begin);
+		stream.AllowClose = true;
+
+		return new FileStreamResult(stream, MimeMapper.MimeTypes[".xlsx"]);
+	}
+
+
 }
