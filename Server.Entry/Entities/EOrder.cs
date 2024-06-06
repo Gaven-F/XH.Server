@@ -67,11 +67,9 @@ public class EOrder : BasicEntity
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
     public bool StartApprove { get; set; }
-	public DateTime EstimatedTime { get; set; } = DateTime.Now;
-	public DateTime ProposedDate { get; set; } = DateTime.Now;
-	public DateTime ReviewDate { get; set; } = DateTime.Now;
-
-
+    public DateTime EstimatedTime { get; set; } = DateTime.Now;
+    public DateTime ProposedDate { get; set; } = DateTime.Now;
+    public DateTime ReviewDate { get; set; } = DateTime.Now;
 }
 
 public class EOrderItem : BasicEntity
@@ -79,6 +77,7 @@ public class EOrderItem : BasicEntity
     [JsonConverter(typeof(JsonLongToStringConverter))]
     public long OrderId { get; set; }
     public string Project { get; set; } = string.Empty;
+    public string ScoringFactor { get; set; } = string.Empty;
     public string Condition { get; set; } = string.Empty;
     public string Engineer { get; set; } = string.Empty;
     public string Quantity { get; set; } = string.Empty;
@@ -97,10 +96,9 @@ public class EOrderItem : BasicEntity
     public DateTime EstimatedTime { get; set; } = DateTime.Now;
     public string TestResult { get; set; } = string.Empty;
     public string SampleNumber { get; set; } = string.Empty;
-	public string ExtensionDate { get; set; } = string.Empty;
+    public string ExtensionDate { get; set; } = string.Empty;
 
     // 可修改
     public string ReasonExtension { get; set; } = string.Empty;
     public DateTime FinalTime { get; set; } = DateTime.Now;
- }
-
+}
