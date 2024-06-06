@@ -120,7 +120,7 @@ public class BasicApplicationApi<T>
             {
                 var e = BasicEntityService.GetEntityById(eId);
 
-                var formatFunc = CopyMsgFormat.FormatMapper[nameof(T)];
+                var formatFunc = CopyMsgFormat.FormatMapper[e.GetType().Name];
                 if (formatFunc != null)
                 {
                     DingTalkUtils.SendMsg(

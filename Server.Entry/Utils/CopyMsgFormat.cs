@@ -170,7 +170,7 @@ public class CopyMsgFormat
                 entity.ReviewConference,
                 entity.MeetingTime,
                 entity.Participants,
-                entity.Notes,
+                entity.Notes
             );
         }
         else
@@ -260,7 +260,7 @@ public class CopyMsgFormat
                 """",
                 entity.ContractNumber,
                 entity.InvoicingType,
-                entity.ApplicatDepart
+                entity.ApplicatDepart,
                 entity.ReasonInvoic,
                 entity.InvoiceAmount,
                 entity.InvoicDate,
@@ -287,7 +287,7 @@ public class CopyMsgFormat
                 """",
                 entity.InvoiceType,
                 entity.ApplicantDepart,
-                entity.ReasonReceipt
+                entity.ReasonReceipt,
                 entity.ReceiptAmount,
                 entity.ReceiptDate,
                 entity.ReceiptCompany
@@ -311,7 +311,7 @@ public class CopyMsgFormat
                 """",
                 entity.TypeExpense,
                 entity.Amount,
-                entity.FeeBreakdown
+                entity.FeeBreakdown,
                 entity.Remark
             );
         }
