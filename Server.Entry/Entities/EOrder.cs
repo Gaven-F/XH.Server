@@ -70,7 +70,6 @@ public class EOrder : BasicEntity
 	public DateTime EstimatedTime { get; set; } = DateTime.Now;
 	public DateTime ProposedDate { get; set; } = DateTime.Now;
 	public DateTime ReviewDate { get; set; } = DateTime.Now;
-    public string ScoringFactor { get; set; } = string.Empty;
 
 
 }
@@ -98,10 +97,10 @@ public class EOrderItem : BasicEntity
     public DateTime EstimatedTime { get; set; } = DateTime.Now;
     public string TestResult { get; set; } = string.Empty;
     public string SampleNumber { get; set; } = string.Empty;
-	public DateTime ExtensionDate { get; set; } = DateTime.Now;
+	public string ExtensionDate { get; set; } = string.Empty;
 
     // 可修改
     public string ReasonExtension { get; set; } = string.Empty;
     public DateTime FinalTime { get; set; } = DateTime.Now;
-}
+ }
 
