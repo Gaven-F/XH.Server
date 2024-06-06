@@ -3,7 +3,9 @@
 public class ETopic : BasicEntity
 {
     public string CorpId { get; set; } = string.Empty;
+#pragma warning disable CRRSP08
     public string ApplicatDepart { get; set; } = string.Empty;
+#pragma warning restore CRRSP08
     public string TopicTitle { get; set; } = string.Empty;
     public string TopicContent { get; set; } = string.Empty;
     public string ReviewConference { get; set; } = string.Empty;

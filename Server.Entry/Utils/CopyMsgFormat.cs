@@ -4,6 +4,7 @@ public class CopyMsgFormat
 {
     public static readonly Func<object, string> BTFormate = (object data) =>
     {
+        
         if (data is EBusinessTrip entity)
         {
             return string.Format(

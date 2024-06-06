@@ -67,10 +67,12 @@ public class EOrder : BasicEntity
     [Navigate(NavigateType.OneToMany, nameof(EOrderItem.OrderId), nameof(Id))]
     public List<EOrderItem>? Items { get; set; }
     public bool StartApprove { get; set; }
-    public double TotalTime { get; set; }
 	public DateTime EstimatedTime { get; set; } = DateTime.Now;
 	public DateTime ProposedDate { get; set; } = DateTime.Now;
 	public DateTime ReviewDate { get; set; } = DateTime.Now;
+    public string ScoringFactor { get; set; } = string.Empty;
+
+
 }
 
 public class EOrderItem : BasicEntity
@@ -94,9 +96,12 @@ public class EOrderItem : BasicEntity
     public string Annex { get; set; } = string.Empty;
     public double TotalTime { get; set; }
     public DateTime EstimatedTime { get; set; } = DateTime.Now;
-    public string ReasonExtension { get; set; } = string.Empty;
-    public DateTime FinalTime { get; set; } = DateTime.Now;
     public string TestResult { get; set; } = string.Empty;
     public string SampleNumber { get; set; } = string.Empty;
+	public DateTime ExtensionDate { get; set; } = DateTime.Now;
+
+    // 可修改
+    public string ReasonExtension { get; set; } = string.Empty;
+    public DateTime FinalTime { get; set; } = DateTime.Now;
 }
 
