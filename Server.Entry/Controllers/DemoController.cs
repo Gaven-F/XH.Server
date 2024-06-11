@@ -20,10 +20,11 @@ public class DemoController(BaseFunc dingtalk) : IDynamicApiController
 
     public ActionResult GetAllUserInfo(
         [FromServices] BaseFunc dingtalk,
-        [FromQuery] List<string>? fileds
+        [FromQuery] List<string>? fileds,
+        [FromQuery] List<string>? userIds = null
     )
     {
-        var data = dingtalk.GetAllUserInfo(fileds ?? []);
+        var data = dingtalk.GetAllUserInfo(fileds ?? [], userIds);
         return new OkObjectResult(data);
     }
 

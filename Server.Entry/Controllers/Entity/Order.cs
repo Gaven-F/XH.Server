@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.XSSF.UserModel;
 using Server.Entry.Utils;
+using Utils;
 using TUPLE = System.Tuple<
     Server.Application.Entities.EOrder,
     Server.Domain.ApprovedPolicy.EApprovalLog
@@ -14,7 +15,7 @@ namespace Server.Web.Controllers.Entity;
 /// <summary>
 /// 订单_V2
 /// </summary>
-public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
+public class Order(BaseFunc baseFunc) : BasicApplicationApi<EOrder>, IDynamicApiController
 {
     private ISqlSugarClient Database => Db.Instance;
 
@@ -115,8 +116,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         {
             return Results.BadRequest();
         }
-        ;
-        var stream = Utils.OrderUtils.ReplaceByEntity(data);
+        var stream = Utils.OrderUtils.ReplaceByEntity(data, baseFunc);
         return TypedResults.Stream(
             stream,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -124,7 +124,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         );
     }
 
-    [HttpGet]
+    [HttpGet, Obsolete("由WorkOrder替代")]
     public ActionResult DownloadFile()
     {
         var data = Db.Instance.Queryable<EOrder>().Where(it => !it.IsDeleted).ToArray();
@@ -165,10 +165,13 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
 
     // 台账导出
     [HttpGet]
-    public ActionResult DownloadWorkOrder(string orderId)
+    public IResult DownloadWorkOrder()
     {
-        var id = Convert.ToInt64(orderId);
-        var data = Db.Instance.Queryable<EOrder>().Where(it => !it.IsDeleted).ToArray();
+        var data = Db
+            .Instance.Queryable<EOrder>()
+            .Includes(it => it.Items)
+            .Where(it => !it.IsDeleted)
+            .ToArray();
         //var data = Database
         //	.Queryable<EOrder>()
         //	.Includes(it => it.Items)
@@ -242,7 +245,7 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
                     .SetCellValue(
                         (DateTime.Parse(item.StartTime) - DateTime.Parse(item.EndTime)).Hours
                     );
-                row.CreateCell(12).SetCellValue(item.Engineer);
+                row.CreateCell(12).SetCellValue(UTILS.GetUserNameById(baseFunc, item.Engineer));
                 row.CreateCell(13).SetCellValue(item.Sign);
                 row.CreateCell(14).SetCellValue(item.ScoringFactor);
                 row.CreateCell(15)
@@ -258,9 +261,14 @@ public class Order : BasicApplicationApi<EOrder>, IDynamicApiController
         stream.Flush();
         stream.Seek(0, SeekOrigin.Begin);
         stream.AllowClose = true;
-
-        return new FileStreamResult(stream, MimeMapper.MimeTypes[".xlsx"]);
+        return TypedResults.Stream(
+            stream,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            $"台账{DateTime.UtcNow.ToFileTime()}.xlsx"
+        );
     }
+
+
 
     /// <summary>
     /// 获取订单记录

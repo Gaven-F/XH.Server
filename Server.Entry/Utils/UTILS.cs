@@ -1,4 +1,6 @@
-﻿namespace Server.Entry.Utils;
+﻿using Utils;
+
+namespace Server.Entry.Utils;
 
 public static class UTILS
 {
@@ -21,4 +23,14 @@ public static class UTILS
     {
         throw new Exception("对象为空！");
     }
+
+	public static string? GetUserNameById(BaseFunc baseFunc, string userId)
+	{
+		return baseFunc
+			.GetAllUserInfo(["姓名"], [userId])
+			.ToArray()[0]
+			.FieldDataList[0]
+			.FieldValueList[0]
+			.Value;
+	}
 }

@@ -230,9 +230,16 @@ public class BaseFunc(ConfigService configService)
         return _ERROR;
     }
 
-    public IEnumerable<UserInfo> GetAllUserInfo(IEnumerable<string> fileds)
+    public IEnumerable<UserInfo> GetAllUserInfo(
+        IEnumerable<string> fileds,
+        IEnumerable<string>? userIds = null
+    )
     {
-        var userIds = GetUserIds();
+        if (userIds == null)
+        {
+            userIds = GetUserIds();
+        }
+        //var userIds = GetUserIds();
         userIds.ThrowExpIfNull();
 
         return from info in GetUserInfo(userIds!, fileds)

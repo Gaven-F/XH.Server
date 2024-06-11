@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
+using Mapster;
 using Server.Entry.Utils;
+using Utils;
 
 namespace Server.Web.Utils;
 
@@ -25,6 +27,7 @@ public static partial class OrderUtils
 
     private static readonly Regex placeHolder = R_REPLACE_HOLDER();
     private static readonly Regex arrPlaceHolder = R_ARR_REPLACE_HOLDER();
+    private static readonly Regex specialHolder = R_SPECIAL_HOLDER();
     private static readonly string templateFilePath = "_template";
     private static readonly string absTemplateFilePath = Path.Combine(
         Environment.CurrentDirectory.ToString(),
@@ -105,7 +108,7 @@ public static partial class OrderUtils
         return stream;
     }
 
-    public static Stream ReplaceByEntity(EOrder e)
+    public static Stream ReplaceByEntity(EOrder e, BaseFunc baseFunc)
     {
         var stream = new NPOIStream(false);
         using var fs = new FileStream(GetInfoByName(STR_ORDER_DOCX).FullPath, FileMode.Open);
@@ -122,6 +125,31 @@ public static partial class OrderUtils
         runs.ForEach(r =>
         {
             var text = r.Text;
+            if (specialHolder.Matches(text) is IEnumerable<Match> specialMs && specialMs.Any())
+            {
+                foreach (Match m in specialMs)
+                {
+                    string? value = null;
+                    if (arrPlaceHolder.Match(m.Groups[1].Value) is Match am && am.Success)
+                    {
+                        var p = t2.GetProperty(am.Groups[1].Value);
+                        if (p != null)
+                        {
+                            var index = Convert.ToInt32(am.Groups[2].Value);
+                            if (e.Items != null && e.Items.Count > index)
+                            {
+                                var v =
+                                    Convert.ToString(p.GetValue(e.Items[index]))
+                                    ?? throw new ArgumentNullException();
+
+                                value = UTILS.GetUserNameById(baseFunc, v);
+                            }
+                        }
+                    }
+                    r.ReplaceText(m.Groups[0].Value, value);
+                }
+            }
+
             if (placeHolder.Matches(text) is IEnumerable<Match> ms && ms.Any())
             {
                 foreach (Match m in ms)
@@ -135,7 +163,14 @@ public static partial class OrderUtils
                             var index = Convert.ToInt32(am.Groups[2].Value);
                             if (e.Items != null && e.Items.Count > index)
                             {
-                                if (p.Name.Contains("Time"))
+                                if (
+                                    p.Name.Contains("Time")
+                                    && !p.Name.Equals(
+                                        "totaltime",
+                                        StringComparison.InvariantCultureIgnoreCase
+                                            | StringComparison.CurrentCultureIgnoreCase
+                                    )
+                                )
                                 {
                                     value = DateTime
                                         .Parse(Convert.ToString(p.GetValue(e.Items[index]))!)
@@ -174,4 +209,7 @@ public static partial class OrderUtils
 
     [GeneratedRegex(@"(\w+?)\[([0-9])+?\]")]
     private static partial Regex R_ARR_REPLACE_HOLDER();
+
+    [GeneratedRegex(@"\[\[(.*)\]\]")]
+    private static partial Regex R_SPECIAL_HOLDER();
 }
