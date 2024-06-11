@@ -159,36 +159,33 @@ public static partial class OrderUtils
                 if (specialGroupHolder.Match(m.Groups[1].Value) is Match mg && mg.Success)
                 {
                     var pName = mg.Groups[1].Value;
-                    var p = orderType.GetProperty(pName);
-                    if (p != null)
-                    {
-                        var mgValue = mg.Groups[2].Value;
+                    var p = orderType.GetProperty(pName) ?? throw new ArgumentNullException();
 
-                        if (pName.Contains("Scene") || pName.Contains("Laboratory"))
-                        {
-                            var v = Convert.ToString(p.GetValue(e)) == "是" ? "0" : "1";
-                            value = (v == mgValue) ? "■" : "□";
-                        }
-                        else if (pName.Contains("Urgency"))
-                        {
-                            var v = Convert.ToString(p.GetValue(e)) == "正常" ? "0" : "1";
-                            value = (v == mgValue) ? "■" : "□";
-                        }
+                    var mgValue = mg.Groups[2].Value;
+
+                    if (pName.Contains("Scene") || pName.Contains("Laboratory"))
+                    {
+                        var v = Convert.ToString(p.GetValue(e)) == "是" ? "0" : "1";
+                        value = (v == mgValue) ? "■" : "□";
+                    }
+                    else if (pName.Contains("Urgency"))
+                    {
+                        var v = Convert.ToString(p.GetValue(e)) == "正常" ? "0" : "1";
+                        value = (v == mgValue) ? "■" : "□";
                     }
                 }
                 else if (arrPlaceHolder.Match(m.Groups[1].Value) is Match am && am.Success)
                 {
-                    var p = orderItemType.GetProperty(am.Groups[1].Value);
-                    if (p != null)
+                    var p =
+                        orderItemType.GetProperty(am.Groups[1].Value)
+                        ?? throw new ArgumentNullException();
+                    var index = Convert.ToInt32(am.Groups[2].Value);
+                    if (e.Items != null && e.Items.Count > index)
                     {
-                        var index = Convert.ToInt32(am.Groups[2].Value);
-                        if (e.Items != null && e.Items.Count > index)
-                        {
-                            var v =
-                                Convert.ToString(p.GetValue(e.Items[index]))
-                                ?? throw new ArgumentNullException();
-                            value = UTILS.GetUserNameById(baseFunc, v);
-                        }
+                        var v =
+                            Convert.ToString(p.GetValue(e.Items[index]))
+                            ?? throw new ArgumentNullException();
+                        value = UTILS.GetUserNameById(baseFunc, v);
                     }
                 }
                 par.ReplaceText(m.Groups[0].Value, value);
@@ -270,13 +267,13 @@ public static partial class OrderUtils
         return null;
     }
 
-    [GeneratedRegex(@"\{\{(.+?)\}\}")]
+    [GeneratedRegex(@"\{{2}(.+?)\}{2}")]
     private static partial Regex R_REPLACE_HOLDER();
 
-    [GeneratedRegex(@"(\w+?)\[([0-9])+?\]")]
+    [GeneratedRegex(@"(\w+?)\[{1}(\d+?)\]{1}")]
     private static partial Regex R_ARR_REPLACE_HOLDER();
 
-    [GeneratedRegex(@"\[\[(.*?)\]\]")]
+    [GeneratedRegex(@"\|{2}(.*?)\|{2}")]
     private static partial Regex R_SPECIAL_HOLDER();
 
     [GeneratedRegex(@"(\w+?)_(\d+)")]
