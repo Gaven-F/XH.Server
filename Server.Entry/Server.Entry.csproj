@@ -34,10 +34,4 @@
 		<Copy SourceFiles="@(TemplateFolder)" DestinationFolder="$(OutputPath)/_template" SkipUnchangedFiles="true"></Copy>
 	</Target>
 
-	<ProjectExtensions>
-		<VisualStudio>
-			<UserProperties appsettings_1json__JsonSchema="https://raw.githubusercontent.com/andig/evcc/master/schema.json" />
-		</VisualStudio>
-	</ProjectExtensions>
-
 </Project>
