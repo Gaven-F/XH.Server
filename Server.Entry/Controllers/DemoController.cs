@@ -61,28 +61,6 @@ public class DemoController(BaseFunc dingtalk) : IDynamicApiController
 
     public async Task<ActionResult> DemoApi([FromServices] DatabaseService Db)
     {
-        // Authorization
-        // x-oss-date
-        //var (url, authorization, date) = dingtalk.GetFileDownload("ii7zUuiiddyYJJYtE0n8iSShAiEiE", "20917246345", "137773722348");
-        ////return new OkObjectResult(dingtalk.GetUserUid("01052133605426110345"));
-        //var client = new HttpClient();
-        //client.DefaultRequestHeaders.Add("Authorization", authorization);
-        //client.DefaultRequestHeaders.Add("x-oss-date", date);
-
-        //var res = await client.GetAsync(url);
-        //var contentType = res.Content.Headers.ContentType?.MediaType ?? "ERROR";
-        //contentType = contentType == "ERROR" ? "ERROR" : MimeMapper.ExtTypes[contentType];
-        //var fileName = new SnowFlakeNew(12).GetUniqueShortId() + contentType;
-        //if (res.Content.Headers.ContentDisposition != null)
-        //{
-        //	fileName = res.Content.Headers.ContentDisposition.FileName ?? fileName;
-        //}
-        //var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        //using var file = File.Create(Path.Combine(desktop, fileName));
-        //(await res.Content.ReadAsStreamAsync()).CopyTo(file);
-        ////var data = ExcelUtils.ExcelToTable(File.Open(@"D:\Users\Gaven\Downloads\工作簿1.xlsx", FileMode.Open));
-        //file.Close();
-
         var data = await Db
             .Instance.Queryable<EConsumableManagement>()
             .GroupBy(it => new { it.Name })

@@ -6,4 +6,6 @@ namespace Server.Web.Controllers.Entity;
 /// 合同管理
 /// </summary>
 
-public class ContractManagement : BasicApplicationApi<EContractManagement>, IDynamicApiController { }
+public class ContractManagement
+    : BasicApplicationApi<EContractManagement>,
+        IDynamicApiController { }

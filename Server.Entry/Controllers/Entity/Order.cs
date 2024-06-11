@@ -1,4 +1,8 @@
-﻿using Furion.DynamicApiController;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using Furion.DynamicApiController;
 using Masuit.Tools.Mime;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +33,9 @@ public class Order(BaseFunc baseFunc) : BasicApplicationApi<EOrder>, IDynamicApi
     /// <summary>
     /// 获取所有订单数据
     /// </summary>
-    /// <param name="null">无需传值</param>
+    /// <param name="null"></param>
     /// <returns></returns>
-    public ActionResult GetData(string @null = "")
+    public ActionResult GetData(string? @null = "null")
     {
         var data = Database
             .Queryable<EOrder>()
@@ -52,9 +56,9 @@ public class Order(BaseFunc baseFunc) : BasicApplicationApi<EOrder>, IDynamicApi
     /// 获取订单数据
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="null">无需传值</param>
+    /// <param name="null"></param>
     /// <returns></returns>
-    public ActionResult<EOrder> GetDataById(string id, string @null = "") =>
+    public ActionResult<EOrder> GetDataById(string id, string? @null = "null") =>
         Database
             .Queryable<EOrder>()
             .Where(it => !it.IsDeleted)
@@ -268,8 +272,6 @@ public class Order(BaseFunc baseFunc) : BasicApplicationApi<EOrder>, IDynamicApi
         );
     }
 
-
-
     /// <summary>
     /// 获取订单记录
     /// </summary>
@@ -350,29 +352,29 @@ public class Order(BaseFunc baseFunc) : BasicApplicationApi<EOrder>, IDynamicApi
         );
     }
 
-    [NonAction]
-    public override Results<Ok<List<TUPLE>>, BadRequest<string>> GetData()
-    {
-        try
-        {
-            var data = Database
-                .Queryable<EOrder>()
-                .Where(it => !it.IsDeleted)
-                .Includes(it => it.Items)
-                .ToList();
-            List<TUPLE> res = new(data.Count);
-            foreach (var entity in data)
-            {
-                var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
-                res.Add(new(entity, log));
-            }
-            return TypedResults.Ok(res);
-        }
-        catch (Exception e)
-        {
-            return TypedResults.BadRequest(e.Message);
-        }
-    }
+    //[NonAction]
+    //public override Results<Ok<List<TUPLE>>, BadRequest<string>> GetData()
+    //{
+    //    try
+    //    {
+    //        var data = Database
+    //            .Queryable<EOrder>()
+    //            .Where(it => !it.IsDeleted)
+    //            .Includes(it => it.Items)
+    //            .ToList();
+    //        List<TUPLE> res = new(data.Count);
+    //        foreach (var entity in data)
+    //        {
+    //            var log = ApprovedPolicyService.GetCurrentApprovalLog(entity.Id);
+    //            res.Add(new(entity, log));
+    //        }
+    //        return TypedResults.Ok(res);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        return TypedResults.BadRequest(e.Message);
+    //    }
+    //}
 
     [NonAction]
     public override Results<Ok<TUPLE>, BadRequest<string>> GetDataById(long id)

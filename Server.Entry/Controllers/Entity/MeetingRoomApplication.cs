@@ -6,4 +6,6 @@ namespace Server.Web.Controllers.Entity;
 /// 会议室
 /// </summary>
 
-public class MeetingRoomApplication : BasicApplicationApi<EMeetingRoomApplication>, IDynamicApiController { }
+public class MeetingRoomApplication
+    : BasicApplicationApi<EMeetingRoomApplication>,
+        IDynamicApiController { }
