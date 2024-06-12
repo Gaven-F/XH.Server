@@ -496,8 +496,42 @@ public class CopyMsgFormat
             throw new ArgumentException();
         }
     };
+	public static readonly Func<object, string> ORFormate = (object data) =>
+	{
+		if (data is EOrder entity)
+		{
+			return string.Format(
+			  $$""""
+                {{"编号：",-6}}{0,10} 
+                {{"随工单号：",-6}}{1,10} 
+                {{"客户名称：",-6}}{2,10} 
+                {{"委托人：",-6}}{3,10} 
+                {{"联系电话：",-4}}{4,10}
+                {{"产品型号：",-6}}{5,10} 
+                {{"要求完成时间：",-6}}{6,10} 
+                {{"检测项目数：",-6}}{7,10} 
+                {{"订单总时长",-6}}{8,10} 
+                {{"订单总价",-6}}{9,10} 
+                """",
+			  entity.Numbering,
+			  entity.WorkNumber,
+			  entity.CustomerName,
+			  entity.CommissionEngineers,
+			  entity.ContactNumber,
+			  entity.ProductsModel,
+			  entity.CompletionTime,
+			  entity.Items?.Count,
+			  entity.TotalTime,
+			  entity.TotalPrice
+			);
+		}
+		else
+		{
+			throw new ArgumentException();
+		}
+	};
 
-    public static readonly Dictionary<string, Func<object, string>> FormatMapper =
+	public static readonly Dictionary<string, Func<object, string>> FormatMapper =
         new()
         {
             { nameof(ELeave), LFormate },
@@ -517,5 +551,6 @@ public class CopyMsgFormat
             { nameof(EProjectManagement), PMFormate },
             { nameof(ET_C), TCFormate },
             { nameof(EChipPayment), CPFormate },
-        };
+            { nameof(EOrder), ORFormate },
+		};
 }
